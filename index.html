@@ -3,30 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Material Serpentine | En</title>
+    <title>Premium Serpentine | En</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script>
-        // CSS Variables for dynamic theming
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
+                    fontFamily: { sans: ['Outfit', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
                     colors: {
-                        m3Bg: 'var(--m3-bg)',
-                        m3Surface: 'var(--m3-surface)',
-                        m3SurfaceVariant: 'var(--m3-surface-variant)',
-                        m3Text: 'var(--m3-text)',
-                        m3Primary: 'var(--m3-primary)',
-                        m3Secondary: 'var(--m3-secondary)',
-                        m3Food: 'var(--m3-food)',
-                        m3Grid: 'var(--m3-grid)',
+                        m3Bg: 'var(--m3-bg)', m3Surface: 'var(--m3-surface)', m3SurfaceVariant: 'var(--m3-surface-variant)',
+                        m3Text: 'var(--m3-text)', m3Primary: 'var(--m3-primary)', m3Secondary: 'var(--m3-secondary)',
+                        m3Food: 'var(--m3-food)', m3Gold: '#F5BE48'
                     }
                 }
             }
@@ -35,98 +26,113 @@
 
     <style>
         :root {
-            --m3-bg: #FDFBFF;
-            --m3-surface: #FDFBFF;
-            --m3-surface-variant: #E1E2EC;
-            --m3-text: #1A1C1E;
-            --m3-grid: #E0E2EC;
-            --m3-primary: #005AC1;
-            --m3-secondary: #00639B;
-            --m3-food: #BA1A1A;
+            --m3-bg: #FDFBFF; --m3-surface: #FFFFFF; --m3-surface-variant: #E1E2EC;
+            --m3-text: #1A1C1E; --m3-primary: #005AC1; --m3-secondary: #00639B; --m3-food: #BA1A1A;
         }
-
         html.dark {
-            --m3-bg: #1A1C1E;
-            --m3-surface: #1A1C1E;
-            --m3-surface-variant: #2D3135;
-            --m3-text: #E3E2E6;
-            --m3-grid: #43474E;
-            --m3-primary: #ADC6FF;
-            --m3-secondary: #78B9FF;
-            --m3-food: #FFB4AB;
+            --m3-bg: #111318; --m3-surface: #1E2026; --m3-surface-variant: #2D3135;
+            --m3-text: #E3E2E6; --m3-primary: #ADC6FF; --m3-secondary: #78B9FF; --m3-food: #FFB4AB;
         }
 
         html, body {
-            overflow: hidden;
-            height: 100%;
-            overscroll-behavior: none;
-            touch-action: none;
-            -webkit-tap-highlight-color: transparent;
+            overflow: hidden; height: 100%; overscroll-behavior: none;
+            touch-action: none; -webkit-tap-highlight-color: transparent;
         }
-        canvas { image-rendering: pixelated; }
-
-        .icon-btn {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            color: var(--m3-primary);
-        }
-        .icon-btn:active { transform: scale(0.85); }
         
-        .modal-enter { animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-        @keyframes slideUp {
-            from { transform: translateY(50px) scale(0.95); opacity: 0; }
-            to { transform: translateY(0) scale(1); opacity: 1; }
-        }
+        canvas { image-rendering: pixelated; touch-action: none; }
 
-        /* --- Refined 3D-free Joypad Control --- */
-        .joypad-container {
-            position: relative; width: 220px; height: 220px; margin: 10px auto 20px auto;
-            display: flex; justify-content: center; align-items: center;
-            flex-shrink: 0; user-select: none; touch-action: none;
-            background: #E1E2EC; /* SurfaceVariant color, no gradients */
-            border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Simple shadow */
+        /* Top Bar Icons */
+        .icon-btn { transition: all 0.2s; color: var(--m3-primary); }
+        .icon-btn:active { transform: scale(0.85); }
+
+        /* Modal Animation */
+        .modal-enter { animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* --- Completely New Premium D-Pad (Cross Layout) --- */
+        .premium-controller {
+            display: grid;
+            grid-template-areas: 
+                ". up ." 
+                "left center right" 
+                ". down .";
+            gap: 12px;
+            margin: 10px auto 20px auto;
+            padding: 15px;
+            background: var(--m3-surface-variant);
+            border-radius: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1), inset 0 2px 5px rgba(255,255,255,0.2);
             transition: all 0.3s;
         }
-        html.dark .joypad-container {
-            background: #2D3135; /* Dark SurfaceVariant */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+        html.dark .premium-controller {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.05);
         }
 
-        /* Simple circular directional buttons */
-        .d-btn {
-            position: absolute; background: transparent; color: var(--m3-primary);
-            font-size: 28px; cursor: pointer; transition: all 0.15s;
-            display: flex; justify-content: center; align-items: center; border: none;
-            border-radius: 50%;
+        .dir-btn {
+            background: var(--m3-surface);
+            color: var(--m3-primary);
+            font-size: 24px;
+            border: 2px solid transparent;
+            border-radius: 18px; /* Squircle shape */
+            width: 65px; height: 65px;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            user-select: none;
         }
-        .d-btn:active { background-color: rgba(0, 0, 0, 0.05); transform: scale(0.9); }
-        html.dark .d-btn:active { background-color: rgba(255, 255, 255, 0.05); }
-
-        .d-up { top: 10px; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; }
-        .d-down { bottom: 10px; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; }
-        .d-left { left: 10px; top: 50%; transform: translateY(-50%); width: 70px; height: 70px; }
-        .d-right { right: 10px; top: 50%; transform: translateY(-50%); width: 70px; height: 70px; }
-
-        /* Modern Flat Play/Pause Button */
-        .play-pause-btn {
-            position: absolute; width: 85px; height: 85px; border-radius: 50%;
-            background: var(--m3-primary); color: var(--m3-bg);
-            font-size: 32px; border: none; /* No border for flat look */
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2); z-index: 10;
-            display: flex; justify-content: center; align-items: center; transition: all 0.2s;
+        .dir-btn:active {
+            transform: scale(0.9) translateY(2px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: var(--m3-primary);
+            color: var(--m3-bg);
         }
-        .play-pause-btn:active { transform: scale(0.9); box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
 
-        .color-swatch { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s; }
-        .color-swatch.active { border-color: var(--m3-text); transform: scale(1.1); box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+        .dir-up { grid-area: up; } .dir-down { grid-area: down; }
+        .dir-left { grid-area: left; } .dir-right { grid-area: right; }
         
+        .play-pause-btn {
+            grid-area: center;
+            background: linear-gradient(135deg, var(--m3-primary), var(--m3-secondary));
+            color: var(--m3-bg);
+            border-radius: 50%;
+            width: 70px; height: 70px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 28px; font-weight: bold;
+            box-shadow: 0 6px 15px rgba(0,90,193,0.3);
+            transition: all 0.2s;
+            margin: auto;
+        }
+        .play-pause-btn:active { transform: scale(0.9); }
+
+        /* Game Effects */
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .floating-text {
+            position: absolute; font-weight: bold; font-family: 'JetBrains Mono', monospace;
+            pointer-events: none; animation: floatUp 1s ease-out forwards; z-index: 30;
+        }
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-40px) scale(1.5); }
+        }
+
+        /* Settings UI */
+        .color-swatch { width: 38px; height: 38px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: transform 0.2s; }
+        .color-swatch.active { border-color: var(--m3-text); transform: scale(1.15); box-shadow: 0 0 15px rgba(0,0,0,0.2); }
         .design-btn { border: 2px solid var(--m3-surface-variant); transition: all 0.2s; }
         .design-btn.active { border-color: var(--m3-primary); background: var(--m3-primary); color: var(--m3-bg); }
     </style>
 </head>
 <body class="bg-m3Bg text-m3Text font-sans transition-colors duration-300 flex flex-col min-h-screen p-4 overflow-hidden">
 
-    <div class="w-full max-w-sm flex justify-between items-center mb-6 px-2 flex-shrink-0 mx-auto">
+    <div class="w-full max-w-sm flex justify-between items-center mb-4 px-2 flex-shrink-0 mx-auto">
         <div class="flex flex-col">
             <h1 class="text-3xl font-extrabold tracking-tight text-m3Primary">Serpentine</h1>
             <div class="flex items-center gap-2 mt-1 font-mono text-sm">
@@ -148,46 +154,45 @@
         </div>
     </div>
 
-    <div class="relative bg-m3SurfaceVariant p-2.5 rounded-[2rem] shadow-inner flex-grow max-w-[min(95vw,calc(100vh-390px))] mx-auto overflow-hidden w-full flex justify-center items-center">
-        <canvas id="gameCanvas" width="300" height="300" class="rounded-[1.5rem] bg-m3Bg w-full h-full object-contain shadow-sm"></canvas>
+    <div id="gameWrapper" class="relative bg-m3SurfaceVariant p-2.5 rounded-[2rem] shadow-inner flex-grow max-w-[min(95vw,calc(100vh-390px))] mx-auto overflow-hidden w-full flex justify-center items-center">
+        <div id="canvasContainer" class="relative w-full h-full">
+            <canvas id="gameCanvas" width="300" height="300" class="rounded-[1.5rem] bg-m3Bg w-full h-full object-contain shadow-sm"></canvas>
+            </div>
         
-        <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-md rounded-[2rem] opacity-0 pointer-events-none transition-opacity duration-300 z-20">
-            <h2 class="text-3xl font-extrabold mb-2 text-white">Game Over!</h2>
-            <p class="text-white/80 mb-6 font-mono">Score: <span id="finalScore">0</span></p>
-            <button id="restartBtn" class="px-8 py-4 bg-m3Primary text-m3Bg rounded-full font-bold shadow-lg hover:scale-105 active:scale-95 transition-all text-lg">
-                🔄 Play Again
+        <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-md rounded-[2rem] opacity-0 pointer-events-none transition-opacity duration-300 z-20">
+            <h2 class="text-4xl font-extrabold mb-2 text-white tracking-wider">GAME OVER</h2>
+            <p class="text-white/90 mb-6 font-mono text-lg">Final Score: <span id="finalScore" class="text-2xl font-bold text-yellow-400">0</span></p>
+            <button id="restartBtn" class="px-8 py-4 bg-m3Primary text-m3Bg rounded-full font-bold shadow-lg hover:scale-105 active:scale-95 transition-all text-xl uppercase tracking-wide">
+                Play Again
             </button>
         </div>
     </div>
 
-    <div class="joypad-container">
-        <button class="d-btn d-up" id="btnUp">▲</button>
-        <button class="d-btn d-left" id="btnLeft">◀</button>
+    <div class="premium-controller">
+        <button class="dir-btn dir-up" id="btnUp">▲</button>
+        <button class="dir-btn dir-left" id="btnLeft">◀</button>
         <button class="play-pause-btn" id="btnPlayPause">▶</button>
-        <button class="d-btn d-right" id="btnRight">▶</button>
-        <button class="d-btn d-down" id="btnDown">▼</button>
+        <button class="dir-btn dir-right" id="btnRight">▶</button>
+        <button class="dir-btn dir-down" id="btnDown">▼</button>
     </div>
 
-    <div id="settingsModal" class="fixed inset-0 bg-black/50 hidden justify-center items-end sm:items-center z-50 backdrop-blur-sm transition-opacity">
+    <div id="settingsModal" class="fixed inset-0 bg-black/60 hidden justify-center items-end sm:items-center z-50 backdrop-blur-sm transition-opacity">
         <div class="bg-m3Bg w-full sm:w-[90%] max-w-sm rounded-t-[2rem] sm:rounded-[2rem] p-6 modal-enter max-h-[85vh] overflow-y-auto shadow-2xl">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-m3Primary">Settings</h2>
-                <button id="closeModalBtn" class="p-2 rounded-full bg-m3SurfaceVariant text-m3Text active:scale-90 transition">✕</button>
+                <button id="closeModalBtn" class="p-2 rounded-full bg-m3SurfaceVariant text-m3Text active:scale-90 transition font-bold">✕</button>
             </div>
-
             <div class="flex justify-between items-center mb-6 bg-m3SurfaceVariant p-4 rounded-2xl">
-                <span class="font-semibold">Dark Mode</span>
-                <button id="themeToggleBtn" class="px-4 py-2 bg-m3Primary text-m3Bg rounded-full font-bold shadow transition active:scale-95">☀️ Light</button>
+                <span class="font-semibold text-lg">Dark Mode</span>
+                <button id="themeToggleBtn" class="px-5 py-2 bg-m3Primary text-m3Bg rounded-full font-bold shadow transition active:scale-95">☀️ Light</button>
             </div>
-
             <div class="mb-6">
-                <h3 class="font-semibold mb-3">Theme (10 Colors)</h3>
+                <h3 class="font-semibold mb-3 text-lg opacity-90">Theme Colors</h3>
                 <div class="flex flex-wrap gap-3" id="themeGrid"></div>
             </div>
-
             <div class="mb-4">
-                <h3 class="font-semibold mb-3">Snake Design (5 Styles)</h3>
-                <div class="grid grid-cols-2 gap-2" id="designGrid"></div>
+                <h3 class="font-semibold mb-3 text-lg opacity-90">Snake Design</h3>
+                <div class="grid grid-cols-2 gap-3" id="designGrid"></div>
             </div>
         </div>
     </div>
@@ -195,13 +200,19 @@
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
-        const gridSize = 15;
-        const tileCount = canvas.width / gridSize;
+        const canvasContainer = document.getElementById("canvasContainer");
+        const gameWrapper = document.getElementById("gameWrapper");
         
-        let speed = 4; 
+        // Perfect Grid Calculation (No gaps)
+        const gridSize = 15;
+        const tileCount = 20; // 300 / 15 = exactly 20.
+        
+        let speed = 5; 
         let snake = [{ x: 10, y: 10 }];
         let food = { x: 5, y: 5 };
+        let specialFood = null; // Golden Apple
         let dx = 0, dy = 0;
+        let lastDx = 0, lastDy = 0; // Prevents suicide by fast clicking
         let score = 0;
         let isPaused = true;
         let isGameOver = false;
@@ -211,11 +222,12 @@
         let currentDesignId = 0; 
         let isDarkMode = false;
 
-        let highScore = localStorage.getItem('snakeHighScore') || 0;
+        let highScore = localStorage.getItem('premiumSnakeBest') || 0;
         document.getElementById('highScoreText').innerText = highScore;
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+        // 10 Themes
         const themes = [
             { id: 0, name: 'Blue',   l: {p:'#005AC1', s:'#00639B', f:'#BA1A1A'}, d: {p:'#ADC6FF', s:'#78B9FF', f:'#FFB4AB'} },
             { id: 1, name: 'Emerald',l: {p:'#186d33', s:'#2d844a', f:'#BA1A1A'}, d: {p:'#8FD49E', s:'#65A976', f:'#FFB4AB'} },
@@ -230,75 +242,70 @@
         ];
 
         const designs = [
-            { id: 0, name: "Modern (Round)" },
-            { id: 1, name: "Retro (Square)" },
-            { id: 2, name: "Circle (Dots)" },
-            { id: 3, name: "Diamond (Shapes)" },
-            { id: 4, name: "Glowing (Orbs)" }
+            { id: 0, name: "Modern" }, { id: 1, name: "Retro" },
+            { id: 2, name: "Circles" }, { id: 3, name: "Diamonds" }, { id: 4, name: "Glowing" }
         ];
 
-        function updateTheme() {
-            const root = document.documentElement;
-            const t = themes[currentThemeId];
-            const colors = isDarkMode ? t.d : t.l;
-            root.style.setProperty('--m3-primary', colors.p);
-            root.style.setProperty('--m3-secondary', colors.s);
-            root.style.setProperty('--m3-food', colors.f);
-            document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('active'));
-            document.getElementById(`swatch-${currentThemeId}`).classList.add('active');
-            document.querySelectorAll('.design-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(`design-${currentDesignId}`).classList.add('active');
-            clearScreen(); drawGrid(); drawSnake(); drawFood();
-        }
-
-        function initSettingsUI() {
-            const tGrid = document.getElementById('themeGrid');
-            themes.forEach(t => {
-                let div = document.createElement('div');
-                div.className = 'color-swatch shadow-md';
-                div.style.backgroundColor = isDarkMode ? t.d.p : t.l.p;
-                div.id = `swatch-${t.id}`;
-                div.onclick = () => { currentThemeId = t.id; updateTheme(); };
-                tGrid.appendChild(div);
-            });
-
-            const dGrid = document.getElementById('designGrid');
-            designs.forEach(d => {
-                let btn = document.createElement('button');
-                btn.className = 'design-btn px-4 py-2 rounded-xl text-sm font-semibold';
-                btn.id = `design-${d.id}`; btn.innerText = d.name;
-                btn.onclick = () => { currentDesignId = d.id; updateTheme(); };
-                dGrid.appendChild(btn);
-            });
-            updateTheme();
+        // --- Core Functions ---
+        
+        // Haptic Feedback Engine
+        function vibe(type) {
+            if (!navigator.vibrate) return;
+            try {
+                if (type === 'move') navigator.vibrate(15);
+                else if (type === 'eat') navigator.vibrate([30]);
+                else if (type === 'special') navigator.vibrate([40, 30, 60]);
+                else if (type === 'die') navigator.vibrate([150, 50, 250]);
+            } catch(e){}
         }
 
         function playSound(type) {
             if (!soundEnabled) return;
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
+            
             if (type === 'eat') {
                 osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'special') {
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(1600, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
             } else if (type === 'die') {
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.4);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.5);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.5);
             }
         }
 
-        // Draw Logic
+        function showFloatingText(text, x, y, color) {
+            const el = document.createElement('div');
+            el.className = 'floating-text';
+            el.innerText = text;
+            el.style.color = color;
+            // Convert canvas coordinates to percentage to match responsive canvas
+            const percentX = (x / tileCount) * 100;
+            const percentY = (y / tileCount) * 100;
+            el.style.left = `calc(${percentX}% - 10px)`;
+            el.style.top = `calc(${percentY}% - 10px)`;
+            canvasContainer.appendChild(el);
+            setTimeout(() => el.remove(), 1000);
+        }
+
+        // --- Drawing ---
         function drawGrid() {
-            ctx.strokeStyle = isDarkMode ? '#43474E' : '#E0E2EC';
-            ctx.lineWidth = 0.5; // Clearer lines
-            for (let i = 1; i < tileCount; i++) {
+            ctx.strokeStyle = isDarkMode ? '#3A3F47' : '#EAECF2';
+            ctx.lineWidth = 1;
+            // Draw exactly tileCount lines
+            for (let i = 0; i <= tileCount; i++) {
                 ctx.beginPath(); ctx.moveTo(i * gridSize, 0); ctx.lineTo(i * gridSize, canvas.height); ctx.stroke();
                 ctx.beginPath(); ctx.moveTo(0, i * gridSize); ctx.lineTo(canvas.width, i * gridSize); ctx.stroke();
             }
@@ -307,27 +314,47 @@
         function drawSnake() {
             const headColor = themes[currentThemeId][isDarkMode?'d':'l'].p;
             const bodyColor = themes[currentThemeId][isDarkMode?'d':'l'].s;
+            
             snake.forEach((part, index) => {
                 ctx.fillStyle = index === 0 ? headColor : bodyColor;
                 ctx.shadowBlur = 0; let px = part.x * gridSize; let py = part.y * gridSize; let s = gridSize;
                 ctx.beginPath();
+                
                 if (currentDesignId === 0) ctx.roundRect(px + 1, py + 1, s - 2, s - 2, index === 0 ? 6 : 4);
-                else if (currentDesignId === 1) { ctx.rect(px, py, s, s); ctx.strokeStyle = isDarkMode ? '#1A1C1E' : '#FDFBFF'; ctx.lineWidth = 1; ctx.stroke(); }
+                else if (currentDesignId === 1) { ctx.rect(px, py, s, s); ctx.strokeStyle = isDarkMode ? '#1E2026' : '#FFFFFF'; ctx.lineWidth = 1.5; ctx.stroke(); }
                 else if (currentDesignId === 2) ctx.arc(px + s/2, py + s/2, s/2 - 1, 0, Math.PI*2);
                 else if (currentDesignId === 3) { ctx.moveTo(px + s/2, py); ctx.lineTo(px + s, py + s/2); ctx.lineTo(px + s/2, py + s); ctx.lineTo(px, py + s/2); }
-                else if (currentDesignId === 4) { ctx.shadowBlur = 10; ctx.shadowColor = ctx.fillStyle; ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2); }
+                else if (currentDesignId === 4) { ctx.shadowBlur = 12; ctx.shadowColor = ctx.fillStyle; ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2); }
                 ctx.fill();
 
-                // Eyes for Head (Improved visibility)
+                // Directional Eyes on Head
                 if (index === 0 && currentDesignId !== 1 && currentDesignId !== 3) {
-                    ctx.fillStyle = isDarkMode ? '#000' : '#FFF'; ctx.shadowBlur = 0;
-                    ctx.beginPath(); ctx.arc(px + 5, py + 5, 2.5, 0, Math.PI*2); ctx.arc(px + 10, py + 5, 2.5, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = isDarkMode ? '#111318' : '#FFF'; ctx.shadowBlur = 0;
+                    let eyeOffset1X, eyeOffset1Y, eyeOffset2X, eyeOffset2Y;
+                    
+                    // Look direction logic
+                    if (dx === 1) { // Right
+                        eyeOffset1X = 10; eyeOffset1Y = 4; eyeOffset2X = 10; eyeOffset2Y = 11;
+                    } else if (dx === -1) { // Left
+                        eyeOffset1X = 5; eyeOffset1Y = 4; eyeOffset2X = 5; eyeOffset2Y = 11;
+                    } else if (dy === 1) { // Down
+                        eyeOffset1X = 4; eyeOffset1Y = 10; eyeOffset2X = 11; eyeOffset2Y = 10;
+                    } else { // Up or default
+                        eyeOffset1X = 4; eyeOffset1Y = 5; eyeOffset2X = 11; eyeOffset2Y = 5;
+                    }
+
+                    ctx.beginPath(); 
+                    ctx.arc(px + eyeOffset1X, py + eyeOffset1Y, 2.5, 0, Math.PI*2); 
+                    ctx.arc(px + eyeOffset2X, py + eyeOffset2Y, 2.5, 0, Math.PI*2); 
+                    ctx.fill();
                 }
             }); ctx.shadowBlur = 0;
         }
 
-        function drawFood() {
-            const fColor = themes[currentThemeId][isDarkMode?'d':'l'].f; ctx.fillStyle = fColor;
+        function drawFoods() {
+            // Normal Food
+            const fColor = themes[currentThemeId][isDarkMode?'d':'l'].f; 
+            ctx.fillStyle = fColor;
             let px = food.x * gridSize; let py = food.y * gridSize; let s = gridSize;
             ctx.beginPath();
             if (currentDesignId === 1) ctx.rect(px+1, py+1, s-2, s-2);
@@ -335,86 +362,216 @@
             else if (currentDesignId === 4) { ctx.shadowBlur = 15; ctx.shadowColor = fColor; ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2); }
             else ctx.arc(px + s/2, py + s/2, s/2 - 1.5, 0, Math.PI*2);
             ctx.fill(); ctx.shadowBlur = 0;
+
+            // Golden Apple
+            if (specialFood) {
+                ctx.fillStyle = '#F5BE48';
+                ctx.shadowBlur = 20; ctx.shadowColor = '#F5BE48';
+                let gx = specialFood.x * gridSize; let gy = specialFood.y * gridSize;
+                ctx.beginPath();
+                // Star/Diamond shape for special food
+                ctx.moveTo(gx + s/2, gy); ctx.lineTo(gx + s, gy + s/2); ctx.lineTo(gx + s/2, gy + s); ctx.lineTo(gx, gy + s/2);
+                ctx.fill(); ctx.shadowBlur = 0;
+            }
         }
 
-        function drawGame() {
-            if (isPaused || isGameOver) return; moveSnake(); if (checkGameOver()) return;
-            clearScreen(); drawGrid(); drawFood(); drawSnake(); setTimeout(drawGame, 1000 / speed);
-        }
-        function clearScreen() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
-
+        // --- Game Logic ---
         function moveSnake() {
             if (dx === 0 && dy === 0) return; 
+            lastDx = dx; lastDy = dy; // Lock direction for this tick
+            
             const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+            // Wrap logic
             if (head.x < 0) head.x = tileCount - 1; if (head.x >= tileCount) head.x = 0;
             if (head.y < 0) head.y = tileCount - 1; if (head.y >= tileCount) head.y = 0;
             snake.unshift(head);
+            
+            let ate = false;
+            // Eat normal food
             if (head.x === food.x && head.y === food.y) {
-                score += 10; document.getElementById("score").innerText = score; playSound('eat'); placeFood();
-                speed = Math.min(speed + 0.1, 14); 
-                if (score > highScore) { highScore = score; localStorage.setItem('snakeHighScore', highScore); document.getElementById('highScoreText').innerText = highScore; }
-            } else { snake.pop(); }
+                score += 10; updateScore();
+                playSound('eat'); vibe('eat');
+                showFloatingText("+10", food.x, food.y, themes[currentThemeId][isDarkMode?'d':'l'].p);
+                placeFood(); ate = true;
+                speed = Math.min(speed + 0.15, 16); // Increase speed
+            } 
+            // Eat Special food
+            else if (specialFood && head.x === specialFood.x && head.y === specialFood.y) {
+                score += 30; updateScore();
+                playSound('special'); vibe('special');
+                showFloatingText("+30", specialFood.x, specialFood.y, "#F5BE48");
+                specialFood = null; ate = true;
+            }
+            
+            if (!ate) snake.pop();
+
+            // Special food timeout logic
+            if (specialFood) {
+                specialFood.timer--;
+                if (specialFood.timer <= 0) specialFood = null;
+            }
         }
 
         function placeFood() {
             food = { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
-            if (snake.some(part => part.x === food.x && part.y === food.y)) placeFood();
+            if (snake.some(part => part.x === food.x && part.y === food.y)) return placeFood();
+
+            // 15% chance to spawn Golden Apple if one doesn't exist
+            if (!specialFood && Math.random() < 0.15) {
+                let gx = Math.floor(Math.random() * tileCount);
+                let gy = Math.floor(Math.random() * tileCount);
+                if (!snake.some(part => part.x === gx && part.y === gy) && (gx !== food.x || gy !== food.y)) {
+                    specialFood = { x: gx, y: gy, timer: 35 }; // stays for 35 ticks
+                }
+            }
+        }
+
+        function updateScore() {
+            document.getElementById("score").innerText = score;
+            if (score > highScore) { 
+                highScore = score; 
+                localStorage.setItem('premiumSnakeBest', highScore); 
+                document.getElementById('highScoreText').innerText = highScore; 
+            }
         }
 
         function checkGameOver() {
             const head = snake[0];
             for (let i = 1; i < snake.length; i++) {
                 if (head.x === snake[i].x && head.y === snake[i].y) {
-                    isGameOver = true; playSound('die'); document.getElementById("finalScore").innerText = score;
+                    isGameOver = true; 
+                    playSound('die'); vibe('die');
+                    gameWrapper.classList.add('shake');
+                    setTimeout(() => gameWrapper.classList.remove('shake'), 500);
+                    
+                    document.getElementById("finalScore").innerText = score;
                     document.getElementById("gameOverScreen").classList.remove('opacity-0', 'pointer-events-none');
                     btnPlayPause.innerText = "▶"; return true;
                 }
             } return false;
         }
 
-        function resetGame() {
-            snake = [{ x: 10, y: 10 }]; dx = 0; dy = 0; score = 0; speed = 4; document.getElementById("score").innerText = score;
-            isGameOver = false; document.getElementById("gameOverScreen").classList.add('opacity-0', 'pointer-events-none');
-            placeFood(); isPaused = true; btnPlayPause.innerText = "▶"; clearScreen(); drawGrid(); drawSnake(); drawFood();
+        function drawGame() {
+            if (isPaused || isGameOver) return; 
+            moveSnake(); 
+            if (checkGameOver()) return;
+            clearScreen(); drawGrid(); drawFoods(); drawSnake(); 
+            setTimeout(drawGame, 1000 / speed);
         }
 
+        function clearScreen() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+        function resetGame() {
+            snake = [{ x: 10, y: 10 }]; dx = 0; dy = 0; lastDx = 0; lastDy = 0;
+            score = 0; speed = 5; specialFood = null;
+            document.getElementById("score").innerText = score;
+            isGameOver = false; document.getElementById("gameOverScreen").classList.add('opacity-0', 'pointer-events-none');
+            placeFood(); isPaused = true; btnPlayPause.innerText = "▶"; 
+            clearScreen(); drawGrid(); drawSnake(); drawFoods();
+        }
+
+        // --- Controls ---
         function togglePlayPause() {
+            vibe('move');
             if (isGameOver) resetGame();
             isPaused = !isPaused;
-            if (!isPaused) { btnPlayPause.innerHTML = "<b>||</b>"; if (dx===0 && dy===0) dx = 1; drawGame(); } 
+            if (!isPaused) { btnPlayPause.innerHTML = "<b>||</b>"; if (dx===0 && dy===0) {dx = 1; lastDx = 1;} drawGame(); } 
             else { btnPlayPause.innerText = "▶"; }
         }
 
-        function setDir(newDx, newDy) { if (isPaused) togglePlayPause(); if (newDx !== 0 && dx === -newDx) return; if (newDy !== 0 && dy === -newDy) return; dx = newDx; dy = newDy; }
+        function setDir(newDx, newDy) { 
+            vibe('move');
+            if (isPaused && !isGameOver) togglePlayPause(); 
+            // Prevent 180 turn using lastDx/lastDy to avoid suicide
+            if (newDx !== 0 && lastDx === -newDx) return; 
+            if (newDy !== 0 && lastDy === -newDy) return; 
+            dx = newDx; dy = newDy; 
+        }
 
-        // Controls
+        // Button Listeners
         document.getElementById('btnUp').onclick = () => setDir(0, -1);
         document.getElementById('btnDown').onclick = () => setDir(0, 1);
         document.getElementById('btnLeft').onclick = () => setDir(-1, 0);
         document.getElementById('btnRight').onclick = () => setDir(1, 0);
-        btnPlayPause.onclick = togglePlayPause; document.getElementById('restartBtn').onclick = resetGame;
+        btnPlayPause.onclick = togglePlayPause; 
+        document.getElementById('restartBtn').onclick = resetGame;
 
-        // Top Bar
-        document.getElementById('refreshBtn').onclick = () => window.location.reload();
+        // --- Swipe Controls (Premium Feature) ---
+        let touchStartX = 0, touchStartY = 0;
+        canvas.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY;
+            e.preventDefault(); // Prevent scrolling while touching canvas
+        }, {passive: false});
+
+        canvas.addEventListener('touchend', e => {
+            let touchEndX = e.changedTouches[0].screenX; let touchEndY = e.changedTouches[0].screenY;
+            handleSwipe(touchStartX, touchStartY, touchEndX, touchEndY);
+            e.preventDefault();
+        }, {passive: false});
+
+        function handleSwipe(startX, startY, endX, endY) {
+            let diffX = endX - startX; let diffY = endY - startY;
+            if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) return; // Ignore small taps
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX > 0) setDir(1, 0); else setDir(-1, 0); // Right/Left
+            } else {
+                if (diffY > 0) setDir(0, 1); else setDir(0, -1); // Down/Up
+            }
+        }
+
+        // --- UI & Settings ---
+        function updateTheme() {
+            const root = document.documentElement; const t = themes[currentThemeId]; const colors = isDarkMode ? t.d : t.l;
+            root.style.setProperty('--m3-primary', colors.p); root.style.setProperty('--m3-secondary', colors.s); root.style.setProperty('--m3-food', colors.f);
+            document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('active'));
+            document.getElementById(`swatch-${currentThemeId}`).classList.add('active');
+            document.querySelectorAll('.design-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(`design-${currentDesignId}`).classList.add('active');
+            clearScreen(); drawGrid(); drawSnake(); drawFoods();
+        }
+
+        function initSettingsUI() {
+            const tGrid = document.getElementById('themeGrid');
+            themes.forEach(t => {
+                let div = document.createElement('div'); div.className = 'color-swatch shadow-md';
+                div.style.backgroundColor = isDarkMode ? t.d.p : t.l.p; div.id = `swatch-${t.id}`;
+                div.onclick = () => { currentThemeId = t.id; updateTheme(); }; tGrid.appendChild(div);
+            });
+            const dGrid = document.getElementById('designGrid');
+            designs.forEach(d => {
+                let btn = document.createElement('button'); btn.className = 'design-btn px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-wider';
+                btn.id = `design-${d.id}`; btn.innerText = d.name;
+                btn.onclick = () => { currentDesignId = d.id; updateTheme(); }; dGrid.appendChild(btn);
+            });
+            updateTheme();
+        }
+
+        // Top Bar actions
+        document.getElementById('refreshBtn').onclick = () => { vibe('move'); window.location.reload(); };
         const soundIcon = document.getElementById('soundIcon');
         document.getElementById('soundBtn').onclick = () => {
-            soundEnabled = !soundEnabled; soundIcon.innerHTML = soundEnabled 
+            vibe('move'); soundEnabled = !soundEnabled; 
+            soundIcon.innerHTML = soundEnabled 
                 ? '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>'
                 : '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
         };
 
-        // Modal Logic
         const modal = document.getElementById('settingsModal');
         document.getElementById('menuBtn').onclick = () => {
-            modal.classList.remove('hidden'); modal.classList.add('flex');
+            vibe('move'); modal.classList.remove('hidden'); modal.classList.add('flex');
             document.querySelectorAll('.color-swatch').forEach(el => { const tId = parseInt(el.id.split('-')[1]); el.style.backgroundColor = isDarkMode ? themes[tId].d.p : themes[tId].l.p; });
         };
-        document.getElementById('closeModalBtn').onclick = () => { modal.classList.add('hidden'); modal.classList.remove('flex'); };
+        document.getElementById('closeModalBtn').onclick = () => { vibe('move'); modal.classList.add('hidden'); modal.classList.remove('flex'); };
+        
         const themeToggleBtn = document.getElementById('themeToggleBtn');
-        themeToggleBtn.onclick = () => { isDarkMode = !isDarkMode; document.documentElement.classList.toggle('dark'); themeToggleBtn.innerHTML = isDarkMode ? "🌙 Dark" : "☀️ Light"; updateTheme(); document.querySelectorAll('.color-swatch').forEach(el => { const tId = parseInt(el.id.split('-')[1]); el.style.backgroundColor = isDarkMode ? themes[tId].d.p : themes[tId].l.p; }); };
+        themeToggleBtn.onclick = () => { 
+            vibe('move'); isDarkMode = !isDarkMode; document.documentElement.classList.toggle('dark'); 
+            themeToggleBtn.innerHTML = isDarkMode ? "🌙 Dark" : "☀️ Light"; updateTheme(); 
+            document.querySelectorAll('.color-swatch').forEach(el => { const tId = parseInt(el.id.split('-')[1]); el.style.backgroundColor = isDarkMode ? themes[tId].d.p : themes[tId].l.p; }); 
+        };
 
-        // Boot
-        initSettingsUI(); placeFood(); clearScreen(); drawGrid(); drawSnake(); drawFood();
+        // Initialize
+        initSettingsUI(); placeFood(); clearScreen(); drawGrid(); drawSnake(); drawFoods();
     </script>
 </body>
 </html>
