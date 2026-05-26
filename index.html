@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Material Serpentine</title>
+    <title>Material Serpentine | En</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -35,28 +35,22 @@
 
     <style>
         :root {
-            /* Default Light Mode Base Colors */
             --m3-bg: #FDFBFF;
             --m3-surface: #FDFBFF;
             --m3-surface-variant: #E1E2EC;
             --m3-text: #1A1C1E;
             --m3-grid: #E0E2EC;
-            
-            /* Dynamic Colors (Blue by default) */
             --m3-primary: #005AC1;
             --m3-secondary: #00639B;
             --m3-food: #BA1A1A;
         }
 
         html.dark {
-            /* Default Dark Mode Base Colors */
             --m3-bg: #1A1C1E;
             --m3-surface: #1A1C1E;
             --m3-surface-variant: #2D3135;
             --m3-text: #E3E2E6;
             --m3-grid: #43474E;
-            
-            /* Dynamic Colors (Blue Dark by default) */
             --m3-primary: #ADC6FF;
             --m3-secondary: #78B9FF;
             --m3-food: #FFB4AB;
@@ -77,65 +71,62 @@
         }
         .icon-btn:active { transform: scale(0.85); }
         
-        /* Modal Animation */
         .modal-enter { animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
         @keyframes slideUp {
             from { transform: translateY(50px) scale(0.95); opacity: 0; }
             to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
-        /* 3D Segmented Joypad */
+        /* --- Refined 3D-free Joypad Control --- */
         .joypad-container {
-            position: relative; width: 240px; height: 240px; margin: 5px auto 15px auto;
+            position: relative; width: 220px; height: 220px; margin: 10px auto 20px auto;
             display: flex; justify-content: center; align-items: center;
             flex-shrink: 0; user-select: none; touch-action: none;
-        }
-        .d-pad-ring {
-            position: absolute; width: 100%; height: 100%; border-radius: 50%;
-            background: linear-gradient(145deg, #f0f2f5, #e6e8eb);
-            border: 2px solid #D3D8E1;
-            box-shadow: 4px 4px 10px #d0d3d9, -4px -4px 10px #ffffff, inset 0 2px 4px rgba(0,0,0,0.05);
-            display: flex; justify-content: center; align-items: center; overflow: hidden;
+            background: #E1E2EC; /* SurfaceVariant color, no gradients */
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Simple shadow */
             transition: all 0.3s;
         }
-        html.dark .d-pad-ring {
-            background: linear-gradient(145deg, #23252a, #1d1e23); border-color: #373A43;
-            box-shadow: 4px 4px 10px #111215, -4px -4px 10px #2a2d33, inset 0 2px 4px rgba(0,0,0,0.2);
+        html.dark .joypad-container {
+            background: #2D3135; /* Dark SurfaceVariant */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
         }
+
+        /* Simple circular directional buttons */
         .d-btn {
             position: absolute; background: transparent; color: var(--m3-primary);
             font-size: 28px; cursor: pointer; transition: all 0.15s;
             display: flex; justify-content: center; align-items: center; border: none;
+            border-radius: 50%;
         }
-        .d-btn:active { background-color: rgba(0, 0, 0, 0.05); transform: scale(0.92); }
+        .d-btn:active { background-color: rgba(0, 0, 0, 0.05); transform: scale(0.9); }
         html.dark .d-btn:active { background-color: rgba(255, 255, 255, 0.05); }
 
-        .d-up { top: 0; left: 50%; transform: translateX(-50%); width: 90px; height: 80px; border-radius: 40px 40px 10px 10px; padding-bottom: 12px; }
-        .d-down { bottom: 0; left: 50%; transform: translateX(-50%); width: 90px; height: 80px; border-radius: 10px 10px 40px 40px; padding-top: 12px; }
-        .d-left { left: 0; top: 50%; transform: translateY(-50%); width: 80px; height: 90px; border-radius: 40px 10px 10px 40px; padding-right: 12px; }
-        .d-right { right: 0; top: 50%; transform: translateY(-50%); width: 80px; height: 90px; border-radius: 10px 40px 40px 10px; padding-left: 12px; }
+        .d-up { top: 10px; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; }
+        .d-down { bottom: 10px; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; }
+        .d-left { left: 10px; top: 50%; transform: translateY(-50%); width: 70px; height: 70px; }
+        .d-right { right: 10px; top: 50%; transform: translateY(-50%); width: 70px; height: 70px; }
 
+        /* Modern Flat Play/Pause Button */
         .play-pause-btn {
             position: absolute; width: 85px; height: 85px; border-radius: 50%;
             background: var(--m3-primary); color: var(--m3-bg);
-            font-size: 32px; border: 5px solid var(--m3-bg);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2); z-index: 10;
+            font-size: 32px; border: none; /* No border for flat look */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2); z-index: 10;
             display: flex; justify-content: center; align-items: center; transition: all 0.2s;
         }
-        .play-pause-btn:active { transform: scale(0.9); }
+        .play-pause-btn:active { transform: scale(0.9); box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
 
-        /* Theme Color Swatch */
         .color-swatch { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s; }
         .color-swatch.active { border-color: var(--m3-text); transform: scale(1.1); box-shadow: 0 0 10px rgba(0,0,0,0.2); }
         
-        /* Design Button */
         .design-btn { border: 2px solid var(--m3-surface-variant); transition: all 0.2s; }
         .design-btn.active { border-color: var(--m3-primary); background: var(--m3-primary); color: var(--m3-bg); }
     </style>
 </head>
 <body class="bg-m3Bg text-m3Text font-sans transition-colors duration-300 flex flex-col min-h-screen p-4 overflow-hidden">
 
-    <div class="w-full max-w-sm flex justify-between items-center mb-4 px-2 flex-shrink-0 mx-auto">
+    <div class="w-full max-w-sm flex justify-between items-center mb-6 px-2 flex-shrink-0 mx-auto">
         <div class="flex flex-col">
             <h1 class="text-3xl font-extrabold tracking-tight text-m3Primary">Serpentine</h1>
             <div class="flex items-center gap-2 mt-1 font-mono text-sm">
@@ -145,19 +136,19 @@
         </div>
         
         <div class="flex gap-2">
-            <button id="refreshBtn" class="icon-btn w-11 h-11 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm">
-                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+            <button id="refreshBtn" class="icon-btn w-12 h-12 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm">
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
             </button>
-            <button id="soundBtn" class="icon-btn w-11 h-11 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm">
-                <svg id="soundIcon" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            <button id="soundBtn" class="icon-btn w-12 h-12 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm">
+                <svg id="soundIcon" class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
             </button>
-            <button id="menuBtn" class="icon-btn w-11 h-11 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm">
+            <button id="menuBtn" class="icon-btn w-12 h-12 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm">
                 <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </button>
         </div>
     </div>
 
-    <div class="relative bg-m3SurfaceVariant p-2 rounded-[2rem] shadow-inner flex-grow max-w-[min(95vw,calc(100vh-380px))] mx-auto overflow-hidden w-full flex justify-center items-center">
+    <div class="relative bg-m3SurfaceVariant p-2.5 rounded-[2rem] shadow-inner flex-grow max-w-[min(95vw,calc(100vh-390px))] mx-auto overflow-hidden w-full flex justify-center items-center">
         <canvas id="gameCanvas" width="300" height="300" class="rounded-[1.5rem] bg-m3Bg w-full h-full object-contain shadow-sm"></canvas>
         
         <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-md rounded-[2rem] opacity-0 pointer-events-none transition-opacity duration-300 z-20">
@@ -170,34 +161,32 @@
     </div>
 
     <div class="joypad-container">
-        <div class="d-pad-ring">
-            <button class="d-btn d-up" id="btnUp">▲</button>
-            <button class="d-btn d-left" id="btnLeft">◀</button>
-            <button class="play-pause-btn" id="btnPlayPause">▶</button>
-            <button class="d-btn d-right" id="btnRight">▶</button>
-            <button class="d-btn d-down" id="btnDown">▼</button>
-        </div>
+        <button class="d-btn d-up" id="btnUp">▲</button>
+        <button class="d-btn d-left" id="btnLeft">◀</button>
+        <button class="play-pause-btn" id="btnPlayPause">▶</button>
+        <button class="d-btn d-right" id="btnRight">▶</button>
+        <button class="d-btn d-down" id="btnDown">▼</button>
     </div>
 
     <div id="settingsModal" class="fixed inset-0 bg-black/50 hidden justify-center items-end sm:items-center z-50 backdrop-blur-sm transition-opacity">
         <div class="bg-m3Bg w-full sm:w-[90%] max-w-sm rounded-t-[2rem] sm:rounded-[2rem] p-6 modal-enter max-h-[85vh] overflow-y-auto shadow-2xl">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-m3Primary">সেটিংস (Settings)</h2>
+                <h2 class="text-2xl font-bold text-m3Primary">Settings</h2>
                 <button id="closeModalBtn" class="p-2 rounded-full bg-m3SurfaceVariant text-m3Text active:scale-90 transition">✕</button>
             </div>
 
             <div class="flex justify-between items-center mb-6 bg-m3SurfaceVariant p-4 rounded-2xl">
-                <span class="font-semibold">ডার্ক মোড (Dark Mode)</span>
+                <span class="font-semibold">Dark Mode</span>
                 <button id="themeToggleBtn" class="px-4 py-2 bg-m3Primary text-m3Bg rounded-full font-bold shadow transition active:scale-95">☀️ Light</button>
             </div>
 
             <div class="mb-6">
-                <h3 class="font-semibold mb-3">থিম পরিবর্তন (10 Colors)</h3>
+                <h3 class="font-semibold mb-3">Theme (10 Colors)</h3>
                 <div class="flex flex-wrap gap-3" id="themeGrid"></div>
             </div>
 
             <div class="mb-4">
-                <h3 class="font-semibold mb-3">সাপের ডিজাইন (5 Styles)</h3>
+                <h3 class="font-semibold mb-3">Snake Design (5 Styles)</h3>
                 <div class="grid grid-cols-2 gap-2" id="designGrid"></div>
             </div>
         </div>
@@ -209,7 +198,6 @@
         const gridSize = 15;
         const tileCount = canvas.width / gridSize;
         
-        // Game State
         let speed = 4; 
         let snake = [{ x: 10, y: 10 }];
         let food = { x: 5, y: 5 };
@@ -218,19 +206,16 @@
         let isPaused = true;
         let isGameOver = false;
         
-        // Settings State
         let soundEnabled = true;
         let currentThemeId = 0;
-        let currentDesignId = 0; // 0=Modern, 1=Retro, 2=Circles, 3=Diamond, 4=Glowing
+        let currentDesignId = 0; 
         let isDarkMode = false;
 
-        // High Score Setup
         let highScore = localStorage.getItem('snakeHighScore') || 0;
         document.getElementById('highScoreText').innerText = highScore;
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // 10 Material You Themes { light, dark }
         const themes = [
             { id: 0, name: 'Blue',   l: {p:'#005AC1', s:'#00639B', f:'#BA1A1A'}, d: {p:'#ADC6FF', s:'#78B9FF', f:'#FFB4AB'} },
             { id: 1, name: 'Emerald',l: {p:'#186d33', s:'#2d844a', f:'#BA1A1A'}, d: {p:'#8FD49E', s:'#65A976', f:'#FFB4AB'} },
@@ -245,39 +230,32 @@
         ];
 
         const designs = [
-            { id: 0, name: "আধুনিক (Modern)" },
-            { id: 1, name: "রেট্রো (Retro Square)" },
-            { id: 2, name: "গোলাকার (Circles)" },
-            { id: 3, name: "ডায়মন্ড (Diamonds)" },
-            { id: 4, name: "গ্লোয়িং (Glowing)" }
+            { id: 0, name: "Modern (Round)" },
+            { id: 1, name: "Retro (Square)" },
+            { id: 2, name: "Circle (Dots)" },
+            { id: 3, name: "Diamond (Shapes)" },
+            { id: 4, name: "Glowing (Orbs)" }
         ];
 
-        // Apply CSS Variables based on Theme & Mode
         function updateTheme() {
             const root = document.documentElement;
             const t = themes[currentThemeId];
             const colors = isDarkMode ? t.d : t.l;
-            
             root.style.setProperty('--m3-primary', colors.p);
             root.style.setProperty('--m3-secondary', colors.s);
             root.style.setProperty('--m3-food', colors.f);
-
-            // Update UI selections
             document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('active'));
             document.getElementById(`swatch-${currentThemeId}`).classList.add('active');
-            
             document.querySelectorAll('.design-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(`design-${currentDesignId}`).classList.add('active');
-            
             clearScreen(); drawGrid(); drawSnake(); drawFood();
         }
 
-        // Initialize Modals and UI
         function initSettingsUI() {
             const tGrid = document.getElementById('themeGrid');
             themes.forEach(t => {
                 let div = document.createElement('div');
-                div.className = 'color-swatch bg-[' + t.l.p + '] dark:bg-[' + t.d.p + '] shadow-md';
+                div.className = 'color-swatch shadow-md';
                 div.style.backgroundColor = isDarkMode ? t.d.p : t.l.p;
                 div.id = `swatch-${t.id}`;
                 div.onclick = () => { currentThemeId = t.id; updateTheme(); };
@@ -288,23 +266,19 @@
             designs.forEach(d => {
                 let btn = document.createElement('button');
                 btn.className = 'design-btn px-4 py-2 rounded-xl text-sm font-semibold';
-                btn.id = `design-${d.id}`;
-                btn.innerText = d.name;
+                btn.id = `design-${d.id}`; btn.innerText = d.name;
                 btn.onclick = () => { currentDesignId = d.id; updateTheme(); };
                 dGrid.appendChild(btn);
             });
-
             updateTheme();
         }
 
-        // Sound Logic
         function playSound(type) {
             if (!soundEnabled) return;
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
-            
             if (type === 'eat') {
                 osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
@@ -320,10 +294,10 @@
             }
         }
 
-        // --- Drawing Logic based on Design ---
+        // Draw Logic
         function drawGrid() {
             ctx.strokeStyle = isDarkMode ? '#43474E' : '#E0E2EC';
-            ctx.lineWidth = 0.5;
+            ctx.lineWidth = 0.5; // Clearer lines
             for (let i = 1; i < tileCount; i++) {
                 ctx.beginPath(); ctx.moveTo(i * gridSize, 0); ctx.lineTo(i * gridSize, canvas.height); ctx.stroke();
                 ctx.beginPath(); ctx.moveTo(0, i * gridSize); ctx.lineTo(canvas.width, i * gridSize); ctx.stroke();
@@ -333,68 +307,39 @@
         function drawSnake() {
             const headColor = themes[currentThemeId][isDarkMode?'d':'l'].p;
             const bodyColor = themes[currentThemeId][isDarkMode?'d':'l'].s;
-
             snake.forEach((part, index) => {
                 ctx.fillStyle = index === 0 ? headColor : bodyColor;
-                ctx.shadowBlur = 0; // reset
-                let px = part.x * gridSize; let py = part.y * gridSize; let s = gridSize;
-
+                ctx.shadowBlur = 0; let px = part.x * gridSize; let py = part.y * gridSize; let s = gridSize;
                 ctx.beginPath();
-                if (currentDesignId === 0) { // Modern Round
-                    ctx.roundRect(px + 1, py + 1, s - 2, s - 2, index === 0 ? 6 : 4);
-                } else if (currentDesignId === 1) { // Retro Square
-                    ctx.rect(px, py, s, s);
-                    ctx.strokeStyle = isDarkMode ? '#1A1C1E' : '#FDFBFF';
-                    ctx.lineWidth = 1; ctx.stroke();
-                } else if (currentDesignId === 2) { // Circle
-                    ctx.arc(px + s/2, py + s/2, s/2 - 1, 0, Math.PI*2);
-                } else if (currentDesignId === 3) { // Diamond
-                    ctx.moveTo(px + s/2, py); ctx.lineTo(px + s, py + s/2);
-                    ctx.lineTo(px + s/2, py + s); ctx.lineTo(px, py + s/2);
-                } else if (currentDesignId === 4) { // Glowing Orbs
-                    ctx.shadowBlur = 10; ctx.shadowColor = ctx.fillStyle;
-                    ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2);
-                }
+                if (currentDesignId === 0) ctx.roundRect(px + 1, py + 1, s - 2, s - 2, index === 0 ? 6 : 4);
+                else if (currentDesignId === 1) { ctx.rect(px, py, s, s); ctx.strokeStyle = isDarkMode ? '#1A1C1E' : '#FDFBFF'; ctx.lineWidth = 1; ctx.stroke(); }
+                else if (currentDesignId === 2) ctx.arc(px + s/2, py + s/2, s/2 - 1, 0, Math.PI*2);
+                else if (currentDesignId === 3) { ctx.moveTo(px + s/2, py); ctx.lineTo(px + s, py + s/2); ctx.lineTo(px + s/2, py + s); ctx.lineTo(px, py + s/2); }
+                else if (currentDesignId === 4) { ctx.shadowBlur = 10; ctx.shadowColor = ctx.fillStyle; ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2); }
                 ctx.fill();
 
-                // Eyes for Head
+                // Eyes for Head (Improved visibility)
                 if (index === 0 && currentDesignId !== 1 && currentDesignId !== 3) {
-                    ctx.fillStyle = isDarkMode ? '#000' : '#FFF';
-                    ctx.shadowBlur = 0;
-                    ctx.beginPath(); ctx.arc(px + 5, py + 5, 2, 0, Math.PI*2); ctx.arc(px + 10, py + 5, 2, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = isDarkMode ? '#000' : '#FFF'; ctx.shadowBlur = 0;
+                    ctx.beginPath(); ctx.arc(px + 5, py + 5, 2.5, 0, Math.PI*2); ctx.arc(px + 10, py + 5, 2.5, 0, Math.PI*2); ctx.fill();
                 }
-            });
-            ctx.shadowBlur = 0; // ensure reset
+            }); ctx.shadowBlur = 0;
         }
 
         function drawFood() {
-            const fColor = themes[currentThemeId][isDarkMode?'d':'l'].f;
-            ctx.fillStyle = fColor;
+            const fColor = themes[currentThemeId][isDarkMode?'d':'l'].f; ctx.fillStyle = fColor;
             let px = food.x * gridSize; let py = food.y * gridSize; let s = gridSize;
-            
             ctx.beginPath();
-            if (currentDesignId === 1) { // Retro
-                ctx.rect(px+1, py+1, s-2, s-2);
-            } else if (currentDesignId === 3) { // Diamond
-                ctx.moveTo(px + s/2, py+1); ctx.lineTo(px + s-1, py + s/2);
-                ctx.lineTo(px + s/2, py + s-1); ctx.lineTo(px+1, py + s/2);
-            } else if (currentDesignId === 4) { // Glow
-                ctx.shadowBlur = 15; ctx.shadowColor = fColor;
-                ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2);
-            } else { // Modern & Circle
-                ctx.arc(px + s/2, py + s/2, s/2 - 1.5, 0, Math.PI*2);
-            }
-            ctx.fill();
-            ctx.shadowBlur = 0;
+            if (currentDesignId === 1) ctx.rect(px+1, py+1, s-2, s-2);
+            else if (currentDesignId === 3) { ctx.moveTo(px + s/2, py+1); ctx.lineTo(px + s-1, py + s/2); ctx.lineTo(px + s/2, py + s-1); ctx.lineTo(px+1, py + s/2); }
+            else if (currentDesignId === 4) { ctx.shadowBlur = 15; ctx.shadowColor = fColor; ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2); }
+            else ctx.arc(px + s/2, py + s/2, s/2 - 1.5, 0, Math.PI*2);
+            ctx.fill(); ctx.shadowBlur = 0;
         }
 
-        // Game Loop & Logic
         function drawGame() {
-            if (isPaused || isGameOver) return;
-            moveSnake();
-            if (checkGameOver()) return;
-            clearScreen(); drawGrid(); drawFood(); drawSnake();
-            setTimeout(drawGame, 1000 / speed);
+            if (isPaused || isGameOver) return; moveSnake(); if (checkGameOver()) return;
+            clearScreen(); drawGrid(); drawFood(); drawSnake(); setTimeout(drawGame, 1000 / speed);
         }
         function clearScreen() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
@@ -404,18 +349,10 @@
             if (head.x < 0) head.x = tileCount - 1; if (head.x >= tileCount) head.x = 0;
             if (head.y < 0) head.y = tileCount - 1; if (head.y >= tileCount) head.y = 0;
             snake.unshift(head);
-            
             if (head.x === food.x && head.y === food.y) {
-                score += 10; document.getElementById("score").innerText = score;
-                playSound('eat'); placeFood();
+                score += 10; document.getElementById("score").innerText = score; playSound('eat'); placeFood();
                 speed = Math.min(speed + 0.1, 14); 
-                
-                // Handle High Score
-                if (score > highScore) {
-                    highScore = score;
-                    localStorage.setItem('snakeHighScore', highScore);
-                    document.getElementById('highScoreText').innerText = highScore;
-                }
+                if (score > highScore) { highScore = score; localStorage.setItem('snakeHighScore', highScore); document.getElementById('highScoreText').innerText = highScore; }
             } else { snake.pop(); }
         }
 
@@ -428,21 +365,17 @@
             const head = snake[0];
             for (let i = 1; i < snake.length; i++) {
                 if (head.x === snake[i].x && head.y === snake[i].y) {
-                    isGameOver = true; playSound('die');
-                    document.getElementById("finalScore").innerText = score;
+                    isGameOver = true; playSound('die'); document.getElementById("finalScore").innerText = score;
                     document.getElementById("gameOverScreen").classList.remove('opacity-0', 'pointer-events-none');
                     btnPlayPause.innerText = "▶"; return true;
                 }
-            }
-            return false;
+            } return false;
         }
 
         function resetGame() {
-            snake = [{ x: 10, y: 10 }]; dx = 0; dy = 0; score = 0; speed = 4;
-            document.getElementById("score").innerText = score;
+            snake = [{ x: 10, y: 10 }]; dx = 0; dy = 0; score = 0; speed = 4; document.getElementById("score").innerText = score;
             isGameOver = false; document.getElementById("gameOverScreen").classList.add('opacity-0', 'pointer-events-none');
-            placeFood(); isPaused = true; btnPlayPause.innerText = "▶";
-            clearScreen(); drawGrid(); drawSnake(); drawFood();
+            placeFood(); isPaused = true; btnPlayPause.innerText = "▶"; clearScreen(); drawGrid(); drawSnake(); drawFood();
         }
 
         function togglePlayPause() {
@@ -452,27 +385,20 @@
             else { btnPlayPause.innerText = "▶"; }
         }
 
-        function setDir(newDx, newDy) {
-            if (isPaused) togglePlayPause();
-            if (newDx !== 0 && dx === -newDx) return;
-            if (newDy !== 0 && dy === -newDy) return;
-            dx = newDx; dy = newDy;
-        }
+        function setDir(newDx, newDy) { if (isPaused) togglePlayPause(); if (newDx !== 0 && dx === -newDx) return; if (newDy !== 0 && dy === -newDy) return; dx = newDx; dy = newDy; }
 
-        // Button Controls
+        // Controls
         document.getElementById('btnUp').onclick = () => setDir(0, -1);
         document.getElementById('btnDown').onclick = () => setDir(0, 1);
         document.getElementById('btnLeft').onclick = () => setDir(-1, 0);
         document.getElementById('btnRight').onclick = () => setDir(1, 0);
-        btnPlayPause.onclick = togglePlayPause;
-        document.getElementById('restartBtn').onclick = resetGame;
+        btnPlayPause.onclick = togglePlayPause; document.getElementById('restartBtn').onclick = resetGame;
 
-        // Top Bar Logic
+        // Top Bar
         document.getElementById('refreshBtn').onclick = () => window.location.reload();
         const soundIcon = document.getElementById('soundIcon');
         document.getElementById('soundBtn').onclick = () => {
-            soundEnabled = !soundEnabled;
-            soundIcon.innerHTML = soundEnabled 
+            soundEnabled = !soundEnabled; soundIcon.innerHTML = soundEnabled 
                 ? '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>'
                 : '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
         };
@@ -481,29 +407,11 @@
         const modal = document.getElementById('settingsModal');
         document.getElementById('menuBtn').onclick = () => {
             modal.classList.remove('hidden'); modal.classList.add('flex');
-            // Update UI colors in settings
-            document.querySelectorAll('.color-swatch').forEach(el => {
-                const tId = parseInt(el.id.split('-')[1]);
-                el.style.backgroundColor = isDarkMode ? themes[tId].d.p : themes[tId].l.p;
-            });
+            document.querySelectorAll('.color-swatch').forEach(el => { const tId = parseInt(el.id.split('-')[1]); el.style.backgroundColor = isDarkMode ? themes[tId].d.p : themes[tId].l.p; });
         };
-        document.getElementById('closeModalBtn').onclick = () => {
-            modal.classList.add('hidden'); modal.classList.remove('flex');
-        };
-
-        // Dark Mode Toggle
+        document.getElementById('closeModalBtn').onclick = () => { modal.classList.add('hidden'); modal.classList.remove('flex'); };
         const themeToggleBtn = document.getElementById('themeToggleBtn');
-        themeToggleBtn.onclick = () => {
-            isDarkMode = !isDarkMode;
-            document.documentElement.classList.toggle('dark');
-            themeToggleBtn.innerHTML = isDarkMode ? "🌙 Dark" : "☀️ Light";
-            updateTheme();
-            // Refresh swatch colors in modal immediately
-            document.querySelectorAll('.color-swatch').forEach(el => {
-                const tId = parseInt(el.id.split('-')[1]);
-                el.style.backgroundColor = isDarkMode ? themes[tId].d.p : themes[tId].l.p;
-            });
-        };
+        themeToggleBtn.onclick = () => { isDarkMode = !isDarkMode; document.documentElement.classList.toggle('dark'); themeToggleBtn.innerHTML = isDarkMode ? "🌙 Dark" : "☀️ Light"; updateTheme(); document.querySelectorAll('.color-swatch').forEach(el => { const tId = parseInt(el.id.split('-')[1]); el.style.backgroundColor = isDarkMode ? themes[tId].d.p : themes[tId].l.p; }); };
 
         // Boot
         initSettingsUI(); placeFood(); clearScreen(); drawGrid(); drawSnake(); drawFood();
