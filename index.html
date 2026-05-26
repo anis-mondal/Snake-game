@@ -2,8 +2,8 @@
 <html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Material Snake Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Material Serpentine</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
@@ -18,12 +18,13 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        m3LightBg: '#FDFBFF',
-                        m3LightSurface: '#E0E2EC',
-                        m3LightPrimary: '#005AC1',
-                        m3DarkBg: '#1A1C1E',
-                        m3DarkSurface: '#43474E',
-                        m3DarkPrimary: '#ADC6FF',
+                        m3Bg: '#F3F4F9',
+                        m3Surface: '#FFFFFF',
+                        m3Primary: '#0A56D1',
+                        m3Secondary: '#00639B',
+                        m3DarkBg: '#111318',
+                        m3DarkSurface: '#1E2026',
+                        m3DarkPrimary: '#A8C7FA',
                     }
                 }
             }
@@ -31,110 +32,157 @@
     </script>
 
     <style>
-        body {
-            touch-action: none; /* মোবাইলে জুম বা স্ক্রল হওয়া বন্ধ করতে */
+        /* শুধুমাত্র গেম বোর্ড এবং কন্ট্রোলারে টাচ করলে পেজ স্ক্রল হবে না, বাকি জায়গায় হবে */
+        #gameCanvas, .joypad-container {
+            touch-action: none; 
+        }
+
+        canvas {
+            image-rendering: pixelated; 
+        }
+
+        /* Top Bar Icon Buttons Animation */
+        .icon-btn {
+            transition: background-color 0.3s, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #0A56D1;
+        }
+        .dark .icon-btn {
+            color: #A8C7FA;
+        }
+        .icon-btn:active {
+            transform: scale(0.85);
         }
         
-        /* Circular D-Pad Styling */
-        .d-pad-container {
+        /* Custom Animations for Icons */
+        @keyframes spin-once {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes pop-bounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .anim-spin { animation: spin-once 0.5s ease-in-out; }
+        .anim-pop { animation: pop-bounce 0.4s ease-in-out; }
+
+        /* 3D Segmented D-Pad Controller */
+        .joypad-container {
             position: relative;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: #E0E2EC;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.05), 0 8px 16px rgba(0,0,0,0.1);
+            width: 240px;
+            height: 240px;
             margin: 20px auto;
-        }
-        
-        .dark .d-pad-container {
-            background: #2D3135;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .d-btn {
             position: absolute;
-            background: transparent;
-            border: none;
+            background: linear-gradient(145deg, #f0f2f5, #e6e8eb);
+            border: 2px solid #D3D8E1;
+            box-shadow: 4px 4px 8px #d0d3d9, -4px -4px 8px #ffffff;
+            color: #0A56D1;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.15s ease;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 28px;
-            color: #005AC1;
-            cursor: pointer;
-            transition: all 0.2s;
         }
-        
-        .dark .d-btn { color: #ADC6FF; }
-        .d-btn:active { transform: scale(0.85); }
 
-        .d-up { top: 10px; left: 50%; transform: translateX(-50%); width: 80px; height: 60px; }
-        .d-down { bottom: 10px; left: 50%; transform: translateX(-50%); width: 80px; height: 60px; }
-        .d-left { left: 10px; top: 50%; transform: translateY(-50%); width: 60px; height: 80px; }
-        .d-right { right: 10px; top: 50%; transform: translateY(-50%); width: 60px; height: 80px; }
+        .dark .d-btn {
+            background: linear-gradient(145deg, #2b2e36, #24272e);
+            border: 2px solid #373A43;
+            box-shadow: 4px 4px 8px #141519, -4px -4px 8px #323741;
+            color: #A8C7FA;
+        }
 
+        .d-btn:active {
+            box-shadow: inset 4px 4px 8px #d0d3d9, inset -4px -4px 8px #ffffff;
+            transform: scale(0.95);
+        }
+
+        .dark .d-btn:active {
+            box-shadow: inset 4px 4px 8px #141519, inset -4px -4px 8px #323741;
+        }
+
+        .d-up { top: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 75px; border-radius: 40px 40px 10px 10px; padding-bottom: 10px;}
+        .d-down { bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 75px; border-radius: 10px 10px 40px 40px; padding-top: 10px;}
+        .d-left { left: 0; top: 50%; transform: translateY(-50%); width: 75px; height: 80px; border-radius: 40px 10px 10px 40px; padding-right: 10px;}
+        .d-right { right: 0; top: 50%; transform: translateY(-50%); width: 75px; height: 80px; border-radius: 10px 40px 40px 10px; padding-left: 10px;}
+
+        /* Center Play/Pause Button */
         .play-pause-btn {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 75px;
-            height: 75px;
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
-            background: #005AC1;
+            background: linear-gradient(145deg, #0b5ce0, #094ebf);
             color: white;
-            border: none;
-            box-shadow: 0 4px 10px rgba(0,90,193,0.3);
+            font-size: 32px;
+            border: 4px solid #F3F4F9;
+            box-shadow: 0 8px 16px rgba(10, 86, 209, 0.4);
             cursor: pointer;
+            z-index: 10;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
-            font-weight: bold;
             transition: all 0.2s;
         }
-        
+
         .dark .play-pause-btn {
-            background: #ADC6FF;
-            color: #001A41;
-            box-shadow: 0 4px 10px rgba(173,198,255,0.2);
+            background: linear-gradient(145deg, #b4d1ff, #97b3e1);
+            color: #002D6D;
+            border-color: #111318;
+            box-shadow: 0 8px 16px rgba(168, 199, 250, 0.2);
         }
-        .play-pause-btn:active { transform: translate(-50%, -50%) scale(0.9); }
+
+        .play-pause-btn:active {
+            transform: scale(0.92);
+        }
     </style>
 </head>
-<body class="bg-m3LightBg dark:bg-m3DarkBg text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300 flex flex-col items-center justify-center min-h-screen p-4">
+<body class="bg-m3Bg dark:bg-m3DarkBg text-gray-900 dark:text-gray-100 transition-colors duration-300 flex flex-col items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-sm flex justify-between items-center mb-4 px-2">
+    <div class="w-full max-w-sm flex justify-between items-center mb-6 px-2">
         <div>
-            <h1 class="text-2xl font-bold text-m3LightPrimary dark:text-m3DarkPrimary">Serpentine</h1>
-            <p class="font-mono font-semibold">Score: <span id="score">0</span></p>
+            <h1 class="text-3xl font-extrabold tracking-tight text-m3Primary dark:text-m3DarkPrimary">Serpentine</h1>
+            <div class="flex items-center gap-2 mt-1">
+                <span class="px-3 py-1 bg-m3Surface dark:bg-m3DarkSurface rounded-full text-sm font-mono shadow-sm">
+                    Score: <span id="score" class="font-bold text-m3Primary dark:text-m3DarkPrimary">0</span>
+                </span>
+            </div>
         </div>
         
         <div class="flex gap-2">
-            <button id="soundBtn" class="p-3 rounded-full bg-m3LightSurface dark:bg-m3DarkSurface text-xl shadow-sm active:scale-95 transition-transform">
-                🔊
+            <button id="refreshBtn" class="icon-btn w-12 h-12 flex items-center justify-center rounded-full bg-m3Surface dark:bg-m3DarkSurface shadow-sm border border-gray-200 dark:border-gray-800">
+                <svg id="refreshIcon" class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
             </button>
-            <button id="themeBtn" class="p-3 rounded-full bg-m3LightSurface dark:bg-m3DarkSurface text-xl shadow-sm active:scale-95 transition-transform">
-                🌙
+            <button id="soundBtn" class="icon-btn w-12 h-12 flex items-center justify-center rounded-full bg-m3Surface dark:bg-m3DarkSurface shadow-sm border border-gray-200 dark:border-gray-800">
+                <svg id="soundIcon" class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            </button>
+            <button id="themeBtn" class="icon-btn w-12 h-12 flex items-center justify-center rounded-full bg-m3Surface dark:bg-m3DarkSurface shadow-sm border border-gray-200 dark:border-gray-800">
+                <svg id="themeIcon" class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
             </button>
         </div>
     </div>
 
-    <div class="relative bg-m3LightSurface dark:bg-m3DarkSurface p-2 rounded-3xl shadow-sm">
-        <canvas id="gameCanvas" width="300" height="300" class="rounded-2xl bg-white dark:bg-[#2D3135]"></canvas>
+    <div class="relative bg-m3Surface dark:bg-m3DarkSurface p-3 rounded-[2rem] shadow-lg border border-gray-100 dark:border-gray-800">
+        <canvas id="gameCanvas" width="300" height="300" class="rounded-[1.5rem] bg-[#F8FAFC] dark:bg-[#1A1C23]"></canvas>
         
-        <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm rounded-3xl hidden">
-            <button id="restartBtn" class="px-6 py-3 bg-m3LightPrimary text-white dark:bg-m3DarkPrimary dark:text-gray-900 rounded-full font-bold shadow-lg hover:scale-105 active:scale-95 transition-all">
-                🔄 Restart Game
+        <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 dark:bg-black/80 backdrop-blur-md rounded-[2rem] opacity-0 pointer-events-none transition-opacity duration-300 z-20">
+            <h2 class="text-2xl font-bold mb-4 text-m3Primary dark:text-m3DarkPrimary">Game Over!</h2>
+            <button id="restartBtn" class="px-8 py-4 bg-m3Primary text-white dark:bg-m3DarkPrimary dark:text-gray-900 rounded-full font-bold shadow-lg hover:scale-105 active:scale-95 transition-all text-lg">
+                🔄 Play Again
             </button>
         </div>
     </div>
 
-    <div class="d-pad-container mt-6">
+    <div class="joypad-container mt-4">
         <button class="d-btn d-up" id="btnUp">▲</button>
         <button class="d-btn d-left" id="btnLeft">◀</button>
-        
         <button class="play-pause-btn" id="btnPlayPause">▶</button>
-        
         <button class="d-btn d-right" id="btnRight">▶</button>
         <button class="d-btn d-down" id="btnDown">▼</button>
     </div>
@@ -143,34 +191,35 @@
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         
-        // গেমের বেসিক সেটিংস
         const gridSize = 15;
         const tileCount = canvas.width / gridSize;
-        let speed = 7;
+        let speed = 4; // নিয়ন্ত্রিত গতি
         
-        // গেম স্টেট
         let snake = [{ x: 10, y: 10 }];
         let food = { x: 5, y: 5 };
-        let dx = 0;
-        let dy = 0;
+        let dx = 0, dy = 0;
         let score = 0;
         let isPaused = true;
         let isGameOver = false;
         
-        // অডিও স্টেট
         let soundEnabled = true;
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // UI এলিমেন্ট
         const scoreEl = document.getElementById("score");
         const gameOverScreen = document.getElementById("gameOverScreen");
         const btnPlayPause = document.getElementById("btnPlayPause");
 
-        // সাউন্ড তৈরি করার ফাংশন (Web Audio API)
+        // SVG Icons Data
+        const icons = {
+            soundOn: '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>',
+            soundOff: '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>',
+            moon: '<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>',
+            sun: '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06z"/>'
+        };
+
         function playSound(type) {
             if (!soundEnabled) return;
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
@@ -178,34 +227,28 @@
             
             if (type === 'eat') {
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.1);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             } else if (type === 'die') {
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.5);
+                osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.4);
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.5);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
             }
         }
 
-        // গেম লুপ
         function drawGame() {
             if (isPaused || isGameOver) return;
-            
             moveSnake();
             if (checkGameOver()) return;
-            
             clearScreen();
             drawFood();
             drawSnake();
-            
             setTimeout(drawGame, 1000 / speed);
         }
 
@@ -215,42 +258,62 @@
 
         function drawSnake() {
             const isDark = document.documentElement.classList.contains('dark');
-            ctx.fillStyle = isDark ? '#ADC6FF' : '#005AC1'; 
-            
-            snake.forEach(part => {
-                ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 1, gridSize - 1);
+            const headColor = isDark ? '#A8C7FA' : '#0A56D1';
+            const bodyColor = isDark ? '#78B9FF' : '#00639B';
+
+            snake.forEach((part, index) => {
+                ctx.fillStyle = index === 0 ? headColor : bodyColor;
+                ctx.beginPath();
+                ctx.roundRect(
+                    part.x * gridSize + 1, 
+                    part.y * gridSize + 1, 
+                    gridSize - 2, 
+                    gridSize - 2, 
+                    index === 0 ? 6 : 4 
+                );
+                ctx.fill();
+
+                if (index === 0) {
+                    ctx.fillStyle = isDark ? '#000' : '#FFF';
+                    ctx.beginPath();
+                    ctx.arc(part.x * gridSize + 5, part.y * gridSize + 5, 2, 0, Math.PI*2);
+                    ctx.arc(part.x * gridSize + 10, part.y * gridSize + 5, 2, 0, Math.PI*2);
+                    ctx.fill();
+                }
             });
+        }
+
+        function drawFood() {
+            const isDark = document.documentElement.classList.contains('dark');
+            ctx.fillStyle = isDark ? '#FFB4AB' : '#B3261E';
+            ctx.beginPath();
+            ctx.arc(
+                food.x * gridSize + gridSize/2, 
+                food.y * gridSize + gridSize/2, 
+                gridSize/2 - 1.5, 
+                0, Math.PI*2
+            );
+            ctx.fill();
         }
 
         function moveSnake() {
             if (dx === 0 && dy === 0) return; 
-            
             const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-            
-            // দেয়াল ভেদ করার নিয়ম (Screen-Wrap)
             if (head.x < 0) head.x = tileCount - 1;
             if (head.x >= tileCount) head.x = 0;
             if (head.y < 0) head.y = tileCount - 1;
             if (head.y >= tileCount) head.y = 0;
-
             snake.unshift(head);
             
-            // খাবার খাওয়া চেক
             if (head.x === food.x && head.y === food.y) {
                 score += 10;
                 scoreEl.innerText = score;
                 playSound('eat');
                 placeFood();
-                speed = Math.min(speed + 0.2, 15); 
+                speed = Math.min(speed + 0.1, 12); 
             } else {
                 snake.pop();
             }
-        }
-
-        function drawFood() {
-            const isDark = document.documentElement.classList.contains('dark');
-            ctx.fillStyle = isDark ? '#FFB4AB' : '#BA1A1A'; 
-            ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 1, gridSize - 1);
         }
 
         function placeFood() {
@@ -258,19 +321,16 @@
                 x: Math.floor(Math.random() * tileCount),
                 y: Math.floor(Math.random() * tileCount)
             };
-            if (snake.some(part => part.x === food.x && part.y === food.y)) {
-                placeFood();
-            }
+            if (snake.some(part => part.x === food.x && part.y === food.y)) placeFood();
         }
 
-        // নিজের সাথে ধাক্কা খেলে গেম ওভার
         function checkGameOver() {
             const head = snake[0];
             for (let i = 1; i < snake.length; i++) {
                 if (head.x === snake[i].x && head.y === snake[i].y) {
                     isGameOver = true;
                     playSound('die');
-                    gameOverScreen.classList.remove('hidden');
+                    gameOverScreen.classList.remove('opacity-0', 'pointer-events-none');
                     btnPlayPause.innerText = "▶";
                     return true;
                 }
@@ -280,43 +340,35 @@
 
         function resetGame() {
             snake = [{ x: 10, y: 10 }];
-            dx = 0;
-            dy = 0;
-            score = 0;
-            speed = 7;
+            dx = 0; dy = 0;
+            score = 0; 
+            speed = 4;
             scoreEl.innerText = score;
             isGameOver = false;
-            gameOverScreen.classList.add('hidden');
+            gameOverScreen.classList.add('opacity-0', 'pointer-events-none');
             placeFood();
-            
             isPaused = true;
             btnPlayPause.innerText = "▶";
-            
-            clearScreen();
-            drawSnake();
-            drawFood();
+            clearScreen(); drawSnake(); drawFood();
         }
 
         function togglePlayPause() {
             if (isGameOver) resetGame();
-            
             isPaused = !isPaused;
             if (!isPaused) {
-                btnPlayPause.innerText = "⏸";
-                if (dx === 0 && dy === 0) { dx = 1; }
+                btnPlayPause.innerHTML = "<b>||</b>"; 
+                if (dx === 0 && dy === 0) dx = 1;
                 drawGame();
             } else {
                 btnPlayPause.innerText = "▶";
             }
         }
 
-        // কন্ট্রোলার
         function setDir(newDx, newDy) {
             if (isPaused) togglePlayPause();
             if (newDx !== 0 && dx === -newDx) return;
             if (newDy !== 0 && dy === -newDy) return;
-            dx = newDx;
-            dy = newDy;
+            dx = newDx; dy = newDy;
         }
 
         document.getElementById('btnUp').onclick = () => setDir(0, -1);
@@ -326,27 +378,44 @@
         btnPlayPause.onclick = togglePlayPause;
         document.getElementById('restartBtn').onclick = resetGame;
 
-        // টপ বার বাটন (থিম এবং সাউন্ড)
+        // Top Bar Buttons Functionality with Animations
+        function triggerAnimation(element, animClass) {
+            element.classList.remove(animClass);
+            void element.offsetWidth; // Trigger reflow
+            element.classList.add(animClass);
+        }
+
+        const refreshBtn = document.getElementById('refreshBtn');
+        const refreshIcon = document.getElementById('refreshIcon');
+        refreshBtn.onclick = () => {
+            triggerAnimation(refreshIcon, 'anim-spin');
+            setTimeout(() => window.location.reload(), 300); // Wait for spin to finish before reload
+        };
+
         const themeBtn = document.getElementById('themeBtn');
-        const htmlElement = document.documentElement;
-        
+        const themeIcon = document.getElementById('themeIcon');
         themeBtn.onclick = () => {
-            htmlElement.classList.toggle('dark');
-            themeBtn.innerText = htmlElement.classList.contains('dark') ? "☀️" : "🌙";
-            clearScreen(); drawSnake(); drawFood(); 
+            triggerAnimation(themeIcon, 'anim-spin');
+            const htmlClass = document.documentElement.classList;
+            htmlClass.toggle('dark');
+            setTimeout(() => {
+                themeIcon.innerHTML = htmlClass.contains('dark') ? icons.sun : icons.moon;
+                clearScreen(); drawSnake(); drawFood(); 
+            }, 150);
         };
 
         const soundBtn = document.getElementById('soundBtn');
+        const soundIcon = document.getElementById('soundIcon');
         soundBtn.onclick = () => {
+            triggerAnimation(soundIcon, 'anim-pop');
             soundEnabled = !soundEnabled;
-            soundBtn.innerText = soundEnabled ? "🔊" : "🔇";
+            setTimeout(() => {
+                soundIcon.innerHTML = soundEnabled ? icons.soundOn : icons.soundOff;
+            }, 150);
         };
 
-        // শুরুতে গেম বোর্ড আঁকা
-        placeFood();
-        clearScreen();
-        drawSnake();
-        drawFood();
+        // Initialize
+        placeFood(); clearScreen(); drawSnake(); drawFood();
     </script>
 </body>
 </html>
