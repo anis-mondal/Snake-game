@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Material Snake Game</title>
+    <title>Material Serpentine</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
@@ -18,12 +18,16 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        m3LightBg: '#FDFBFF',
-                        m3LightSurface: '#E0E2EC',
-                        m3LightPrimary: '#005AC1',
-                        m3DarkBg: '#1A1C1E',
-                        m3DarkSurface: '#43474E',
-                        m3DarkPrimary: '#ADC6FF',
+                        m3Bg: '#F3F4F9',
+                        m3Surface: '#FFFFFF',
+                        m3Primary: '#0A56D1',
+                        m3Secondary: '#00639B',
+                        m3Food: '#B3261E',
+                        m3DarkBg: '#111318',
+                        m3DarkSurface: '#1E2026',
+                        m3DarkPrimary: '#A8C7FA',
+                        m3DarkSecondary: '#78B9FF',
+                        m3DarkFood: '#FFB4AB',
                     }
                 }
             }
@@ -32,111 +36,127 @@
 
     <style>
         body {
-            touch-action: none; /* Prevents zooming and scrolling on mobile */
-        }
-        
-        @keyframes scaleIn {
-            from { transform: scale(0.85); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        .animate-scale-in {
-            animation: scaleIn 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Circular D-Pad Styling */
-        .d-pad-container {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: var(--dpad-bg, #E0E2EC);
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.05), 0 8px 16px rgba(0,0,0,0.1);
-            margin: 20px auto;
+        /* Canvas Styling */
+        canvas {
+            image-rendering: pixelated; /* Sharp edges */
         }
-        
-        .dark .d-pad-container {
-            background: #2D3135;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.3);
+
+        /* 3D Segmented D-Pad Controller */
+        .joypad-container {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .d-btn {
             position: absolute;
-            background: transparent;
-            border: none;
+            background: linear-gradient(145deg, #f0f2f5, #e6e8eb);
+            border: 2px solid #D3D8E1;
+            box-shadow: 4px 4px 8px #d0d3d9, -4px -4px 8px #ffffff;
+            color: #0A56D1;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.15s ease;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
-            color: #005AC1;
-            cursor: pointer;
-            transition: all 0.2s;
         }
-        
-        .dark .d-btn { color: #ADC6FF; }
-        .d-btn:active { transform: scale(0.9); }
 
-        .d-up { top: 10px; left: 50%; transform: translateX(-50%); width: 80px; height: 60px; }
-        .d-down { bottom: 10px; left: 50%; transform: translateX(-50%); width: 80px; height: 60px; }
-        .d-left { left: 10px; top: 50%; transform: translateY(-50%); width: 60px; height: 80px; }
-        .d-right { right: 10px; top: 50%; transform: translateY(-50%); width: 60px; height: 80px; }
+        .dark .d-btn {
+            background: linear-gradient(145deg, #2b2e36, #24272e);
+            border: 2px solid #373A43;
+            box-shadow: 4px 4px 8px #141519, -4px -4px 8px #323741;
+            color: #A8C7FA;
+        }
 
+        .d-btn:active {
+            box-shadow: inset 4px 4px 8px #d0d3d9, inset -4px -4px 8px #ffffff;
+            transform: scale(0.95);
+        }
+
+        .dark .d-btn:active {
+            box-shadow: inset 4px 4px 8px #141519, inset -4px -4px 8px #323741;
+        }
+
+        /* Shaping the directional buttons to form a segmented ring */
+        .d-up { top: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 75px; border-radius: 40px 40px 10px 10px; padding-bottom: 10px;}
+        .d-down { bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 75px; border-radius: 10px 10px 40px 40px; padding-top: 10px;}
+        .d-left { left: 0; top: 50%; transform: translateY(-50%); width: 75px; height: 80px; border-radius: 40px 10px 10px 40px; padding-right: 10px;}
+        .d-right { right: 0; top: 50%; transform: translateY(-50%); width: 75px; height: 80px; border-radius: 10px 40px 40px 10px; padding-left: 10px;}
+
+        /* Center Play/Pause Button */
         .play-pause-btn {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
-            background: #005AC1;
+            background: linear-gradient(145deg, #0b5ce0, #094ebf);
             color: white;
-            border: none;
-            box-shadow: 0 4px 10px rgba(0,90,193,0.3);
+            font-size: 32px;
+            border: 4px solid #F3F4F9;
+            box-shadow: 0 8px 16px rgba(10, 86, 209, 0.4);
             cursor: pointer;
+            z-index: 10;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 28px;
             transition: all 0.2s;
         }
-        
+
         .dark .play-pause-btn {
-            background: #ADC6FF;
-            color: #001A41;
-            box-shadow: 0 4px 10px rgba(173,198,255,0.2);
+            background: linear-gradient(145deg, #b4d1ff, #97b3e1);
+            color: #002D6D;
+            border-color: #111318;
+            box-shadow: 0 8px 16px rgba(168, 199, 250, 0.2);
         }
-        .play-pause-btn:active { transform: translate(-50%, -50%) scale(0.9); }
+
+        .play-pause-btn:active {
+            transform: scale(0.92);
+        }
     </style>
 </head>
-<body class="bg-m3LightBg dark:bg-m3DarkBg text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300 flex flex-col items-center justify-center min-h-screen p-4">
+<body class="bg-m3Bg dark:bg-m3DarkBg text-gray-900 dark:text-gray-100 transition-colors duration-300 flex flex-col items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-md flex justify-between items-center mb-4 px-2">
+    <div class="w-full max-w-sm flex justify-between items-center mb-6 px-2">
         <div>
-            <h1 class="text-2xl font-bold tracking-tight text-m3LightPrimary dark:text-m3DarkPrimary">Serpentine</h1>
-            <p class="font-mono text-sm opacity-80">Score: <span id="score" class="font-bold">0</span></p>
+            <h1 class="text-3xl font-extrabold tracking-tight text-m3Primary dark:text-m3DarkPrimary">Serpentine</h1>
+            <div class="flex items-center gap-2 mt-1">
+                <span class="px-3 py-1 bg-m3Surface dark:bg-m3DarkSurface rounded-full text-sm font-mono shadow-sm">
+                    Score: <span id="score" class="font-bold text-m3Primary dark:text-m3DarkPrimary">0</span>
+                </span>
+            </div>
         </div>
         
         <div class="flex gap-3">
-            <button id="soundBtn" class="p-3 rounded-full bg-m3LightSurface dark:bg-m3DarkSurface transition-transform active:scale-95">
+            <button id="soundBtn" class="w-12 h-12 flex items-center justify-center rounded-full bg-m3Surface dark:bg-m3DarkSurface shadow-sm border border-gray-200 dark:border-gray-700 active:scale-90 transition-all text-xl">
                 🔊
             </button>
-            <button id="themeBtn" class="p-3 rounded-full bg-m3LightSurface dark:bg-m3DarkSurface transition-transform active:scale-95">
+            <button id="themeBtn" class="w-12 h-12 flex items-center justify-center rounded-full bg-m3Surface dark:bg-m3DarkSurface shadow-sm border border-gray-200 dark:border-gray-700 active:scale-90 transition-all text-xl">
                 🌙
             </button>
         </div>
     </div>
 
-    <div class="relative bg-m3LightSurface dark:bg-m3DarkSurface p-2 rounded-3xl shadow-sm animate-scale-in">
-        <canvas id="gameCanvas" width="300" height="300" class="rounded-2xl bg-white dark:bg-[#2D3135]"></canvas>
+    <div class="relative bg-m3Surface dark:bg-m3DarkSurface p-3 rounded-[2rem] shadow-lg border border-gray-100 dark:border-gray-800">
+        <canvas id="gameCanvas" width="300" height="300" class="rounded-[1.5rem] bg-[#F8FAFC] dark:bg-[#1A1C23]"></canvas>
         
-        <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm rounded-3xl hidden">
-            <button id="restartBtn" class="px-6 py-3 bg-m3LightPrimary text-white dark:bg-m3DarkPrimary dark:text-gray-900 rounded-full font-bold shadow-lg hover:scale-105 transition-transform">
-                🔄 Restart
+        <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 dark:bg-black/80 backdrop-blur-md rounded-[2rem] opacity-0 pointer-events-none transition-opacity duration-300">
+            <h2 class="text-2xl font-bold mb-4 text-m3Primary dark:text-m3DarkPrimary">Game Over!</h2>
+            <button id="restartBtn" class="px-8 py-4 bg-m3Primary text-white dark:bg-m3DarkPrimary dark:text-gray-900 rounded-full font-bold shadow-lg hover:scale-105 active:scale-95 transition-all text-lg">
+                🔄 Play Again
             </button>
         </div>
     </div>
 
-    <div class="d-pad-container mt-6">
+    <div class="joypad-container">
         <button class="d-btn d-up" id="btnUp">▲</button>
         <button class="d-btn d-left" id="btnLeft">◀</button>
         
@@ -150,30 +170,25 @@
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         
-        // Settings
         const gridSize = 15;
         const tileCount = canvas.width / gridSize;
         let speed = 7;
         
-        // Game State
         let snake = [{ x: 10, y: 10 }];
         let food = { x: 5, y: 5 };
-        let dx = 0;
-        let dy = 0;
+        let dx = 0, dy = 0;
         let score = 0;
         let isPaused = true;
         let isGameOver = false;
         
-        // Audio State
         let soundEnabled = true;
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // UI Elements
         const scoreEl = document.getElementById("score");
         const gameOverScreen = document.getElementById("gameOverScreen");
         const btnPlayPause = document.getElementById("btnPlayPause");
 
-        // --- Audio Functions (Web Audio API) ---
+        // Web Audio API Sounds
         function playSound(type) {
             if (!soundEnabled) return;
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -185,34 +200,28 @@
             
             if (type === 'eat') {
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.1);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             } else if (type === 'die') {
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.5);
+                osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.4);
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.5);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
             }
         }
 
-        // --- Game Loop ---
         function drawGame() {
             if (isPaused || isGameOver) return;
-            
             moveSnake();
             if (checkGameOver()) return;
-            
             clearScreen();
             drawFood();
             drawSnake();
-            
             setTimeout(drawGame, 1000 / speed);
         }
 
@@ -220,21 +229,58 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
+        // Attractive Snake Design (Rounded borders, darker head)
         function drawSnake() {
             const isDark = document.documentElement.classList.contains('dark');
-            ctx.fillStyle = isDark ? '#ADC6FF' : '#005AC1'; // Material Primary Color
-            
-            snake.forEach(part => {
-                ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 1, gridSize - 1);
+            const headColor = isDark ? '#A8C7FA' : '#0A56D1';
+            const bodyColor = isDark ? '#78B9FF' : '#00639B';
+
+            snake.forEach((part, index) => {
+                ctx.fillStyle = index === 0 ? headColor : bodyColor;
+                
+                // Use roundRect for modern attractive look
+                ctx.beginPath();
+                ctx.roundRect(
+                    part.x * gridSize + 1, 
+                    part.y * gridSize + 1, 
+                    gridSize - 2, 
+                    gridSize - 2, 
+                    index === 0 ? 6 : 4 // Head is more rounded
+                );
+                ctx.fill();
+
+                // Draw tiny eyes on the head
+                if (index === 0) {
+                    ctx.fillStyle = isDark ? '#000' : '#FFF';
+                    ctx.beginPath();
+                    ctx.arc(part.x * gridSize + 5, part.y * gridSize + 5, 2, 0, Math.PI*2);
+                    ctx.arc(part.x * gridSize + 10, part.y * gridSize + 5, 2, 0, Math.PI*2);
+                    ctx.fill();
+                }
             });
         }
 
+        // Attractive Food Design (Circular glowing dot/berry)
+        function drawFood() {
+            const isDark = document.documentElement.classList.contains('dark');
+            ctx.fillStyle = isDark ? '#FFB4AB' : '#B3261E';
+            
+            ctx.beginPath();
+            ctx.arc(
+                food.x * gridSize + gridSize/2, 
+                food.y * gridSize + gridSize/2, 
+                gridSize/2 - 1.5, 
+                0, Math.PI*2
+            );
+            ctx.fill();
+        }
+
         function moveSnake() {
-            if (dx === 0 && dy === 0) return; // Haven't started moving yet
+            if (dx === 0 && dy === 0) return; 
             
             const head = { x: snake[0].x + dx, y: snake[0].y + dy };
             
-            // Screen Wrap Logic (Wall collision = teleport to other side)
+            // Screen-Wrap logic
             if (head.x < 0) head.x = tileCount - 1;
             if (head.x >= tileCount) head.x = 0;
             if (head.y < 0) head.y = tileCount - 1;
@@ -242,22 +288,15 @@
 
             snake.unshift(head);
             
-            // Check Food
             if (head.x === food.x && head.y === food.y) {
                 score += 10;
                 scoreEl.innerText = score;
                 playSound('eat');
                 placeFood();
-                speed = Math.min(speed + 0.2, 15); // Increase speed slightly
+                speed = Math.min(speed + 0.25, 18); 
             } else {
                 snake.pop();
             }
-        }
-
-        function drawFood() {
-            const isDark = document.documentElement.classList.contains('dark');
-            ctx.fillStyle = isDark ? '#FFB4AB' : '#BA1A1A'; // Material Red
-            ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 1, gridSize - 1);
         }
 
         function placeFood() {
@@ -265,20 +304,17 @@
                 x: Math.floor(Math.random() * tileCount),
                 y: Math.floor(Math.random() * tileCount)
             };
-            // Ensure food doesn't spawn on snake
-            if (snake.some(part => part.x === food.x && part.y === food.y)) {
-                placeFood();
-            }
+            if (snake.some(part => part.x === food.x && part.y === food.y)) placeFood();
         }
 
         function checkGameOver() {
             const head = snake[0];
-            // Die ONLY if head touches body
             for (let i = 1; i < snake.length; i++) {
                 if (head.x === snake[i].x && head.y === snake[i].y) {
                     isGameOver = true;
                     playSound('die');
-                    gameOverScreen.classList.remove('hidden');
+                    gameOverScreen.classList.remove('opacity-0', 'pointer-events-none');
+                    btnPlayPause.innerText = "▶";
                     return true;
                 }
             }
@@ -287,46 +323,36 @@
 
         function resetGame() {
             snake = [{ x: 10, y: 10 }];
-            dx = 0;
-            dy = 0;
-            score = 0;
-            speed = 7;
+            dx = 0; dy = 0;
+            score = 0; speed = 7;
             scoreEl.innerText = score;
             isGameOver = false;
-            gameOverScreen.classList.add('hidden');
+            gameOverScreen.classList.add('opacity-0', 'pointer-events-none');
             placeFood();
             
-            // Reset to paused state
             isPaused = true;
             btnPlayPause.innerText = "▶";
-            
-            clearScreen();
-            drawSnake();
-            drawFood();
+            clearScreen(); drawSnake(); drawFood();
         }
 
         function togglePlayPause() {
             if (isGameOver) resetGame();
-            
             isPaused = !isPaused;
             if (!isPaused) {
-                btnPlayPause.innerText = "⏸";
-                // If starting for the first time, set default direction
-                if (dx === 0 && dy === 0) { dx = 1; }
+                btnPlayPause.innerHTML = "<b>||</b>"; // Pause icon
+                if (dx === 0 && dy === 0) dx = 1;
                 drawGame();
             } else {
                 btnPlayPause.innerText = "▶";
             }
         }
 
-        // --- Controls ---
+        // Controls
         function setDir(newDx, newDy) {
             if (isPaused) togglePlayPause();
-            // Prevent 180 degree turns
             if (newDx !== 0 && dx === -newDx) return;
             if (newDy !== 0 && dy === -newDy) return;
-            dx = newDx;
-            dy = newDy;
+            dx = newDx; dy = newDy;
         }
 
         document.getElementById('btnUp').onclick = () => setDir(0, -1);
@@ -336,23 +362,12 @@
         btnPlayPause.onclick = togglePlayPause;
         document.getElementById('restartBtn').onclick = resetGame;
 
-        // Keyboard support
-        window.addEventListener('keydown', e => {
-            if (e.key === 'ArrowUp') setDir(0, -1);
-            else if (e.key === 'ArrowDown') setDir(0, 1);
-            else if (e.key === 'ArrowLeft') setDir(-1, 0);
-            else if (e.key === 'ArrowRight') setDir(1, 0);
-            else if (e.key === ' ') togglePlayPause();
-        });
-
-        // --- Top Bar Actions ---
+        // Header Buttons
         const themeBtn = document.getElementById('themeBtn');
-        const htmlElement = document.documentElement;
-        
         themeBtn.onclick = () => {
-            htmlElement.classList.toggle('dark');
-            themeBtn.innerText = htmlElement.classList.contains('dark') ? "☀️" : "🌙";
-            clearScreen(); drawSnake(); drawFood(); // Redraw with new colors
+            document.documentElement.classList.toggle('dark');
+            themeBtn.innerText = document.documentElement.classList.contains('dark') ? "☀️" : "🌙";
+            clearScreen(); drawSnake(); drawFood(); 
         };
 
         const soundBtn = document.getElementById('soundBtn');
@@ -361,11 +376,8 @@
             soundBtn.innerText = soundEnabled ? "🔊" : "🔇";
         };
 
-        // Initial Draw
-        placeFood();
-        clearScreen();
-        drawSnake();
-        drawFood();
+        // Initialize
+        placeFood(); clearScreen(); drawSnake(); drawFood();
     </script>
 </body>
 </html>
