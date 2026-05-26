@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Premium Serpentine | En</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script>
@@ -39,54 +39,43 @@
             touch-action: none; -webkit-tap-highlight-color: transparent;
         }
         
-        canvas { image-rendering: pixelated; touch-action: none; }
+        /* Perfect Square Canvas Container */
+        .canvas-container {
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            max-width: 340px;
+            margin: 0 auto;
+            position: relative;
+        }
+        canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; touch-action: none; }
 
-        /* Top Bar Icons */
         .icon-btn { transition: all 0.2s; color: var(--m3-primary); }
         .icon-btn:active { transform: scale(0.85); }
 
-        /* Modal Animation */
-        .modal-enter { animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        /* --- Completely New Premium D-Pad (Cross Layout) --- */
+        /* Compact Premium Controller */
         .premium-controller {
             display: grid;
-            grid-template-areas: 
-                ". up ." 
-                "left center right" 
-                ". down .";
-            gap: 12px;
-            margin: 10px auto 20px auto;
-            padding: 15px;
+            grid-template-areas: ". up ." "left center right" ". down .";
+            gap: 8px; /* Reduced gap */
+            margin: 5px auto 15px auto;
+            padding: 12px; /* Reduced padding */
             background: var(--m3-surface-variant);
-            border-radius: 30px;
+            border-radius: 24px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.1), inset 0 2px 5px rgba(255,255,255,0.2);
             transition: all 0.3s;
         }
-        html.dark .premium-controller {
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.05);
-        }
+        html.dark .premium-controller { box-shadow: 0 8px 25px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.05); }
 
         .dir-btn {
-            background: var(--m3-surface);
-            color: var(--m3-primary);
-            font-size: 24px;
-            border: 2px solid transparent;
-            border-radius: 18px; /* Squircle shape */
-            width: 65px; height: 65px;
+            background: var(--m3-surface); color: var(--m3-primary);
+            font-size: 20px; border: 2px solid transparent; border-radius: 14px;
+            width: 50px; height: 50px; /* Smaller buttons */
             display: flex; justify-content: center; align-items: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            user-select: none;
+            cursor: pointer; user-select: none;
         }
-        .dir-btn:active {
-            transform: scale(0.9) translateY(2px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            background: var(--m3-primary);
-            color: var(--m3-bg);
-        }
+        .dir-btn:active { transform: scale(0.85) translateY(2px); box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: var(--m3-primary); color: var(--m3-bg); }
 
         .dir-up { grid-area: up; } .dir-down { grid-area: down; }
         .dir-left { grid-area: left; } .dir-right { grid-area: right; }
@@ -94,18 +83,15 @@
         .play-pause-btn {
             grid-area: center;
             background: linear-gradient(135deg, var(--m3-primary), var(--m3-secondary));
-            color: var(--m3-bg);
-            border-radius: 50%;
-            width: 70px; height: 70px;
+            color: var(--m3-bg); border-radius: 50%;
+            width: 55px; height: 55px; /* Smaller center button */
             display: flex; justify-content: center; align-items: center;
-            font-size: 28px; font-weight: bold;
-            box-shadow: 0 6px 15px rgba(0,90,193,0.3);
-            transition: all 0.2s;
-            margin: auto;
+            font-size: 22px; font-weight: bold;
+            box-shadow: 0 6px 15px rgba(0,90,193,0.3); transition: all 0.2s; margin: auto;
         }
         .play-pause-btn:active { transform: scale(0.9); }
 
-        /* Game Effects */
+        /* Animations */
         .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake {
             10%, 90% { transform: translate3d(-1px, 0, 0); }
@@ -115,56 +101,69 @@
         }
 
         .floating-text {
-            position: absolute; font-weight: bold; font-family: 'JetBrains Mono', monospace;
-            pointer-events: none; animation: floatUp 1s ease-out forwards; z-index: 30;
+            position: absolute; font-weight: 800; font-family: 'JetBrains Mono', monospace;
+            pointer-events: none; animation: floatUpAndFade 0.8s ease-out forwards; z-index: 30; text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
-        @keyframes floatUp {
+        @keyframes floatUpAndFade {
             0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-40px) scale(1.5); }
+            100% { opacity: 0; transform: translateY(-50px) scale(1.8); }
         }
 
-        /* Settings UI */
-        .color-swatch { width: 38px; height: 38px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: transform 0.2s; }
+        /* Combo Bar */
+        .combo-bar-container { height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; width: 100%; margin-top: 4px; }
+        html.dark .combo-bar-container { background: rgba(255,255,255,0.1); }
+        #comboBar { height: 100%; background: var(--m3-primary); width: 0%; transition: width 0.1s linear, background-color 0.3s; }
+
+        /* Modal Settings */
+        .modal-enter { animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .color-swatch { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: transform 0.2s; }
         .color-swatch.active { border-color: var(--m3-text); transform: scale(1.15); box-shadow: 0 0 15px rgba(0,0,0,0.2); }
         .design-btn { border: 2px solid var(--m3-surface-variant); transition: all 0.2s; }
         .design-btn.active { border-color: var(--m3-primary); background: var(--m3-primary); color: var(--m3-bg); }
     </style>
 </head>
-<body class="bg-m3Bg text-m3Text font-sans transition-colors duration-300 flex flex-col min-h-screen p-4 overflow-hidden">
+<body class="bg-m3Bg text-m3Text font-sans transition-colors duration-300 flex flex-col min-h-screen p-3 overflow-hidden">
 
-    <div class="w-full max-w-sm flex justify-between items-center mb-4 px-2 flex-shrink-0 mx-auto">
-        <div class="flex flex-col">
-            <h1 class="text-3xl font-extrabold tracking-tight text-m3Primary">Serpentine</h1>
-            <div class="flex items-center gap-2 mt-1 font-mono text-sm">
-                <span class="px-3 py-1 bg-m3SurfaceVariant rounded-full font-bold shadow-sm">Score: <span id="score">0</span></span>
-                <span class="px-3 py-1 bg-m3SurfaceVariant rounded-full shadow-sm opacity-80">Best: <span id="highScoreText">0</span></span>
+    <div class="w-full max-w-sm flex justify-between items-start mb-2 px-1 flex-shrink-0 mx-auto">
+        <div class="flex flex-col w-2/3">
+            <div class="flex items-baseline gap-2">
+                <h1 class="text-3xl font-extrabold tracking-tight text-m3Primary">Serpentine</h1>
+                <span id="rankBadge" class="text-xs font-bold px-2 py-0.5 rounded bg-m3Gold text-yellow-900 uppercase tracking-widest shadow-sm">Egg</span>
+            </div>
+            
+            <div class="flex items-center gap-2 mt-1 font-mono text-sm w-full">
+                <span class="px-2 py-1 bg-m3SurfaceVariant rounded shadow-sm whitespace-nowrap">Score: <span id="score" class="font-bold text-m3Primary text-lg">0</span></span>
+                <span class="px-2 py-1 bg-m3SurfaceVariant rounded shadow-sm opacity-80 whitespace-nowrap">Best: <span id="highScoreText">0</span></span>
+            </div>
+            
+            <div class="w-full pr-4 mt-1">
+                <div class="flex justify-between text-[10px] font-bold uppercase opacity-70 mb-0.5">
+                    <span>Combo <span id="comboText">x1</span></span>
+                </div>
+                <div class="combo-bar-container"><div id="comboBar"></div></div>
             </div>
         </div>
         
-        <div class="flex gap-2">
-            <button id="refreshBtn" class="icon-btn w-12 h-12 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm">
-                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
-            </button>
-            <button id="soundBtn" class="icon-btn w-12 h-12 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm">
-                <svg id="soundIcon" class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-            </button>
-            <button id="menuBtn" class="icon-btn w-12 h-12 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm">
-                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
-            </button>
+        <div class="flex gap-1">
+            <button id="refreshBtn" class="icon-btn w-10 h-10 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg></button>
+            <button id="soundBtn" class="icon-btn w-10 h-10 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm"><svg id="soundIcon" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></button>
+            <button id="menuBtn" class="icon-btn w-10 h-10 flex items-center justify-center rounded-full bg-m3SurfaceVariant shadow-sm"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
         </div>
     </div>
 
-    <div id="gameWrapper" class="relative bg-m3SurfaceVariant p-2.5 rounded-[2rem] shadow-inner flex-grow max-w-[min(95vw,calc(100vh-390px))] mx-auto overflow-hidden w-full flex justify-center items-center">
-        <div id="canvasContainer" class="relative w-full h-full">
-            <canvas id="gameCanvas" width="300" height="300" class="rounded-[1.5rem] bg-m3Bg w-full h-full object-contain shadow-sm"></canvas>
+    <div id="gameWrapper" class="bg-m3SurfaceVariant p-2 rounded-[2rem] shadow-inner flex-grow mx-auto flex justify-center items-center w-full max-w-sm">
+        <div class="canvas-container" id="canvasContainer">
+            <canvas id="gameCanvas" width="300" height="300" class="rounded-[1.5rem] bg-m3Bg shadow-sm"></canvas>
+            
+            <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/75 backdrop-blur-md rounded-[1.5rem] opacity-0 pointer-events-none transition-opacity duration-300 z-20">
+                <h2 class="text-4xl font-extrabold mb-1 text-white tracking-wider">GAME OVER</h2>
+                <p class="text-white/90 mb-1 font-mono text-lg">Score: <span id="finalScore" class="text-3xl font-bold text-yellow-400">0</span></p>
+                <p class="text-m3Gold mb-5 font-bold uppercase tracking-widest text-sm" id="finalRank">Rank: Egg</p>
+                <button id="restartBtn" class="px-8 py-3 bg-m3Primary text-m3Bg rounded-full font-bold shadow-lg hover:scale-105 active:scale-95 transition-all text-xl uppercase tracking-wide">
+                    Play Again
+                </button>
             </div>
-        
-        <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-md rounded-[2rem] opacity-0 pointer-events-none transition-opacity duration-300 z-20">
-            <h2 class="text-4xl font-extrabold mb-2 text-white tracking-wider">GAME OVER</h2>
-            <p class="text-white/90 mb-6 font-mono text-lg">Final Score: <span id="finalScore" class="text-2xl font-bold text-yellow-400">0</span></p>
-            <button id="restartBtn" class="px-8 py-4 bg-m3Primary text-m3Bg rounded-full font-bold shadow-lg hover:scale-105 active:scale-95 transition-all text-xl uppercase tracking-wide">
-                Play Again
-            </button>
         </div>
     </div>
 
@@ -188,11 +187,11 @@
             </div>
             <div class="mb-6">
                 <h3 class="font-semibold mb-3 text-lg opacity-90">Theme Colors</h3>
-                <div class="flex flex-wrap gap-3" id="themeGrid"></div>
+                <div class="flex flex-wrap gap-2.5" id="themeGrid"></div>
             </div>
-            <div class="mb-4">
+            <div class="mb-2">
                 <h3 class="font-semibold mb-3 text-lg opacity-90">Snake Design</h3>
-                <div class="grid grid-cols-2 gap-3" id="designGrid"></div>
+                <div class="grid grid-cols-2 gap-2" id="designGrid"></div>
             </div>
         </div>
     </div>
@@ -203,26 +202,34 @@
         const canvasContainer = document.getElementById("canvasContainer");
         const gameWrapper = document.getElementById("gameWrapper");
         
-        // Perfect Grid Calculation (No gaps)
+        // Exact Grid Match (300px / 15px = 20 tiles exactly. No gaps!)
         const gridSize = 15;
-        const tileCount = 20; // 300 / 15 = exactly 20.
+        const tileCount = 20; 
         
-        let speed = 5; 
+        // Game Logic State
+        let speed = 6; 
         let snake = [{ x: 10, y: 10 }];
         let food = { x: 5, y: 5 };
-        let specialFood = null; // Golden Apple
+        let specialFood = null; 
         let dx = 0, dy = 0;
-        let lastDx = 0, lastDy = 0; // Prevents suicide by fast clicking
+        let lastDx = 0, lastDy = 0; 
         let score = 0;
         let isPaused = true;
         let isGameOver = false;
+
+        // Combo & Juice State
+        let comboMultiplier = 1;
+        let comboTimer = 0;
+        const MAX_COMBO_TIME = 40; // Ticks before combo resets
+        let particles = [];
+        let frames = 0; // For 60FPS loop
         
         let soundEnabled = true;
         let currentThemeId = 0;
         let currentDesignId = 0; 
         let isDarkMode = false;
 
-        let highScore = localStorage.getItem('premiumSnakeBest') || 0;
+        let highScore = localStorage.getItem('premiumSnakeV2') || 0;
         document.getElementById('highScoreText').innerText = highScore;
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -246,16 +253,14 @@
             { id: 2, name: "Circles" }, { id: 3, name: "Diamonds" }, { id: 4, name: "Glowing" }
         ];
 
-        // --- Core Functions ---
-        
-        // Haptic Feedback Engine
+        // --- Core Audio/Haptic Engine ---
         function vibe(type) {
             if (!navigator.vibrate) return;
             try {
-                if (type === 'move') navigator.vibrate(15);
-                else if (type === 'eat') navigator.vibrate([30]);
-                else if (type === 'special') navigator.vibrate([40, 30, 60]);
-                else if (type === 'die') navigator.vibrate([150, 50, 250]);
+                if (type === 'move') navigator.vibrate(10);
+                else if (type === 'eat') navigator.vibrate([20]);
+                else if (type === 'special') navigator.vibrate([30, 20, 50]);
+                else if (type === 'die') navigator.vibrate([150, 50, 200]);
             } catch(e){}
         }
 
@@ -266,45 +271,114 @@
             osc.connect(gain); gain.connect(audioCtx.destination);
             
             if (type === 'eat') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+                osc.type = 'sine'; osc.frequency.setValueAtTime(600 + (comboMultiplier*100), audioCtx.currentTime); // Pitch goes up with combo
+                osc.frequency.exponentialRampToValueAtTime(1200 + (comboMultiplier*200), audioCtx.currentTime + 0.1);
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             } else if (type === 'special') {
-                osc.type = 'triangle'; osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                osc.frequency.linearRampToValueAtTime(1600, audioCtx.currentTime + 0.2);
-                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+                osc.type = 'square'; osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(1200, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
             } else if (type === 'die') {
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.5);
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.6);
                 gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+            }
+        }
+
+        // --- Visual Effects ---
+        function spawnParticles(x, y, color) {
+            for(let i=0; i<12; i++) {
+                particles.push({
+                    x: x * gridSize + gridSize/2, y: y * gridSize + gridSize/2,
+                    vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8,
+                    life: 1, color: color, size: Math.random() * 3 + 1
+                });
             }
         }
 
         function showFloatingText(text, x, y, color) {
             const el = document.createElement('div');
-            el.className = 'floating-text';
-            el.innerText = text;
-            el.style.color = color;
-            // Convert canvas coordinates to percentage to match responsive canvas
-            const percentX = (x / tileCount) * 100;
-            const percentY = (y / tileCount) * 100;
-            el.style.left = `calc(${percentX}% - 10px)`;
-            el.style.top = `calc(${percentY}% - 10px)`;
+            el.className = 'floating-text'; el.innerText = text; el.style.color = color;
+            const percentX = (x / tileCount) * 100; const percentY = (y / tileCount) * 100;
+            el.style.left = `calc(${percentX}% - 10px)`; el.style.top = `calc(${percentY}% - 10px)`;
             canvasContainer.appendChild(el);
-            setTimeout(() => el.remove(), 1000);
+            setTimeout(() => el.remove(), 800);
         }
 
-        // --- Drawing ---
+        function getRank(s) {
+            if(s < 100) return "Egg"; if(s < 300) return "Hatchling"; if(s < 600) return "Snake";
+            if(s < 1200) return "Viper"; if(s < 2000) return "Cobra"; if(s < 3500) return "Python";
+            return "Dragon";
+        }
+
+        function updateUI() {
+            document.getElementById("score").innerText = score;
+            const rank = getRank(score);
+            document.getElementById("rankBadge").innerText = rank;
+            document.getElementById("finalRank").innerText = "Rank: " + rank;
+            
+            // Update Combo UI
+            const bar = document.getElementById("comboBar");
+            const comboTxt = document.getElementById("comboText");
+            const percentage = (comboTimer / MAX_COMBO_TIME) * 100;
+            bar.style.width = `${percentage}%`;
+            comboTxt.innerText = `x${comboMultiplier}`;
+            
+            if (comboMultiplier > 1) {
+                bar.style.backgroundColor = themes[currentThemeId][isDarkMode?'d':'l'].p;
+                comboTxt.style.color = themes[currentThemeId][isDarkMode?'d':'l'].p;
+            } else {
+                bar.style.backgroundColor = 'transparent';
+                comboTxt.style.color = '';
+            }
+
+            if (score > highScore) { 
+                highScore = score; localStorage.setItem('premiumSnakeV2', highScore); 
+                document.getElementById('highScoreText').innerText = highScore; 
+            }
+        }
+
+        // --- 60 FPS Render Engine ---
+        function loop() {
+            requestAnimationFrame(loop);
+            frames++;
+            
+            // Game Logic Tick (Variable speed)
+            const tickRate = Math.max(2, Math.floor(25 - speed)); // As speed goes up, frames between moves goes down
+            if (frames % tickRate === 0) {
+                if (!isPaused && !isGameOver) {
+                    moveSnake();
+                }
+            }
+
+            // Always Draw Everything for smooth particles
+            ctx.fillStyle = isDarkMode ? '#111318' : '#FDFBFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height); // Background wipe
+            drawGrid(); 
+            if (!isGameOver) drawFoods(); 
+            drawSnake();
+            
+            // Render Particles Smoothly
+            for(let i=particles.length-1; i>=0; i--) {
+                let p = particles[i];
+                p.x += p.vx; p.y += p.vy; p.life -= 0.04;
+                if(p.life <= 0) { particles.splice(i, 1); continue; }
+                ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+            }
+            ctx.globalAlpha = 1.0;
+        }
+
+        // --- Drawing Functions ---
         function drawGrid() {
-            ctx.strokeStyle = isDarkMode ? '#3A3F47' : '#EAECF2';
+            ctx.strokeStyle = isDarkMode ? '#2D3135' : '#E1E2EC';
             ctx.lineWidth = 1;
-            // Draw exactly tileCount lines
             for (let i = 0; i <= tileCount; i++) {
                 ctx.beginPath(); ctx.moveTo(i * gridSize, 0); ctx.lineTo(i * gridSize, canvas.height); ctx.stroke();
                 ctx.beginPath(); ctx.moveTo(0, i * gridSize); ctx.lineTo(canvas.width, i * gridSize); ctx.stroke();
@@ -317,121 +391,122 @@
             
             snake.forEach((part, index) => {
                 ctx.fillStyle = index === 0 ? headColor : bodyColor;
-                ctx.shadowBlur = 0; let px = part.x * gridSize; let py = part.y * gridSize; let s = gridSize;
-                ctx.beginPath();
+                ctx.shadowBlur = 0; 
+                let px = part.x * gridSize; let py = part.y * gridSize; 
                 
-                if (currentDesignId === 0) ctx.roundRect(px + 1, py + 1, s - 2, s - 2, index === 0 ? 6 : 4);
-                else if (currentDesignId === 1) { ctx.rect(px, py, s, s); ctx.strokeStyle = isDarkMode ? '#1E2026' : '#FFFFFF'; ctx.lineWidth = 1.5; ctx.stroke(); }
-                else if (currentDesignId === 2) ctx.arc(px + s/2, py + s/2, s/2 - 1, 0, Math.PI*2);
+                // Tapered Tail Logic (Gets slightly smaller at the end)
+                let shrink = index === 0 ? 0 : (index / snake.length) * 4; 
+                if (currentDesignId === 1 || currentDesignId === 3) shrink = 0; // Don't taper retro/diamond
+                let s = gridSize - shrink;
+                let offset = shrink / 2;
+
+                ctx.beginPath();
+                if (currentDesignId === 0) ctx.roundRect(px + offset + 1, py + offset + 1, s - 2, s - 2, index === 0 ? 6 : 4);
+                else if (currentDesignId === 1) { ctx.rect(px, py, s, s); ctx.strokeStyle = isDarkMode ? '#111318' : '#FDFBFF'; ctx.lineWidth = 1; ctx.stroke(); }
+                else if (currentDesignId === 2) ctx.arc(px + gridSize/2, py + gridSize/2, s/2 - 1, 0, Math.PI*2);
                 else if (currentDesignId === 3) { ctx.moveTo(px + s/2, py); ctx.lineTo(px + s, py + s/2); ctx.lineTo(px + s/2, py + s); ctx.lineTo(px, py + s/2); }
-                else if (currentDesignId === 4) { ctx.shadowBlur = 12; ctx.shadowColor = ctx.fillStyle; ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2); }
+                else if (currentDesignId === 4) { ctx.shadowBlur = 10; ctx.shadowColor = ctx.fillStyle; ctx.arc(px + gridSize/2, py + gridSize/2, s/2 - 2, 0, Math.PI*2); }
                 ctx.fill();
 
-                // Directional Eyes on Head
+                // Advanced Eyes based on direction
                 if (index === 0 && currentDesignId !== 1 && currentDesignId !== 3) {
                     ctx.fillStyle = isDarkMode ? '#111318' : '#FFF'; ctx.shadowBlur = 0;
-                    let eyeOffset1X, eyeOffset1Y, eyeOffset2X, eyeOffset2Y;
+                    let e1x, e1y, e2x, e2y;
+                    if (lastDx === 1) { e1x = 10; e1y = 4; e2x = 10; e2y = 11; } 
+                    else if (lastDx === -1) { e1x = 5; e1y = 4; e2x = 5; e2y = 11; } 
+                    else if (lastDy === 1) { e1x = 4; e1y = 10; e2x = 11; e2y = 10; } 
+                    else { e1x = 4; e1y = 5; e2x = 11; e2y = 5; } // Default / Up
                     
-                    // Look direction logic
-                    if (dx === 1) { // Right
-                        eyeOffset1X = 10; eyeOffset1Y = 4; eyeOffset2X = 10; eyeOffset2Y = 11;
-                    } else if (dx === -1) { // Left
-                        eyeOffset1X = 5; eyeOffset1Y = 4; eyeOffset2X = 5; eyeOffset2Y = 11;
-                    } else if (dy === 1) { // Down
-                        eyeOffset1X = 4; eyeOffset1Y = 10; eyeOffset2X = 11; eyeOffset2Y = 10;
-                    } else { // Up or default
-                        eyeOffset1X = 4; eyeOffset1Y = 5; eyeOffset2X = 11; eyeOffset2Y = 5;
-                    }
-
-                    ctx.beginPath(); 
-                    ctx.arc(px + eyeOffset1X, py + eyeOffset1Y, 2.5, 0, Math.PI*2); 
-                    ctx.arc(px + eyeOffset2X, py + eyeOffset2Y, 2.5, 0, Math.PI*2); 
-                    ctx.fill();
+                    ctx.beginPath(); ctx.arc(px + e1x, py + e1y, 2.5, 0, Math.PI*2); ctx.arc(px + e2x, py + e2y, 2.5, 0, Math.PI*2); ctx.fill();
                 }
             }); ctx.shadowBlur = 0;
         }
 
         function drawFoods() {
-            // Normal Food
-            const fColor = themes[currentThemeId][isDarkMode?'d':'l'].f; 
-            ctx.fillStyle = fColor;
+            const fColor = themes[currentThemeId][isDarkMode?'d':'l'].f; ctx.fillStyle = fColor;
             let px = food.x * gridSize; let py = food.y * gridSize; let s = gridSize;
+            
             ctx.beginPath();
             if (currentDesignId === 1) ctx.rect(px+1, py+1, s-2, s-2);
             else if (currentDesignId === 3) { ctx.moveTo(px + s/2, py+1); ctx.lineTo(px + s-1, py + s/2); ctx.lineTo(px + s/2, py + s-1); ctx.lineTo(px+1, py + s/2); }
             else if (currentDesignId === 4) { ctx.shadowBlur = 15; ctx.shadowColor = fColor; ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2); }
-            else ctx.arc(px + s/2, py + s/2, s/2 - 1.5, 0, Math.PI*2);
+            else { 
+                // Pulsing normal food
+                let pulse = Math.sin(frames * 0.1) * 1.5;
+                ctx.arc(px + s/2, py + s/2, (s/2 - 2) + pulse, 0, Math.PI*2); 
+            }
             ctx.fill(); ctx.shadowBlur = 0;
 
-            // Golden Apple
             if (specialFood) {
-                ctx.fillStyle = '#F5BE48';
-                ctx.shadowBlur = 20; ctx.shadowColor = '#F5BE48';
+                ctx.fillStyle = '#F5BE48'; ctx.shadowBlur = 15; ctx.shadowColor = '#F5BE48';
                 let gx = specialFood.x * gridSize; let gy = specialFood.y * gridSize;
-                ctx.beginPath();
-                // Star/Diamond shape for special food
-                ctx.moveTo(gx + s/2, gy); ctx.lineTo(gx + s, gy + s/2); ctx.lineTo(gx + s/2, gy + s); ctx.lineTo(gx, gy + s/2);
-                ctx.fill(); ctx.shadowBlur = 0;
+                let rot = frames * 0.05; // Spin effect
+                ctx.save(); ctx.translate(gx + s/2, gy + s/2); ctx.rotate(rot);
+                ctx.beginPath(); ctx.moveTo(0, -s/2+2); ctx.lineTo(s/2-2, 0); ctx.lineTo(0, s/2-2); ctx.lineTo(-s/2+2, 0); ctx.fill();
+                ctx.restore(); ctx.shadowBlur = 0;
             }
         }
 
         // --- Game Logic ---
         function moveSnake() {
             if (dx === 0 && dy === 0) return; 
-            lastDx = dx; lastDy = dy; // Lock direction for this tick
+            lastDx = dx; lastDy = dy; 
             
             const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-            // Wrap logic
             if (head.x < 0) head.x = tileCount - 1; if (head.x >= tileCount) head.x = 0;
             if (head.y < 0) head.y = tileCount - 1; if (head.y >= tileCount) head.y = 0;
             snake.unshift(head);
             
             let ate = false;
-            // Eat normal food
+            
             if (head.x === food.x && head.y === food.y) {
-                score += 10; updateScore();
+                let pts = 10 * comboMultiplier;
+                score += pts; 
                 playSound('eat'); vibe('eat');
-                showFloatingText("+10", food.x, food.y, themes[currentThemeId][isDarkMode?'d':'l'].p);
+                spawnParticles(food.x, food.y, themes[currentThemeId][isDarkMode?'d':'l'].f);
+                showFloatingText(`+${pts}`, food.x, food.y, themes[currentThemeId][isDarkMode?'d':'l'].p);
+                
+                // Combo Logic
+                comboTimer = MAX_COMBO_TIME; 
+                comboMultiplier = Math.min(comboMultiplier + 1, 5); // Max 5x combo
+                
                 placeFood(); ate = true;
-                speed = Math.min(speed + 0.15, 16); // Increase speed
+                speed = Math.min(speed + 0.2, 20); // Faster curve
             } 
-            // Eat Special food
             else if (specialFood && head.x === specialFood.x && head.y === specialFood.y) {
-                score += 30; updateScore();
+                let pts = 30 * comboMultiplier;
+                score += pts; 
                 playSound('special'); vibe('special');
-                showFloatingText("+30", specialFood.x, specialFood.y, "#F5BE48");
+                spawnParticles(specialFood.x, specialFood.y, '#F5BE48');
+                showFloatingText(`+${pts}!`, specialFood.x, specialFood.y, "#F5BE48");
                 specialFood = null; ate = true;
+                comboTimer = MAX_COMBO_TIME;
             }
             
-            if (!ate) snake.pop();
+            if (!ate) {
+                snake.pop();
+                // Degrade Combo
+                if (comboTimer > 0) comboTimer--;
+                else comboMultiplier = 1;
+            }
 
-            // Special food timeout logic
             if (specialFood) {
                 specialFood.timer--;
                 if (specialFood.timer <= 0) specialFood = null;
             }
+            
+            updateUI();
         }
 
         function placeFood() {
             food = { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
             if (snake.some(part => part.x === food.x && part.y === food.y)) return placeFood();
 
-            // 15% chance to spawn Golden Apple if one doesn't exist
-            if (!specialFood && Math.random() < 0.15) {
-                let gx = Math.floor(Math.random() * tileCount);
-                let gy = Math.floor(Math.random() * tileCount);
+            if (!specialFood && Math.random() < 0.15 && score > 50) {
+                let gx = Math.floor(Math.random() * tileCount); let gy = Math.floor(Math.random() * tileCount);
                 if (!snake.some(part => part.x === gx && part.y === gy) && (gx !== food.x || gy !== food.y)) {
-                    specialFood = { x: gx, y: gy, timer: 35 }; // stays for 35 ticks
+                    specialFood = { x: gx, y: gy, timer: 45 }; 
                 }
-            }
-        }
-
-        function updateScore() {
-            document.getElementById("score").innerText = score;
-            if (score > highScore) { 
-                highScore = score; 
-                localStorage.setItem('premiumSnakeBest', highScore); 
-                document.getElementById('highScoreText').innerText = highScore; 
             }
         }
 
@@ -439,10 +514,8 @@
             const head = snake[0];
             for (let i = 1; i < snake.length; i++) {
                 if (head.x === snake[i].x && head.y === snake[i].y) {
-                    isGameOver = true; 
-                    playSound('die'); vibe('die');
-                    gameWrapper.classList.add('shake');
-                    setTimeout(() => gameWrapper.classList.remove('shake'), 500);
+                    isGameOver = true; playSound('die'); vibe('die');
+                    gameWrapper.classList.add('shake'); setTimeout(() => gameWrapper.classList.remove('shake'), 400);
                     
                     document.getElementById("finalScore").innerText = score;
                     document.getElementById("gameOverScreen").classList.remove('opacity-0', 'pointer-events-none');
@@ -451,23 +524,12 @@
             } return false;
         }
 
-        function drawGame() {
-            if (isPaused || isGameOver) return; 
-            moveSnake(); 
-            if (checkGameOver()) return;
-            clearScreen(); drawGrid(); drawFoods(); drawSnake(); 
-            setTimeout(drawGame, 1000 / speed);
-        }
-
-        function clearScreen() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
-
         function resetGame() {
             snake = [{ x: 10, y: 10 }]; dx = 0; dy = 0; lastDx = 0; lastDy = 0;
-            score = 0; speed = 5; specialFood = null;
-            document.getElementById("score").innerText = score;
+            score = 0; speed = 6; specialFood = null; comboMultiplier = 1; comboTimer = 0; particles = [];
+            updateUI();
             isGameOver = false; document.getElementById("gameOverScreen").classList.add('opacity-0', 'pointer-events-none');
             placeFood(); isPaused = true; btnPlayPause.innerText = "▶"; 
-            clearScreen(); drawGrid(); drawSnake(); drawFoods();
         }
 
         // --- Controls ---
@@ -475,51 +537,36 @@
             vibe('move');
             if (isGameOver) resetGame();
             isPaused = !isPaused;
-            if (!isPaused) { btnPlayPause.innerHTML = "<b>||</b>"; if (dx===0 && dy===0) {dx = 1; lastDx = 1;} drawGame(); } 
+            if (!isPaused) { btnPlayPause.innerHTML = "<b>||</b>"; if (dx===0 && dy===0) {dx = 1; lastDx = 1;} } 
             else { btnPlayPause.innerText = "▶"; }
         }
 
         function setDir(newDx, newDy) { 
             vibe('move');
             if (isPaused && !isGameOver) togglePlayPause(); 
-            // Prevent 180 turn using lastDx/lastDy to avoid suicide
             if (newDx !== 0 && lastDx === -newDx) return; 
             if (newDy !== 0 && lastDy === -newDy) return; 
             dx = newDx; dy = newDy; 
         }
 
-        // Button Listeners
         document.getElementById('btnUp').onclick = () => setDir(0, -1);
         document.getElementById('btnDown').onclick = () => setDir(0, 1);
         document.getElementById('btnLeft').onclick = () => setDir(-1, 0);
         document.getElementById('btnRight').onclick = () => setDir(1, 0);
-        btnPlayPause.onclick = togglePlayPause; 
-        document.getElementById('restartBtn').onclick = resetGame;
+        btnPlayPause.onclick = togglePlayPause; document.getElementById('restartBtn').onclick = resetGame;
 
-        // --- Swipe Controls (Premium Feature) ---
+        // Swipe Controls
         let touchStartX = 0, touchStartY = 0;
-        canvas.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY;
-            e.preventDefault(); // Prevent scrolling while touching canvas
-        }, {passive: false});
-
-        canvas.addEventListener('touchend', e => {
-            let touchEndX = e.changedTouches[0].screenX; let touchEndY = e.changedTouches[0].screenY;
-            handleSwipe(touchStartX, touchStartY, touchEndX, touchEndY);
+        canvasContainer.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY; e.preventDefault(); }, {passive: false});
+        canvasContainer.addEventListener('touchend', e => {
+            let diffX = e.changedTouches[0].screenX - touchStartX; let diffY = e.changedTouches[0].screenY - touchStartY;
+            if (Math.abs(diffX) < 25 && Math.abs(diffY) < 25) return; 
+            if (Math.abs(diffX) > Math.abs(diffY)) { if (diffX > 0) setDir(1, 0); else setDir(-1, 0); } 
+            else { if (diffY > 0) setDir(0, 1); else setDir(0, -1); }
             e.preventDefault();
         }, {passive: false});
 
-        function handleSwipe(startX, startY, endX, endY) {
-            let diffX = endX - startX; let diffY = endY - startY;
-            if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) return; // Ignore small taps
-            if (Math.abs(diffX) > Math.abs(diffY)) {
-                if (diffX > 0) setDir(1, 0); else setDir(-1, 0); // Right/Left
-            } else {
-                if (diffY > 0) setDir(0, 1); else setDir(0, -1); // Down/Up
-            }
-        }
-
-        // --- UI & Settings ---
+        // --- UI Initialization ---
         function updateTheme() {
             const root = document.documentElement; const t = themes[currentThemeId]; const colors = isDarkMode ? t.d : t.l;
             root.style.setProperty('--m3-primary', colors.p); root.style.setProperty('--m3-secondary', colors.s); root.style.setProperty('--m3-food', colors.f);
@@ -527,7 +574,7 @@
             document.getElementById(`swatch-${currentThemeId}`).classList.add('active');
             document.querySelectorAll('.design-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(`design-${currentDesignId}`).classList.add('active');
-            clearScreen(); drawGrid(); drawSnake(); drawFoods();
+            updateUI(); // Updates combo bar color
         }
 
         function initSettingsUI() {
@@ -535,18 +582,17 @@
             themes.forEach(t => {
                 let div = document.createElement('div'); div.className = 'color-swatch shadow-md';
                 div.style.backgroundColor = isDarkMode ? t.d.p : t.l.p; div.id = `swatch-${t.id}`;
-                div.onclick = () => { currentThemeId = t.id; updateTheme(); }; tGrid.appendChild(div);
+                div.onclick = () => { vibe('move'); currentThemeId = t.id; updateTheme(); }; tGrid.appendChild(div);
             });
             const dGrid = document.getElementById('designGrid');
             designs.forEach(d => {
-                let btn = document.createElement('button'); btn.className = 'design-btn px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-wider';
+                let btn = document.createElement('button'); btn.className = 'design-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider';
                 btn.id = `design-${d.id}`; btn.innerText = d.name;
-                btn.onclick = () => { currentDesignId = d.id; updateTheme(); }; dGrid.appendChild(btn);
+                btn.onclick = () => { vibe('move'); currentDesignId = d.id; updateTheme(); }; dGrid.appendChild(btn);
             });
             updateTheme();
         }
 
-        // Top Bar actions
         document.getElementById('refreshBtn').onclick = () => { vibe('move'); window.location.reload(); };
         const soundIcon = document.getElementById('soundIcon');
         document.getElementById('soundBtn').onclick = () => {
@@ -570,8 +616,9 @@
             document.querySelectorAll('.color-swatch').forEach(el => { const tId = parseInt(el.id.split('-')[1]); el.style.backgroundColor = isDarkMode ? themes[tId].d.p : themes[tId].l.p; }); 
         };
 
-        // Initialize
-        initSettingsUI(); placeFood(); clearScreen(); drawGrid(); drawSnake(); drawFoods();
+        // Start Engine
+        initSettingsUI(); placeFood(); updateUI();
+        requestAnimationFrame(loop); // Start 60FPS loop
     </script>
 </body>
 </html>
