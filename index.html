@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Ultimate Serpentine | Premium</title>
     
-    <!-- Changed Font to Nunito -->
+    <!-- Using Nunito as the primary font -->
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -28,14 +28,14 @@
         :root {
             --color-primary: #3B82F6; --color-secondary: #8B5CF6;
             --bg-gradient: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
-            --glass-bg: rgba(30, 41, 59, 0.65); --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-bg: rgba(20, 30, 48, 0.65); --glass-border: rgba(255, 255, 255, 0.08);
             --text-main: #F8FAFC; --text-muted: #94A3B8;
         }
         
         html.light {
             --color-primary: #2563EB; --color-secondary: #7C3AED;
-            --bg-gradient: linear-gradient(135deg, #F0F9FF 0%, #E0E7FF 100%);
-            --glass-bg: rgba(255, 255, 255, 0.8); --glass-border: rgba(255, 255, 255, 0.5);
+            --bg-gradient: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(255, 255, 255, 0.6);
             --text-main: #0F172A; --text-muted: #475569;
         }
 
@@ -45,55 +45,62 @@
             background: var(--bg-gradient); color: var(--text-main);
         }
 
-        /* Premium Glassmorphism Panel - More compact for space */
+        /* Minimal & Premium Glassmorphism */
         .glass-panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            border-radius: 1.5rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            border-radius: 1.75rem;
         }
 
+        /* Updated Canvas Container with Dynamic Border */
         .canvas-container {
-            width: 100%; max-width: 360px; /* Made slightly larger */
+            width: 100%; max-width: 360px;
             aspect-ratio: 1 / 1;
             margin: 0 auto; position: relative; overflow: hidden;
             border-radius: 1.25rem;
+            border: 2px solid var(--color-primary);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.2), inset 0 0 20px rgba(0,0,0,0.1);
+            transition: border-color 0.5s ease;
         }
-        canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+        
+        /* High-Res Canvas (CSS scales it down perfectly) */
+        canvas { width: 100%; height: 100%; display: block; }
 
-        /* XP Bar & Combo Bar */
-        .progress-bg { background: rgba(0,0,0,0.25); border-radius: 999px; overflow: hidden; height: 6px; width: 100%; }
-        html.light .progress-bg { background: rgba(0,0,0,0.1); }
+        .progress-bg { background: rgba(0,0,0,0.15); border-radius: 999px; overflow: hidden; height: 6px; width: 100%; }
+        html.light .progress-bg { background: rgba(0,0,0,0.08); }
         .progress-fill { height: 100%; background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)); transition: width 0.3s ease; border-radius: 999px; }
 
-        /* Compact Circular Controller to save space */
+        /* Minimal Circular Controller */
         .d-pad-wrapper {
             display: grid; 
-            grid-template-columns: repeat(3, 44px); 
-            grid-template-rows: repeat(3, 44px); 
-            gap: 6px;
+            grid-template-columns: repeat(3, 46px); 
+            grid-template-rows: repeat(3, 46px); 
+            gap: 8px;
             justify-content: center; 
             align-content: center;
             margin: 0 auto; 
-            padding: 12px;
+            padding: 16px;
             border-radius: 50%;
             width: max-content;
             aspect-ratio: 1 / 1;
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25), inset 0 2px 10px rgba(255,255,255,0.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
         }
+        
+        /* Buttons are now perfectly circular */
         .d-btn {
-            background: rgba(255,255,255,0.04); color: var(--color-primary); 
+            background: rgba(255,255,255,0.03); color: var(--color-primary); 
             border: 1px solid var(--glass-border);
-            border-radius: 12px;
+            border-radius: 50%; /* Changed to circular */
             font-size: 18px; display: flex; justify-content: center; align-items: center;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 10px rgba(0,0,0,0.1); user-select: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 10px rgba(0,0,0,0.05); user-select: none;
         }
-        html.light .d-btn { background: rgba(0,0,0,0.03); }
-        .d-btn:active { transform: scale(0.85); background: var(--color-primary); color: #fff; box-shadow: 0 0 15px var(--color-primary); }
+        html.light .d-btn { background: rgba(0,0,0,0.02); }
+        .d-btn:active { transform: scale(0.85); background: var(--color-primary); color: #fff; box-shadow: 0 0 20px var(--color-primary); }
 
         .btn-up { grid-column: 2; grid-row: 1; } .btn-left { grid-column: 1; grid-row: 2; }
         .btn-right { grid-column: 3; grid-row: 2; } .btn-down { grid-column: 2; grid-row: 3; }
@@ -102,11 +109,10 @@
             grid-column: 2; grid-row: 2; border-radius: 50%; font-size: 18px; font-weight: 900;
             background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); color: #fff;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); transition: transform 0.1s;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); transition: transform 0.1s;
         }
         .play-pause-btn:active { transform: scale(0.9); }
 
-        /* Floating Animations */
         .floating-text {
             position: absolute; font-weight: 900; font-family: 'Nunito', sans-serif;
             pointer-events: none; animation: floatUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; z-index: 30;
@@ -117,8 +123,7 @@
         .shake { animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%,90%{transform:translate3d(-2px,0,0)} 20%,80%{transform:translate3d(3px,0,0)} 30%,50%,70%{transform:translate3d(-5px,0,0)} 40%,60%{transform:translate3d(5px,0,0)} }
 
-        /* Modal & Shop */
-        .shop-item { border: 2px solid var(--glass-border); border-radius: 1rem; padding: 0.6rem; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; background: rgba(0,0,0,0.15); }
+        .shop-item { border: 2px solid var(--glass-border); border-radius: 1.25rem; padding: 0.6rem; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; background: rgba(0,0,0,0.1); }
         html.light .shop-item { background: rgba(255,255,255,0.4); }
         .shop-item.locked { opacity: 0.7; filter: grayscale(100%); }
         .shop-item.active { border-color: var(--color-primary); background: rgba(59, 130, 246, 0.15); transform: scale(1.03); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
@@ -127,35 +132,33 @@
 
         .combo-glow { box-shadow: 0 0 30px var(--color-primary), inset 0 0 20px var(--color-secondary) !important; border-color: var(--color-primary) !important; }
         
-        .color-swatch { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .color-swatch { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .color-swatch:hover { transform: scale(1.1); }
-        .color-swatch.active { border-color: #fff; transform: scale(1.15); box-shadow: 0 0 15px currentColor; }
+        .color-swatch.active { border-color: #fff; transform: scale(1.15); box-shadow: 0 0 12px currentColor; }
     </style>
 </head>
-<body class="font-sans transition-colors duration-500 flex flex-col min-h-screen p-3 pb-6 justify-between lg:justify-center gap-3">
+<body class="font-sans transition-colors duration-500 flex flex-col min-h-screen p-4 pb-8 justify-between lg:justify-center gap-4">
 
-    <!-- Top Status Bar (More Compact) -->
-    <div class="glass-panel w-full max-w-[360px] mx-auto p-3 flex flex-col gap-2.5">
+    <!-- Premium Minimal Top Bar -->
+    <div class="glass-panel w-full max-w-[360px] mx-auto p-3.5 flex flex-col gap-3">
         <div class="flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <h1 class="text-2xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-m3Primary to-m3Secondary">Serpentine</h1>
-            </div>
-            <div class="flex gap-1.5">
-                <div class="flex items-center gap-1.5 bg-black/20 dark:bg-white/10 px-2.5 py-1 rounded-full border border-white/10 shadow-inner">
-                    <span class="coin-icon text-sm">🪙</span> <span id="coinCount" class="font-black font-mono text-sm">0</span>
+            <h1 class="text-2xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-m3Primary to-m3Secondary drop-shadow-sm">Serpentine</h1>
+            <div class="flex gap-2">
+                <div class="flex items-center gap-1.5 bg-black/10 dark:bg-white/5 px-3 py-1.5 rounded-full border border-white/5 shadow-inner">
+                    <span class="coin-icon text-sm">🪙</span> <span id="coinCount" class="font-black font-sans text-sm">0</span>
                 </div>
-                <!-- Fullscreen Button -->
-                <button id="fullscreenBtn" class="w-8 h-8 flex justify-center items-center rounded-full bg-black/20 dark:bg-white/10 active:scale-90 transition-transform border border-white/10 shadow-sm hover:bg-black/30 dark:hover:bg-white/20">
+                <!-- Dynamic Fullscreen Button -->
+                <button id="fullscreenBtn" class="w-9 h-9 flex justify-center items-center rounded-full bg-black/10 dark:bg-white/5 active:scale-90 transition-all border border-white/5 shadow-sm hover:bg-black/20 dark:hover:bg-white/10 text-gray-500 dark:text-gray-300">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
                 </button>
-                <button id="menuBtn" class="w-8 h-8 flex justify-center items-center rounded-full bg-black/20 dark:bg-white/10 active:scale-90 transition-transform border border-white/10 shadow-sm hover:bg-black/30 dark:hover:bg-white/20">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                <button id="menuBtn" class="w-9 h-9 flex justify-center items-center rounded-full bg-black/10 dark:bg-white/5 active:scale-90 transition-all border border-white/5 shadow-sm hover:bg-black/20 dark:hover:bg-white/10 text-gray-500 dark:text-gray-300">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
                 </button>
             </div>
         </div>
 
-        <div class="w-full bg-black/10 dark:bg-black/20 p-2 rounded-xl border border-white/5">
-            <div class="flex justify-between text-[10px] font-extrabold uppercase tracking-widest opacity-90 mb-1">
+        <div class="w-full bg-black/5 dark:bg-black/20 p-2.5 rounded-2xl border border-white/5">
+            <div class="flex justify-between text-[11px] font-extrabold uppercase tracking-widest opacity-80 mb-1.5">
                 <span id="levelText" class="text-m3Primary">Level 1</span>
                 <span>XP: <span id="xpText">0/1000</span></span>
             </div>
@@ -164,8 +167,9 @@
 
         <div class="flex justify-between items-end px-1">
             <div class="flex flex-col">
-                <span class="text-[10px] uppercase font-bold opacity-70 tracking-wider">Score</span>
-                <span id="score" class="text-2xl font-black font-mono leading-none bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400 dark:from-white dark:to-gray-300">0</span>
+                <span class="text-[10px] uppercase font-bold opacity-60 tracking-wider">Score</span>
+                <!-- Nunito Extra Bold applied here to Score -->
+                <span id="score" class="text-3xl font-black font-sans leading-none bg-clip-text text-transparent bg-gradient-to-b from-gray-800 to-gray-500 dark:from-white dark:to-gray-400">0</span>
             </div>
             <div class="flex flex-col items-end w-1/2">
                 <span class="text-[10px] uppercase font-bold text-m3Secondary mb-1 flex items-center gap-1">
@@ -176,29 +180,30 @@
         </div>
     </div>
 
-    <!-- Game Canvas -->
+    <!-- Game Canvas (High Res Scale) -->
     <div class="w-full max-w-[360px] mx-auto relative flex-1 flex items-center justify-center min-h-[320px]">
-        <div class="glass-panel canvas-container p-1.5 transition-all duration-300 shadow-2xl" id="canvasContainer">
-            <canvas id="gameCanvas" width="300" height="300" class="rounded-xl bg-black/5 dark:bg-black/30 w-full h-full object-contain"></canvas>
+        <div class="canvas-container bg-black/5 dark:bg-black/30" id="canvasContainer">
+            <!-- Increased Width & Height for better resolution -->
+            <canvas id="gameCanvas" width="600" height="600" class="w-full h-full object-contain"></canvas>
             
-            <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-300 z-20 rounded-[1.25rem]">
-                <h2 class="text-4xl font-black mb-2 text-white tracking-widest text-transparent bg-clip-text bg-gradient-to-br from-red-400 to-red-600 drop-shadow-lg">GAMEOVER</h2>
-                <div class="flex gap-6 my-3 bg-white/5 p-3 rounded-2xl border border-white/10 w-[85%] justify-center">
-                    <div class="text-center"><p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Score</p><p id="finalScore" class="text-2xl font-black text-white font-mono">0</p></div>
-                    <div class="w-px bg-white/20"></div>
-                    <div class="text-center"><p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Best</p><p id="highScoreText" class="text-2xl font-black text-m3Primary font-mono">0</p></div>
+            <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-300 z-20 rounded-[1.25rem]">
+                <h2 class="text-5xl font-black mb-3 text-white tracking-widest text-transparent bg-clip-text bg-gradient-to-br from-red-400 to-red-600 drop-shadow-lg">GAMEOVER</h2>
+                <div class="flex gap-8 my-4 bg-white/5 p-4 rounded-2xl border border-white/10 w-[85%] justify-center">
+                    <div class="text-center"><p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider mb-1">Score</p><p id="finalScore" class="text-3xl font-black text-white font-sans">0</p></div>
+                    <div class="w-px bg-white/10"></div>
+                    <div class="text-center"><p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider mb-1">Best</p><p id="highScoreText" class="text-3xl font-black text-m3Primary font-sans">0</p></div>
                 </div>
-                <div class="flex items-center gap-2 mb-5 bg-white/10 px-4 py-2 rounded-full border border-white/10 shadow-inner">
-                    <span class="coin-icon text-lg">🪙</span><span class="text-xs font-bold text-gray-200">Earned: <span id="earnedCoins" class="text-yellow-400 font-mono text-base ml-1">0</span></span>
+                <div class="flex items-center gap-2 mb-6 bg-white/10 px-5 py-2.5 rounded-full border border-white/10 shadow-inner">
+                    <span class="coin-icon text-lg">🪙</span><span class="text-xs font-bold text-gray-200">Earned: <span id="earnedCoins" class="text-yellow-400 font-sans font-black text-lg ml-1">0</span></span>
                 </div>
-                <button id="restartBtn" class="px-8 py-3 bg-gradient-to-r from-m3Primary to-m3Secondary text-white rounded-full font-black shadow-[0_4px_20px_rgba(59,130,246,0.5)] active:scale-95 transition-all text-base uppercase tracking-widest border border-white/20">
+                <button id="restartBtn" class="px-8 py-3 bg-gradient-to-r from-m3Primary to-m3Secondary text-white rounded-full font-black shadow-[0_6px_20px_rgba(59,130,246,0.4)] active:scale-95 transition-all text-base uppercase tracking-widest border border-white/20">
                     Try Again
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Circular D-Pad Controller -->
+    <!-- Minimal Circular D-Pad Controller -->
     <div class="d-pad-wrapper">
         <button class="d-btn btn-up" id="btnUp">▲</button>
         <button class="d-btn btn-left" id="btnLeft">◀</button>
@@ -209,39 +214,39 @@
 
     <!-- Settings & Shop Modal -->
     <div id="settingsModal" class="fixed inset-0 bg-black/60 hidden justify-center items-end sm:items-center z-50 backdrop-blur-md">
-        <div class="glass-panel w-full sm:w-[90%] max-w-sm rounded-t-[2.5rem] sm:rounded-3xl p-5 max-h-[85vh] flex flex-col animate-[slideUp_0.3s_ease-out] border-b-0 sm:border-b shadow-[0_-10px_40px_rgba(0,0,0,0.3)]">
+        <div class="glass-panel w-full sm:w-[90%] max-w-sm rounded-t-[2.5rem] sm:rounded-3xl p-6 max-h-[85vh] flex flex-col animate-[slideUp_0.3s_ease-out] border-b-0 sm:border-b shadow-[0_-10px_40px_rgba(0,0,0,0.3)]">
             
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex justify-between items-center mb-5">
                 <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-m3Primary to-m3Secondary">Options</h2>
                 <button id="closeModalBtn" class="w-9 h-9 rounded-full bg-black/10 dark:bg-white/10 flex justify-center items-center active:scale-90 font-bold text-lg border border-white/5 hover:bg-black/20 dark:hover:bg-white/20 transition-colors">✕</button>
             </div>
             
-            <div class="flex gap-2 mb-4 p-1.5 bg-black/10 dark:bg-black/30 rounded-2xl border border-white/5">
+            <div class="flex gap-2 mb-5 p-1.5 bg-black/5 dark:bg-black/30 rounded-2xl border border-white/5 shadow-inner">
                 <button id="tabShop" class="flex-1 py-2 font-bold text-sm rounded-xl bg-m3Primary text-white shadow-md transition-all">Skins Shop</button>
-                <button id="tabSettings" class="flex-1 py-2 font-bold text-sm rounded-xl text-gray-500 dark:text-gray-400 transition-all hover:bg-white/5">Settings</button>
+                <button id="tabSettings" class="flex-1 py-2 font-bold text-sm rounded-xl text-gray-500 dark:text-gray-400 transition-all hover:bg-black/5 dark:hover:bg-white/5">Settings</button>
             </div>
 
             <!-- Shop Tab -->
             <div id="shopContent" class="overflow-y-auto flex-1 pb-2 custom-scrollbar">
-                <div class="flex justify-between items-center mb-3 px-2">
-                    <h3 class="font-bold text-xs uppercase tracking-widest opacity-70">Unlock Patterns</h3>
-                    <div class="text-xs font-bold bg-white/10 dark:bg-black/20 px-3 py-1 rounded-full shadow-inner border border-white/5"><span class="coin-icon">🪙</span> <span id="shopCoins">0</span></div>
+                <div class="flex justify-between items-center mb-4 px-1">
+                    <h3 class="font-bold text-[11px] uppercase tracking-widest opacity-60">Unlock Patterns</h3>
+                    <div class="text-xs font-bold bg-white/10 dark:bg-black/20 px-3 py-1.5 rounded-full shadow-inner border border-white/5"><span class="coin-icon">🪙</span> <span id="shopCoins">0</span></div>
                 </div>
                 <div class="grid grid-cols-2 gap-3" id="designGrid"></div>
             </div>
 
             <!-- Settings Tab -->
             <div id="settingsContent" class="overflow-y-auto flex-1 pb-2 hidden flex-col gap-3">
-                <div class="flex justify-between items-center bg-black/5 dark:bg-black/20 p-3.5 rounded-2xl border border-white/5 shadow-sm">
-                    <span class="font-bold text-sm">Theme Mode</span>
-                    <button id="themeToggleBtn" class="px-5 py-2 bg-m3Primary text-white rounded-full font-bold shadow-md active:scale-95 text-xs uppercase tracking-wider transition-all">Toggle</button>
+                <div class="flex justify-between items-center bg-black/5 dark:bg-black/20 p-4 rounded-2xl border border-white/5 shadow-sm">
+                    <span class="font-bold text-sm opacity-90">Theme Mode</span>
+                    <button id="themeToggleBtn" class="px-5 py-2 bg-m3Primary text-white rounded-full font-bold shadow-md active:scale-95 text-[11px] uppercase tracking-wider transition-all">Toggle</button>
                 </div>
-                <div class="flex justify-between items-center bg-black/5 dark:bg-black/20 p-3.5 rounded-2xl border border-white/5 shadow-sm">
-                    <span class="font-bold text-sm">Haptics & Sound</span>
-                    <button id="soundToggleBtn" class="px-5 py-2 bg-m3Primary text-white rounded-full font-bold shadow-md active:scale-95 text-xs uppercase tracking-wider transition-all">ON</button>
+                <div class="flex justify-between items-center bg-black/5 dark:bg-black/20 p-4 rounded-2xl border border-white/5 shadow-sm">
+                    <span class="font-bold text-sm opacity-90">Haptics & Sound</span>
+                    <button id="soundToggleBtn" class="px-5 py-2 bg-m3Primary text-white rounded-full font-bold shadow-md active:scale-95 text-[11px] uppercase tracking-wider transition-all">ON</button>
                 </div>
-                <div class="bg-black/5 dark:bg-black/20 p-4 rounded-2xl border border-white/5 shadow-sm">
-                    <h3 class="font-bold mb-3 text-xs uppercase tracking-widest opacity-70 text-center">App Colors</h3>
+                <div class="bg-black/5 dark:bg-black/20 p-5 rounded-2xl border border-white/5 shadow-sm">
+                    <h3 class="font-bold mb-4 text-[11px] uppercase tracking-widest opacity-60 text-center">App Colors</h3>
                     <div class="flex flex-wrap justify-center gap-3" id="themeGrid"></div>
                 </div>
             </div>
@@ -249,10 +254,14 @@
     </div>
 
     <script>
-        // --- Core Variables & Storage ---
-        const canvas = document.getElementById("gameCanvas"); const ctx = canvas.getContext("2d");
+        // --- High Res Core Variables ---
+        const canvas = document.getElementById("gameCanvas"); 
+        const ctx = canvas.getContext("2d");
         const canvasContainer = document.getElementById("canvasContainer");
-        const gridSize = 15; const tileCount = 20; 
+        
+        // Scaled up for crisp rendering (600x600 canvas)
+        const gridSize = 30; 
+        const tileCount = 20; 
         
         let speed = 6; 
         let snake = [{ x: 10, y: 10 }];
@@ -268,7 +277,6 @@
         let soundEnabled = true; let isDarkMode = true;
         let currentThemeId = 0; let currentDesignId = 0; 
 
-        // Persistent Data
         let highScore = parseInt(localStorage.getItem('premiumSnakeBest')) || 0;
         let totalCoins = parseInt(localStorage.getItem('premiumCoins')) || 0;
         let playerXP = parseInt(localStorage.getItem('premiumXP')) || 0;
@@ -279,24 +287,176 @@
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // --- Data Assets ---
+        // --- Data Assets (10 Themes) ---
         const themes = [
             { id: 0, color: '#3B82F6', l: {p:'#2563EB', s:'#60A5FA', f:'#DC2626'}, d: {p:'#3B82F6', s:'#93C5FD', f:'#F87171'} },
             { id: 1, color: '#10B981', l: {p:'#16A34A', s:'#4ADE80', f:'#DC2626'}, d: {p:'#22C55E', s:'#86EFAC', f:'#F87171'} },
             { id: 2, color: '#8B5CF6', l: {p:'#9333EA', s:'#C084FC', f:'#0D9488'}, d: {p:'#A855F7', s:'#D8B4FE', f:'#14B8A6'} },
             { id: 3, color: '#F43F5E', l: {p:'#E11D48', s:'#FB7185', f:'#2563EB'}, d: {p:'#F43F5E', s:'#FDA4AF', f:'#3B82F6'} },
-            { id: 4, color: '#F59E0B', l: {p:'#D97706', s:'#FBBF24', f:'#4F46E5'}, d: {p:'#F59E0B', s:'#FDE68A', f:'#6366F1'} }
+            { id: 4, color: '#F59E0B', l: {p:'#D97706', s:'#FBBF24', f:'#4F46E5'}, d: {p:'#F59E0B', s:'#FDE68A', f:'#6366F1'} },
+            { id: 5, color: '#EAB308', l: {p:'#CA8A04', s:'#FACC15', f:'#EC4899'}, d: {p:'#EAB308', s:'#FEF08A', f:'#F472B6'} }, // Cyberpunk
+            { id: 6, color: '#D946EF', l: {p:'#C026D3', s:'#E879F9', f:'#06B6D4'}, d: {p:'#D946EF', s:'#F5D0FE', f:'#22D3EE'} }, // Synthwave
+            { id: 7, color: '#84CC16', l: {p:'#65A30D', s:'#A3E635', f:'#F97316'}, d: {p:'#84CC16', s:'#D9F99D', f:'#FB923C'} }, // Forest
+            { id: 8, color: '#06B6D4', l: {p:'#0891B2', s:'#22D3EE', f:'#F43F5E'}, d: {p:'#06B6D4', s:'#A5F3FC', f:'#FB7185'} }, // Ocean
+            { id: 9, color: '#F97316', l: {p:'#EA580C', s:'#FB923C', f:'#8B5CF6'}, d: {p:'#F97316', s:'#FED7AA', f:'#A855F7'} }  // Sunset
         ];
 
+        // 8 Skins with rounded properties
         const skins = [
             { id: 0, name: "Basic", price: 0, desc: "Classic smooth style" },
-            { id: 1, name: "Pixel", price: 0, desc: "Retro square blocks" },
-            { id: 2, name: "Ninja", price: 15, desc: "Sharp diamond edges" },
+            { id: 1, name: "Pixel", price: 0, desc: "Slightly rounded blocks" },
+            { id: 2, name: "Ninja", price: 15, desc: "Rounded diamond edges" },
             { id: 3, name: "Mecha", price: 30, desc: "Segmented armor plates" },
-            { id: 4, name: "Neon", price: 50, desc: "Glowing energy core" }
+            { id: 4, name: "Neon", price: 50, desc: "Glowing energy core" },
+            { id: 5, name: "Blob", price: 65, desc: "Organic water drops" },
+            { id: 6, name: "Stripes", price: 80, desc: "Banded tech snake" },
+            { id: 7, name: "Ghost", price: 100, desc: "Hollow glowing spirits" }
         ];
 
-        // --- Haptics & Sound ---
+        // --- UI & Rendering Logic ---
+        function updateUI() {
+            document.getElementById("score").innerText = score;
+            const bar = document.getElementById("comboBar"); const comboTxt = document.getElementById("comboText");
+            bar.style.width = `${(comboTimer / MAX_COMBO) * 100}%`;
+            comboTxt.innerText = `x${comboMultiplier}`;
+            
+            if(comboMultiplier >= 5) {
+                document.getElementById('comboGlowIcon').classList.remove('hidden');
+                canvasContainer.classList.add('combo-glow');
+                comboTxt.classList.add('animate-pulse', 'text-yellow-400');
+            } else {
+                document.getElementById('comboGlowIcon').classList.add('hidden');
+                canvasContainer.classList.remove('combo-glow');
+                comboTxt.classList.remove('animate-pulse', 'text-yellow-400');
+            }
+
+            const lvlInfo = getLevelInfo(playerXP);
+            document.getElementById('levelText').innerText = `Lv. ${lvlInfo.level}`;
+            document.getElementById('xpText').innerText = `${lvlInfo.currentXP}/${lvlInfo.maxXP}`;
+            document.getElementById('xpBar').style.width = `${lvlInfo.progress}%`;
+        }
+
+        function loop() {
+            requestAnimationFrame(loop); frames++;
+            const tickRate = Math.max(2, Math.floor(25 - speed)); 
+            if (frames % tickRate === 0 && !isPaused && !isGameOver) moveSnake();
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBeautifulGrid(); 
+            if (!isGameOver) drawFoods(); 
+            drawSnake();
+            
+            for(let i=particles.length-1; i>=0; i--) {
+                let p = particles[i]; p.x += p.vx; p.y += p.vy; p.life -= 0.04;
+                if(p.life <= 0) { particles.splice(i, 1); continue; }
+                ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+            } ctx.globalAlpha = 1.0;
+        }
+
+        // Themed and rounded beautiful grid
+        function drawBeautifulGrid() {
+            const colors = themes[currentThemeId][isDarkMode?'d':'l'];
+            ctx.fillStyle = colors.p;
+            ctx.globalAlpha = 0.04; // Very subtle themed background cells
+            
+            for (let x = 0; x < tileCount; x++) {
+                for (let y = 0; y < tileCount; y++) {
+                    ctx.beginPath();
+                    ctx.roundRect(x * gridSize + 2, y * gridSize + 2, gridSize - 4, gridSize - 4, 6);
+                    ctx.fill();
+                }
+            }
+            ctx.globalAlpha = 1.0;
+        }
+
+        function drawSnake() {
+            const colors = themes[currentThemeId][isDarkMode?'d':'l'];
+            snake.forEach((part, index) => {
+                ctx.fillStyle = index === 0 ? colors.p : colors.s;
+                let px = part.x * gridSize; let py = part.y * gridSize; let s = gridSize;
+                
+                ctx.beginPath();
+                if (currentDesignId === 0) { // Basic
+                    ctx.roundRect(px+2, py+2, s-4, s-4, index === 0 ? 12 : 8);
+                    ctx.fill();
+                } else if (currentDesignId === 1) { // Pixel (Slightly rounded)
+                    ctx.roundRect(px+1, py+1, s-2, s-2, 3);
+                    ctx.fill();
+                    ctx.strokeStyle = isDarkMode ? '#0F172A' : '#FFFFFF'; ctx.lineWidth = 2; ctx.stroke();
+                } else if (currentDesignId === 2) { // Ninja (Rounded Diamond)
+                    ctx.save();
+                    ctx.translate(px + s/2, py + s/2);
+                    ctx.rotate(Math.PI / 4);
+                    ctx.roundRect(-s/2 + 4, -s/2 + 4, s - 8, s - 8, 6); // Rounded corners!
+                    ctx.fill();
+                    ctx.restore();
+                } else if (currentDesignId === 3) { // Mecha
+                    ctx.roundRect(px+2, py+2, s-4, s-4, 4); 
+                    ctx.fill();
+                    ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
+                    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                    ctx.fillRect(px+6, py+6, s-12, s-12); // Inner armor
+                } else if (currentDesignId === 4) { // Neon
+                    ctx.shadowBlur = 20; ctx.shadowColor = ctx.fillStyle; 
+                    ctx.arc(px + s/2, py + s/2, s/2 - 4, 0, Math.PI*2);
+                    ctx.fill(); ctx.shadowBlur = 0;
+                } else if (currentDesignId === 5) { // Blob
+                    ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2); // Overlapping
+                    ctx.fill();
+                } else if (currentDesignId === 6) { // Stripes
+                    ctx.roundRect(px+2, py+2, s-4, s-4, 8); ctx.fill();
+                    ctx.fillStyle = index % 2 === 0 ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)';
+                    ctx.roundRect(px+6, py+6, s-12, s-12, 4); ctx.fill();
+                } else if (currentDesignId === 7) { // Ghost
+                    ctx.roundRect(px+3, py+3, s-6, s-6, 8);
+                    ctx.fillStyle = 'rgba(255,255,255,0.1)'; ctx.fill();
+                    ctx.strokeStyle = colors.s; ctx.lineWidth = 3; ctx.stroke();
+                }
+
+                // High-res Eyes setup
+                if (index === 0 && currentDesignId !== 1 && currentDesignId !== 2 && currentDesignId !== 7) {
+                    ctx.fillStyle = isDarkMode ? '#0F172A' : '#FFF';
+                    let e1x = 8, e1y = 10, e2x = 22, e2y = 10; 
+                    if (currentDx === 1) { e1x = 20; e1y = 8; e2x = 20; e2y = 22; } 
+                    else if (currentDx === -1) { e1x = 10; e1y = 8; e2x = 10; e2y = 22; } 
+                    else if (currentDy === 1) { e1x = 8; e1y = 20; e2x = 22; e2y = 20; } 
+                    ctx.beginPath(); ctx.arc(px + e1x, py + e1y, 3, 0, Math.PI*2); ctx.arc(px + e2x, py + e2y, 3, 0, Math.PI*2); ctx.fill();
+                }
+            });
+        }
+
+        function drawFoods() {
+            const fColor = themes[currentThemeId][isDarkMode?'d':'l'].f; ctx.fillStyle = fColor;
+            let px = food.x * gridSize; let py = food.y * gridSize; let s = gridSize;
+            ctx.beginPath();
+            if (currentDesignId === 1 || currentDesignId === 2) { 
+                ctx.roundRect(px+4, py+4, s-8, s-8, 3); 
+            } else { 
+                let pulse = Math.sin(frames * 0.1) * 3; 
+                ctx.arc(px + s/2, py + s/2, (s/2 - 6) + pulse, 0, Math.PI*2); 
+            }
+            ctx.fill();
+
+            if (specialFood) {
+                ctx.fillStyle = '#F5BE48'; ctx.shadowBlur = 20; ctx.shadowColor = '#F5BE48';
+                let gx = specialFood.x * gridSize; let gy = specialFood.y * gridSize;
+                ctx.beginPath(); ctx.arc(gx + s/2, gy + s/2, s/2 - 4, 0, Math.PI*2);
+                ctx.fill(); ctx.shadowBlur = 0;
+                ctx.fillStyle = '#92400E'; ctx.font = "bold 16px 'Nunito'"; ctx.textAlign = "center"; 
+                ctx.fillText("C", gx + s/2, gy + 21);
+            }
+        }
+
+        // --- Engine ---
+        function getLevelInfo(xp) {
+            const level = Math.floor(Math.sqrt(xp / 100)) + 1;
+            const currentLevelXP = Math.pow(level - 1, 2) * 100;
+            const nextLevelXP = Math.pow(level, 2) * 100;
+            const progress = ((xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100;
+            return { level, currentXP: xp, maxXP: nextLevelXP, progress };
+        }
+
         function vibe(type) {
             if (!navigator.vibrate || !soundEnabled) return;
             try {
@@ -312,7 +472,6 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
-            
             if (type === 'eat') {
                 osc.type = 'sine'; osc.frequency.setValueAtTime(600 + (comboMultiplier*150), audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1200 + (comboMultiplier*200), audioCtx.currentTime + 0.1);
@@ -335,145 +494,36 @@
             const el = document.createElement('div'); el.className = 'floating-text'; el.innerText = text; el.style.color = color;
             el.style.left = `calc(${(x / tileCount) * 100}% - 10px)`; el.style.top = `calc(${(y / tileCount) * 100}% - 10px)`;
             canvasContainer.appendChild(el); setTimeout(() => el.remove(), 800);
-            
-            for(let i=0; i<8; i++) {
+            for(let i=0; i<10; i++) {
                 particles.push({
                     x: x * gridSize + gridSize/2, y: y * gridSize + gridSize/2,
-                    vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8,
-                    life: 1, color: color, size: Math.random() * 3 + 1
+                    vx: (Math.random() - 0.5) * 12, vy: (Math.random() - 0.5) * 12,
+                    life: 1, color: color, size: Math.random() * 5 + 2
                 });
             }
         }
 
-        // --- Progression System ---
-        function getLevelInfo(xp) {
-            const level = Math.floor(Math.sqrt(xp / 100)) + 1;
-            const currentLevelXP = Math.pow(level - 1, 2) * 100;
-            const nextLevelXP = Math.pow(level, 2) * 100;
-            const progress = ((xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100;
-            return { level, currentXP: xp, maxXP: nextLevelXP, progress };
-        }
-
-        function updateUI() {
-            document.getElementById("score").innerText = score;
-            
-            const bar = document.getElementById("comboBar"); const comboTxt = document.getElementById("comboText");
-            bar.style.width = `${(comboTimer / MAX_COMBO) * 100}%`;
-            comboTxt.innerText = `x${comboMultiplier}`;
-            
-            if(comboMultiplier >= 5) {
-                document.getElementById('comboGlowIcon').classList.remove('hidden');
-                canvasContainer.classList.add('combo-glow');
-                comboTxt.classList.add('animate-pulse', 'text-yellow-400');
-            } else {
-                document.getElementById('comboGlowIcon').classList.add('hidden');
-                canvasContainer.classList.remove('combo-glow');
-                comboTxt.classList.remove('animate-pulse', 'text-yellow-400');
-            }
-
-            const lvlInfo = getLevelInfo(playerXP);
-            document.getElementById('levelText').innerText = `Lv. ${lvlInfo.level}`;
-            document.getElementById('xpText').innerText = `${lvlInfo.currentXP}/${lvlInfo.maxXP}`;
-            document.getElementById('xpBar').style.width = `${lvlInfo.progress}%`;
-        }
-
-        // --- Render Engine ---
-        function loop() {
-            requestAnimationFrame(loop); frames++;
-            const tickRate = Math.max(2, Math.floor(25 - speed)); 
-            if (frames % tickRate === 0 && !isPaused && !isGameOver) moveSnake();
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawGrid(); if (!isGameOver) drawFoods(); drawSnake();
-            
-            for(let i=particles.length-1; i>=0; i--) {
-                let p = particles[i]; p.x += p.vx; p.y += p.vy; p.life -= 0.05;
-                if(p.life <= 0) { particles.splice(i, 1); continue; }
-                ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-            } ctx.globalAlpha = 1.0;
-        }
-
-        function drawGrid() {
-            ctx.strokeStyle = isDarkMode ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'; ctx.lineWidth = 1; ctx.beginPath();
-            for (let i = 0; i <= tileCount; i++) { let pos = (i * gridSize) + 0.5; ctx.moveTo(pos, 0); ctx.lineTo(pos, canvas.height); ctx.moveTo(0, pos); ctx.lineTo(canvas.width, pos); }
-            ctx.stroke();
-        }
-
-        function drawSnake() {
-            const colors = themes[currentThemeId][isDarkMode?'d':'l'];
-            snake.forEach((part, index) => {
-                ctx.fillStyle = index === 0 ? colors.p : colors.s;
-                let px = part.x * gridSize; let py = part.y * gridSize; let s = gridSize;
-                
-                ctx.beginPath();
-                if (currentDesignId === 0) {
-                    ctx.roundRect(px+1, py+1, s-2, s-2, index === 0 ? 6 : 4);
-                } else if (currentDesignId === 1) {
-                    ctx.rect(px, py, s, s); ctx.strokeStyle = isDarkMode ? '#1E293B' : '#FFFFFF'; ctx.lineWidth = 1; ctx.stroke();
-                } else if (currentDesignId === 2) {
-                    ctx.moveTo(px + s/2, py); ctx.lineTo(px + s, py + s/2); ctx.lineTo(px + s/2, py + s); ctx.lineTo(px, py + s/2);
-                } else if (currentDesignId === 3) {
-                    ctx.roundRect(px+1, py+1, s-2, s-2, 2); ctx.strokeStyle = '#000'; ctx.lineWidth=1.5; ctx.stroke();
-                } else if (currentDesignId === 4) {
-                    ctx.shadowBlur = 12; ctx.shadowColor = ctx.fillStyle; ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2);
-                }
-                ctx.fill(); ctx.shadowBlur = 0;
-
-                if (index === 0 && currentDesignId !== 1 && currentDesignId !== 2) {
-                    ctx.fillStyle = isDarkMode ? '#0F172A' : '#FFF';
-                    let e1x = 4, e1y = 5, e2x = 11, e2y = 5; 
-                    if (currentDx === 1) { e1x = 10; e1y = 4; e2x = 10; e2y = 11; } else if (currentDx === -1) { e1x = 5; e1y = 4; e2x = 5; e2y = 11; } else if (currentDy === 1) { e1x = 4; e1y = 10; e2x = 11; e2y = 10; } 
-                    ctx.beginPath(); ctx.arc(px + e1x, py + e1y, 2, 0, Math.PI*2); ctx.arc(px + e2x, py + e2y, 2, 0, Math.PI*2); ctx.fill();
-                }
-            });
-        }
-
-        function drawFoods() {
-            const fColor = themes[currentThemeId][isDarkMode?'d':'l'].f; ctx.fillStyle = fColor;
-            let px = food.x * gridSize; let py = food.y * gridSize; let s = gridSize;
-            ctx.beginPath();
-            if (currentDesignId === 1 || currentDesignId === 2) { ctx.rect(px+2, py+2, s-4, s-4); } 
-            else { let pulse = Math.sin(frames * 0.1) * 1.5; ctx.arc(px + s/2, py + s/2, (s/2 - 2) + pulse, 0, Math.PI*2); }
-            ctx.fill();
-
-            if (specialFood) {
-                ctx.fillStyle = '#F5BE48'; ctx.shadowBlur = 15; ctx.shadowColor = '#F5BE48';
-                let gx = specialFood.x * gridSize; let gy = specialFood.y * gridSize;
-                ctx.beginPath(); ctx.arc(gx + s/2, gy + s/2, s/2 - 2, 0, Math.PI*2);
-                ctx.fill(); ctx.shadowBlur = 0;
-                ctx.fillStyle = '#92400E'; ctx.font = "bold 10px 'Nunito'"; ctx.textAlign = "center"; ctx.fillText("C", gx + s/2, gy + 11);
-            }
-        }
-
-        // --- Logic ---
         function moveSnake() {
             if (moveQueue.length > 0) {
                 let nextMove = moveQueue.shift(); currentDx = nextMove.dx; currentDy = nextMove.dy; dx = currentDx; dy = currentDy;
             }
-
             const head = { x: snake[0].x + dx, y: snake[0].y + dy };
             if (head.x < 0) head.x = tileCount - 1; if (head.x >= tileCount) head.x = 0;
             if (head.y < 0) head.y = tileCount - 1; if (head.y >= tileCount) head.y = 0;
-            
             for (let i = 0; i < snake.length; i++) { if (head.x === snake[i].x && head.y === snake[i].y) return triggerGameOver(); }
             
             snake.unshift(head); let ate = false;
-            
             if (head.x === food.x && head.y === food.y) {
                 let pts = 10 * comboMultiplier; score += pts; playerXP += pts; 
                 playSound('eat'); vibe('eat'); showJuice(`+${pts}`, food.x, food.y, themes[currentThemeId][isDarkMode?'d':'l'].p);
-                
                 comboTimer = MAX_COMBO; comboMultiplier = Math.min(comboMultiplier + 1, 5); 
                 placeFood(); ate = true; speed = Math.min(speed + 0.15, 20); 
-            } 
-            else if (specialFood && head.x === specialFood.x && head.y === specialFood.y) {
+            } else if (specialFood && head.x === specialFood.x && head.y === specialFood.y) {
                 playSound('coin'); vibe('special'); showJuice(`+5🪙`, specialFood.x, specialFood.y, "#F5BE48");
                 sessionCoins += 5; totalCoins += 5; document.getElementById('coinCount').innerText = totalCoins;
                 localStorage.setItem('premiumCoins', totalCoins);
                 specialFood = null; ate = true;
             }
-            
             if (!ate) { snake.pop(); if (comboTimer > 0) comboTimer--; else comboMultiplier = 1; }
             if (specialFood) { specialFood.timer--; if (specialFood.timer <= 0) specialFood = null; }
             updateUI();
@@ -482,10 +532,8 @@
         function triggerGameOver() {
             isGameOver = true; playSound('die'); vibe('die');
             canvasContainer.classList.add('shake'); setTimeout(() => canvasContainer.classList.remove('shake'), 300);
-            
             if (score > highScore) { highScore = score; localStorage.setItem('premiumSnakeBest', highScore); document.getElementById('highScoreText').innerText = highScore; }
             localStorage.setItem('premiumXP', playerXP);
-            
             document.getElementById("finalScore").innerText = score;
             document.getElementById("earnedCoins").innerText = sessionCoins;
             document.getElementById("gameOverScreen").classList.remove('opacity-0', 'pointer-events-none');
@@ -495,7 +543,6 @@
         function placeFood() {
             food = { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
             if (snake.some(part => part.x === food.x && part.y === food.y)) return placeFood();
-
             if (!specialFood && Math.random() < 0.15 && score > 20) {
                 let gx = Math.floor(Math.random() * tileCount); let gy = Math.floor(Math.random() * tileCount);
                 if (!snake.some(part => part.x === gx && part.y === gy) && (gx !== food.x || gy !== food.y)) { specialFood = { x: gx, y: gy, timer: 50 }; }
@@ -509,7 +556,6 @@
             placeFood(); isPaused = true; document.getElementById("btnPlayPause").innerText = "▶"; 
         }
 
-        // --- Controls ---
         function togglePlayPause() {
             vibe('move');
             if (isGameOver) return resetGame();
@@ -531,11 +577,8 @@
 
         let tStartX = 0, tStartY = 0;
         canvasContainer.addEventListener('touchstart', e => { 
-            // Fix: If Game Over screen is open, allow clicks to pass through to the button!
             if (isGameOver) return; 
-            
-            tStartX = e.touches[0].clientX; tStartY = e.touches[0].clientY; 
-            e.preventDefault(); 
+            tStartX = e.touches[0].clientX; tStartY = e.touches[0].clientY; e.preventDefault(); 
         }, {passive: false});
         
         canvasContainer.addEventListener('touchend', e => {
@@ -546,24 +589,32 @@
             e.preventDefault();
         }, {passive: false});
 
-        // Fullscreen Logic
-        document.getElementById('fullscreenBtn').onclick = () => {
+        // Fullscreen dynamic styling
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        fullscreenBtn.onclick = () => {
             vibe('move');
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-                });
-            } else {
-                document.exitFullscreen();
-            }
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
+            } else { document.exitFullscreen(); }
         };
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                fullscreenBtn.classList.add('bg-m3Primary', 'text-white');
+                fullscreenBtn.classList.remove('bg-black/10', 'dark:bg-white/5', 'text-gray-500', 'dark:text-gray-300');
+            } else {
+                fullscreenBtn.classList.remove('bg-m3Primary', 'text-white');
+                fullscreenBtn.classList.add('bg-black/10', 'dark:bg-white/5', 'text-gray-500', 'dark:text-gray-300');
+            }
+        });
 
-        // --- Shop & Settings UI ---
+        // --- Theming & UI Shop ---
         function applyTheme() {
             const root = document.documentElement; const colors = themes[currentThemeId][isDarkMode?'d':'l'];
             root.style.setProperty('--color-primary', colors.p); root.style.setProperty('--color-secondary', colors.s);
             document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('active'));
             document.getElementById(`swatch-${currentThemeId}`).classList.add('active');
+            // Dynamically update border
+            canvasContainer.style.borderColor = colors.p;
             renderShop();
         }
 
@@ -577,7 +628,7 @@
                 let btn = document.createElement('div'); 
                 btn.className = `shop-item ${isUnlocked ? '' : 'locked'} ${isActive ? 'active' : ''}`;
                 
-                let content = `<h4 class="font-black text-sm">${s.name}</h4><p class="text-[10px] opacity-70 mb-2 leading-tight">${s.desc}</p>`;
+                let content = `<h4 class="font-black text-[13px] mb-0.5">${s.name}</h4><p class="text-[9px] opacity-70 mb-2 leading-tight">${s.desc}</p>`;
                 if (isActive) content += `<div class="text-[10px] font-bold text-m3Primary tracking-wider">EQUIPPED</div>`;
                 else if (isUnlocked) content += `<div class="text-[10px] font-bold tracking-wider">SELECT</div>`;
                 else content += `<div class="text-xs font-bold bg-black/20 dark:bg-black/50 rounded-full inline-flex items-center gap-1 px-3 py-1 border border-white/5 shadow-inner"><span class="coin-icon">🪙</span> ${s.price}</div>`;
@@ -615,12 +666,12 @@
         
         tabShop.onclick = () => {
             tabShop.className = "flex-1 py-2 font-bold text-sm rounded-xl bg-m3Primary text-white shadow-md transition-all";
-            tabSettings.className = "flex-1 py-2 font-bold text-sm rounded-xl text-gray-500 dark:text-gray-400 transition-all hover:bg-white/5";
+            tabSettings.className = "flex-1 py-2 font-bold text-sm rounded-xl text-gray-500 dark:text-gray-400 transition-all hover:bg-black/5 dark:hover:bg-white/5";
             contentShop.classList.remove('hidden'); contentSettings.classList.add('hidden'); contentSettings.classList.remove('flex');
         };
         tabSettings.onclick = () => {
             tabSettings.className = "flex-1 py-2 font-bold text-sm rounded-xl bg-m3Primary text-white shadow-md transition-all";
-            tabShop.className = "flex-1 py-2 font-bold text-sm rounded-xl text-gray-500 dark:text-gray-400 transition-all hover:bg-white/5";
+            tabShop.className = "flex-1 py-2 font-bold text-sm rounded-xl text-gray-500 dark:text-gray-400 transition-all hover:bg-black/5 dark:hover:bg-white/5";
             contentSettings.classList.remove('hidden'); contentSettings.classList.add('flex'); contentShop.classList.add('hidden');
         };
 
@@ -634,7 +685,7 @@
         soundToggleBtn.onclick = () => {
             vibe('move'); soundEnabled = !soundEnabled;
             soundToggleBtn.innerText = soundEnabled ? "ON" : "OFF";
-            soundToggleBtn.style.background = soundEnabled ? "var(--color-primary)" : "transparent";
+            soundToggleBtn.style.background = soundEnabled ? "var(--color-primary)" : "rgba(255,255,255,0.05)";
             soundToggleBtn.style.color = soundEnabled ? "#fff" : "var(--text-muted)";
             soundToggleBtn.style.border = soundEnabled ? "none" : "1px solid var(--text-muted)";
         };
