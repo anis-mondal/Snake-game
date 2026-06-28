@@ -1,20 +1,39 @@
+# 🐍 Classic Snake Game
+
+Welcome to the **Classic Snake Game**! This is a fun, interactive, and fully web-based version of the retro snake game we all know and love. 
+
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+  <a href="https://anis-mondal.github.io/Snake-game/">
+    <img src="https://img.shields.io/badge/🎮%20PLAY%20GAME%20NOW-Click%20Here-success?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Play Now Button">
+  </a>
 </div>
 
-# Run and deploy your AI Studio app
+---
 
-This contains everything you need to run your app locally.
+## 🌟 Features
 
-View your app in AI Studio: https://ai.studio/apps/b6484db2-6cc6-4342-9e19-efe227a78c1a
+*   **🕹️ Classic Gameplay:** Enjoy the nostalgic snake game experience directly in your web browser. No installation required!
+*   **🎨 Customizable Themes:** Change the look and feel of the game with multiple theme options.
+*   **📏 Adjustable Snake Size:** Customize the size of the snake to make the game easier or more challenging according to your preference.
+*   **⚡ Responsive Design:** Play smoothly on your desktop or laptop browsers.
 
-## Run Locally
+## 🚀 How to Play
 
-**Prerequisites:**  Node.js
+1.  Click the **[Play Game Now](https://anis-mondal.github.io/Snake-game/)** button above.
+2.  Use your keyboard's **Arrow Keys** (Up, Down, Left, Right) to control the movement of the snake.
+3.  Eat the food to grow longer and increase your score.
+4.  Avoid hitting the walls or your own tail, or it's Game Over!
 
+## 🛠️ Technologies Used
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+*   **HTML5:** For the structure of the web game.
+*   **CSS3:** For styling, layout, and beautiful themes.
+*   **JavaScript:** For the game logic, snake movement, and interactive features.
+
+## 💻 Run Locally
+
+If you want to run this game on your local machine or contribute to the code:
+
+1. Clone this repository:
+   ```bash
+   git clone [https://github.com/anis-mondal/Snake-game.git](https://github.com/anis-mondal/Snake-game.git)
