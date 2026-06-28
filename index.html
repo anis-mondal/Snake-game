@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Ultimate Serpentine | Premium</title>
     
-    <!-- Using Nunito as the primary font -->
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -15,9 +14,7 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['Nunito', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
-                    colors: {
-                        m3Primary: 'var(--color-primary)', m3Secondary: 'var(--color-secondary)'
-                    },
+                    colors: { m3Primary: 'var(--color-primary)', m3Secondary: 'var(--color-secondary)' },
                     animation: { 'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite' }
                 }
             }
@@ -27,98 +24,97 @@
     <style>
         :root {
             --color-primary: #3B82F6; --color-secondary: #8B5CF6;
-            --bg-gradient: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+            --bg-base: #0F172A; 
+            /* Dynamic background tinted with primary color */
+            --bg-gradient: radial-gradient(circle at 50% -20%, color-mix(in srgb, var(--color-primary) 15%, var(--bg-base)), var(--bg-base) 80%);
             --glass-bg: rgba(20, 30, 48, 0.65); --glass-border: rgba(255, 255, 255, 0.08);
             --text-main: #F8FAFC; --text-muted: #94A3B8;
         }
         
         html.light {
             --color-primary: #2563EB; --color-secondary: #7C3AED;
-            --bg-gradient: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            --bg-base: #F8FAFC;
+            --bg-gradient: radial-gradient(circle at 50% -20%, color-mix(in srgb, var(--color-primary) 15%, var(--bg-base)), var(--bg-base) 80%);
             --glass-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(255, 255, 255, 0.6);
             --text-main: #0F172A; --text-muted: #475569;
+        }
+
+        /* AMOLED Black Mode Variables */
+        html.amoled {
+            --bg-base: #000000;
+            --bg-gradient: #000000 !important;
+            --glass-bg: rgba(10, 10, 10, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.05);
         }
 
         html, body {
             overflow: hidden; height: 100%; overscroll-behavior: none;
             touch-action: none; -webkit-tap-highlight-color: transparent;
             background: var(--bg-gradient); color: var(--text-main);
+            transition: background 0.5s ease;
         }
 
-        /* Minimal & Premium Glassmorphism */
+        /* Premium Glassmorphism */
         .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-            border-radius: 1.75rem;
+            background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12); border-radius: 1.75rem;
         }
 
-        /* Updated Canvas Container with Dynamic Border */
+        /* Canvas Container with Theme Border */
         .canvas-container {
-            width: 100%; max-width: 360px;
-            aspect-ratio: 1 / 1;
+            width: 100%; max-width: 360px; aspect-ratio: 1 / 1;
             margin: 0 auto; position: relative; overflow: hidden;
-            border-radius: 1.25rem;
-            border: 2px solid var(--color-primary);
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.2), inset 0 0 20px rgba(0,0,0,0.1);
-            transition: border-color 0.5s ease;
+            border-radius: 1.25rem; border: 2px solid var(--color-primary);
+            box-shadow: 0 0 30px color-mix(in srgb, var(--color-primary) 30%, transparent), inset 0 0 20px rgba(0,0,0,0.2);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        
-        /* High-Res Canvas (CSS scales it down perfectly) */
         canvas { width: 100%; height: 100%; display: block; }
 
-        .progress-bg { background: rgba(0,0,0,0.15); border-radius: 999px; overflow: hidden; height: 6px; width: 100%; }
-        html.light .progress-bg { background: rgba(0,0,0,0.08); }
+        .progress-bg { background: rgba(0,0,0,0.2); border-radius: 999px; overflow: hidden; height: 6px; width: 100%; }
+        html.light .progress-bg { background: rgba(0,0,0,0.1); }
         .progress-fill { height: 100%; background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)); transition: width 0.3s ease; border-radius: 999px; }
 
-        /* Minimal Circular Controller */
+        /* Custom Capsule D-Pad (Matches your drawing) */
         .d-pad-wrapper {
             display: grid; 
-            grid-template-columns: repeat(3, 46px); 
-            grid-template-rows: repeat(3, 46px); 
-            gap: 8px;
-            justify-content: center; 
-            align-content: center;
-            margin: 0 auto; 
-            padding: 16px;
-            border-radius: 50%;
-            width: max-content;
-            aspect-ratio: 1 / 1;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            grid-template-columns: 50px 68px 50px; 
+            grid-template-rows: 50px 68px 50px; 
+            gap: 10px; justify-content: center; align-content: center;
+            margin: 0 auto; padding: 20px; border-radius: 50%;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); width: max-content;
         }
         
-        /* Buttons are now perfectly circular */
         .d-btn {
             background: rgba(255,255,255,0.03); color: var(--color-primary); 
-            border: 1px solid var(--glass-border);
-            border-radius: 50%; /* Changed to circular */
-            font-size: 18px; display: flex; justify-content: center; align-items: center;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 10px rgba(0,0,0,0.05); user-select: none;
+            border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+            font-size: 20px; display: flex; justify-content: center; align-items: center;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 10px rgba(0,0,0,0.05); user-select: none;
         }
         html.light .d-btn { background: rgba(0,0,0,0.02); }
-        .d-btn:active { transform: scale(0.85); background: var(--color-primary); color: #fff; box-shadow: 0 0 20px var(--color-primary); }
+        .d-btn:active { transform: scale(0.9); background: var(--color-primary); color: #fff; box-shadow: 0 0 25px var(--color-primary); }
 
-        .btn-up { grid-column: 2; grid-row: 1; } .btn-left { grid-column: 1; grid-row: 2; }
-        .btn-right { grid-column: 3; grid-row: 2; } .btn-down { grid-column: 2; grid-row: 3; }
+        /* Capsule Shapes */
+        .btn-up { grid-column: 2; grid-row: 1; border-radius: 30px; width: 100%; height: 100%; }
+        .btn-down { grid-column: 2; grid-row: 3; border-radius: 30px; width: 100%; height: 100%; }
+        .btn-left { grid-column: 1; grid-row: 2; border-radius: 30px; width: 100%; height: 100%; }
+        .btn-right { grid-column: 3; grid-row: 2; border-radius: 30px; width: 100%; height: 100%; }
         
         .play-pause-btn {
-            grid-column: 2; grid-row: 2; border-radius: 50%; font-size: 18px; font-weight: 900;
+            grid-column: 2; grid-row: 2; border-radius: 50%; width: 100%; height: 100%; font-size: 22px; font-weight: 900;
             background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); color: #fff;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); transition: transform 0.1s;
+            box-shadow: 0 4px 20px color-mix(in srgb, var(--color-primary) 50%, transparent); transition: transform 0.1s;
         }
         .play-pause-btn:active { transform: scale(0.9); }
 
+        /* Score & Action Popups */
         .floating-text {
             position: absolute; font-weight: 900; font-family: 'Nunito', sans-serif;
-            pointer-events: none; animation: floatUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; z-index: 30;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.5); font-size: 1.2rem;
+            pointer-events: none; animation: floatUp 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; z-index: 30;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.6); font-size: 1.5rem; letter-spacing: 1px;
         }
-        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(0.5); } 100% { opacity: 0; transform: translateY(-50px) scale(1.5); } }
+        @keyframes floatUp { 0% { opacity: 0; transform: translateY(10px) scale(0.5); } 20% { opacity: 1; transform: translateY(0) scale(1.2); } 100% { opacity: 0; transform: translateY(-50px) scale(1); } }
 
         .shake { animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%,90%{transform:translate3d(-2px,0,0)} 20%,80%{transform:translate3d(3px,0,0)} 30%,50%,70%{transform:translate3d(-5px,0,0)} 40%,60%{transform:translate3d(5px,0,0)} }
@@ -126,29 +122,29 @@
         .shop-item { border: 2px solid var(--glass-border); border-radius: 1.25rem; padding: 0.6rem; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; background: rgba(0,0,0,0.1); }
         html.light .shop-item { background: rgba(255,255,255,0.4); }
         .shop-item.locked { opacity: 0.7; filter: grayscale(100%); }
-        .shop-item.active { border-color: var(--color-primary); background: rgba(59, 130, 246, 0.15); transform: scale(1.03); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
+        .shop-item.active { border-color: var(--color-primary); background: color-mix(in srgb, var(--color-primary) 15%, transparent); transform: scale(1.03); box-shadow: 0 0 15px color-mix(in srgb, var(--color-primary) 30%, transparent); }
         .shop-item:active { transform: scale(0.95); }
         .coin-icon { color: #F5BE48; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
 
-        .combo-glow { box-shadow: 0 0 30px var(--color-primary), inset 0 0 20px var(--color-secondary) !important; border-color: var(--color-primary) !important; }
+        .combo-glow { box-shadow: 0 0 40px color-mix(in srgb, var(--color-primary) 60%, transparent), inset 0 0 25px color-mix(in srgb, var(--color-secondary) 40%, transparent) !important; border-color: var(--color-primary) !important; }
         
         .color-swatch { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .color-swatch:hover { transform: scale(1.1); }
-        .color-swatch.active { border-color: #fff; transform: scale(1.15); box-shadow: 0 0 12px currentColor; }
+        .color-swatch.active { border-color: #fff; transform: scale(1.15); box-shadow: 0 0 15px currentColor; }
+        .chroma-swatch { background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); }
     </style>
 </head>
 <body class="font-sans transition-colors duration-500 flex flex-col min-h-screen p-4 pb-8 justify-between lg:justify-center gap-4">
 
-    <!-- Premium Minimal Top Bar -->
+    <!-- Premium Top Bar -->
     <div class="glass-panel w-full max-w-[360px] mx-auto p-3.5 flex flex-col gap-3">
         <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-m3Primary to-m3Secondary drop-shadow-sm">Serpentine</h1>
+            <h1 class="text-2xl font-black tracking-tight drop-shadow-sm text-m3Primary">Serpentine</h1>
             <div class="flex gap-2">
                 <div class="flex items-center gap-1.5 bg-black/10 dark:bg-white/5 px-3 py-1.5 rounded-full border border-white/5 shadow-inner">
                     <span class="coin-icon text-sm">🪙</span> <span id="coinCount" class="font-black font-sans text-sm">0</span>
                 </div>
-                <!-- Dynamic Fullscreen Button -->
-                <button id="fullscreenBtn" class="w-9 h-9 flex justify-center items-center rounded-full bg-black/10 dark:bg-white/5 active:scale-90 transition-all border border-white/5 shadow-sm hover:bg-black/20 dark:hover:bg-white/10 text-gray-500 dark:text-gray-300">
+                <button id="fullscreenBtn" class="w-9 h-9 flex justify-center items-center rounded-full bg-black/10 dark:bg-white/5 active:scale-90 transition-all border border-white/5 shadow-sm text-gray-500 dark:text-gray-300">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
                 </button>
                 <button id="menuBtn" class="w-9 h-9 flex justify-center items-center rounded-full bg-black/10 dark:bg-white/5 active:scale-90 transition-all border border-white/5 shadow-sm hover:bg-black/20 dark:hover:bg-white/10 text-gray-500 dark:text-gray-300">
@@ -158,7 +154,7 @@
         </div>
 
         <div class="w-full bg-black/5 dark:bg-black/20 p-2.5 rounded-2xl border border-white/5">
-            <div class="flex justify-between text-[11px] font-extrabold uppercase tracking-widest opacity-80 mb-1.5">
+            <div class="flex justify-between text-[11px] font-extrabold uppercase tracking-widest opacity-90 mb-1.5">
                 <span id="levelText" class="text-m3Primary">Level 1</span>
                 <span>XP: <span id="xpText">0/1000</span></span>
             </div>
@@ -167,26 +163,24 @@
 
         <div class="flex justify-between items-end px-1">
             <div class="flex flex-col">
-                <span class="text-[10px] uppercase font-bold opacity-60 tracking-wider">Score</span>
-                <!-- Nunito Extra Bold applied here to Score -->
-                <span id="score" class="text-3xl font-black font-sans leading-none bg-clip-text text-transparent bg-gradient-to-b from-gray-800 to-gray-500 dark:from-white dark:to-gray-400">0</span>
+                <span class="text-[10px] uppercase font-bold opacity-70 tracking-wider">Score</span>
+                <span id="score" class="text-3xl font-black font-sans leading-none text-m3Primary drop-shadow-md">0</span>
             </div>
             <div class="flex flex-col items-end w-1/2">
                 <span class="text-[10px] uppercase font-bold text-m3Secondary mb-1 flex items-center gap-1">
                     <span id="comboGlowIcon" class="hidden animate-pulse">🔥</span> Combo <span id="comboText">x1</span>
                 </span>
-                <div class="progress-bg w-full h-1.5"><div id="comboBar" class="progress-fill" style="width: 0%; background: var(--color-primary);"></div></div>
+                <div class="progress-bg w-full h-2"><div id="comboBar" class="progress-fill" style="width: 0%;"></div></div>
             </div>
         </div>
     </div>
 
-    <!-- Game Canvas (High Res Scale) -->
+    <!-- Game Canvas (High Res 800x800) -->
     <div class="w-full max-w-[360px] mx-auto relative flex-1 flex items-center justify-center min-h-[320px]">
         <div class="canvas-container bg-black/5 dark:bg-black/30" id="canvasContainer">
-            <!-- Increased Width & Height for better resolution -->
-            <canvas id="gameCanvas" width="600" height="600" class="w-full h-full object-contain"></canvas>
+            <canvas id="gameCanvas" width="800" height="800" class="w-full h-full object-contain"></canvas>
             
-            <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-300 z-20 rounded-[1.25rem]">
+            <div id="gameOverScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-300 z-20 rounded-[1.25rem]">
                 <h2 class="text-5xl font-black mb-3 text-white tracking-widest text-transparent bg-clip-text bg-gradient-to-br from-red-400 to-red-600 drop-shadow-lg">GAMEOVER</h2>
                 <div class="flex gap-8 my-4 bg-white/5 p-4 rounded-2xl border border-white/10 w-[85%] justify-center">
                     <div class="text-center"><p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider mb-1">Score</p><p id="finalScore" class="text-3xl font-black text-white font-sans">0</p></div>
@@ -203,7 +197,7 @@
         </div>
     </div>
 
-    <!-- Minimal Circular D-Pad Controller -->
+    <!-- Redesigned Capsule D-Pad Controller -->
     <div class="d-pad-wrapper">
         <button class="d-btn btn-up" id="btnUp">▲</button>
         <button class="d-btn btn-left" id="btnLeft">◀</button>
@@ -213,8 +207,8 @@
     </div>
 
     <!-- Settings & Shop Modal -->
-    <div id="settingsModal" class="fixed inset-0 bg-black/60 hidden justify-center items-end sm:items-center z-50 backdrop-blur-md">
-        <div class="glass-panel w-full sm:w-[90%] max-w-sm rounded-t-[2.5rem] sm:rounded-3xl p-6 max-h-[85vh] flex flex-col animate-[slideUp_0.3s_ease-out] border-b-0 sm:border-b shadow-[0_-10px_40px_rgba(0,0,0,0.3)]">
+    <div id="settingsModal" class="fixed inset-0 bg-black/70 hidden justify-center items-end sm:items-center z-50 backdrop-blur-md">
+        <div class="glass-panel w-full sm:w-[90%] max-w-sm rounded-t-[2.5rem] sm:rounded-3xl p-6 max-h-[85vh] flex flex-col animate-[slideUp_0.3s_ease-out] border-b-0 sm:border-b shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
             
             <div class="flex justify-between items-center mb-5">
                 <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-m3Primary to-m3Secondary">Options</h2>
@@ -222,7 +216,7 @@
             </div>
             
             <div class="flex gap-2 mb-5 p-1.5 bg-black/5 dark:bg-black/30 rounded-2xl border border-white/5 shadow-inner">
-                <button id="tabShop" class="flex-1 py-2 font-bold text-sm rounded-xl bg-m3Primary text-white shadow-md transition-all">Skins Shop</button>
+                <button id="tabShop" class="flex-1 py-2 font-bold text-sm rounded-xl bg-m3Primary text-white shadow-md transition-all">Skins</button>
                 <button id="tabSettings" class="flex-1 py-2 font-bold text-sm rounded-xl text-gray-500 dark:text-gray-400 transition-all hover:bg-black/5 dark:hover:bg-white/5">Settings</button>
             </div>
 
@@ -238,15 +232,20 @@
             <!-- Settings Tab -->
             <div id="settingsContent" class="overflow-y-auto flex-1 pb-2 hidden flex-col gap-3">
                 <div class="flex justify-between items-center bg-black/5 dark:bg-black/20 p-4 rounded-2xl border border-white/5 shadow-sm">
-                    <span class="font-bold text-sm opacity-90">Theme Mode</span>
+                    <span class="font-bold text-sm opacity-90">Dark Mode</span>
                     <button id="themeToggleBtn" class="px-5 py-2 bg-m3Primary text-white rounded-full font-bold shadow-md active:scale-95 text-[11px] uppercase tracking-wider transition-all">Toggle</button>
+                </div>
+                <!-- AMOLED Toggle -->
+                <div class="flex justify-between items-center bg-black/5 dark:bg-black/20 p-4 rounded-2xl border border-white/5 shadow-sm">
+                    <span class="font-bold text-sm opacity-90">AMOLED Black</span>
+                    <button id="amoledToggleBtn" class="px-5 py-2 bg-m3Primary text-white rounded-full font-bold shadow-md active:scale-95 text-[11px] uppercase tracking-wider transition-all">OFF</button>
                 </div>
                 <div class="flex justify-between items-center bg-black/5 dark:bg-black/20 p-4 rounded-2xl border border-white/5 shadow-sm">
                     <span class="font-bold text-sm opacity-90">Haptics & Sound</span>
                     <button id="soundToggleBtn" class="px-5 py-2 bg-m3Primary text-white rounded-full font-bold shadow-md active:scale-95 text-[11px] uppercase tracking-wider transition-all">ON</button>
                 </div>
                 <div class="bg-black/5 dark:bg-black/20 p-5 rounded-2xl border border-white/5 shadow-sm">
-                    <h3 class="font-bold mb-4 text-[11px] uppercase tracking-widest opacity-60 text-center">App Colors</h3>
+                    <h3 class="font-bold mb-4 text-[11px] uppercase tracking-widest opacity-60 text-center">App Themes</h3>
                     <div class="flex flex-wrap justify-center gap-3" id="themeGrid"></div>
                 </div>
             </div>
@@ -255,27 +254,22 @@
 
     <script>
         // --- High Res Core Variables ---
-        const canvas = document.getElementById("gameCanvas"); 
-        const ctx = canvas.getContext("2d");
+        const canvas = document.getElementById("gameCanvas"); const ctx = canvas.getContext("2d");
         const canvasContainer = document.getElementById("canvasContainer");
-        
-        // Scaled up for crisp rendering (600x600 canvas)
-        const gridSize = 30; 
-        const tileCount = 20; 
+        const gridSize = 40; const tileCount = 20; // 800x800 internal res
         
         let speed = 6; 
         let snake = [{ x: 10, y: 10 }];
         let food = { x: 5, y: 5 }; let specialFood = null; 
-        
         let dx = 0, dy = 0; let moveQueue = []; let currentDx = 0, currentDy = 0;
         let score = 0; let sessionCoins = 0;
         let isPaused = true; let isGameOver = false; let gameLoop; 
-
         let comboMultiplier = 1; let comboTimer = 0; const MAX_COMBO = 35; 
         let particles = []; let frames = 0;
         
-        let soundEnabled = true; let isDarkMode = true;
+        let soundEnabled = true; let isDarkMode = true; let isAmoled = false;
         let currentThemeId = 0; let currentDesignId = 0; 
+        let chromaHue = 0; // For RGB Theme
 
         let highScore = parseInt(localStorage.getItem('premiumSnakeBest')) || 0;
         let totalCoins = parseInt(localStorage.getItem('premiumCoins')) || 0;
@@ -287,21 +281,22 @@
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // --- Data Assets (10 Themes) ---
+        // --- 12 Themes including Chroma & Monochrome ---
         const themes = [
             { id: 0, color: '#3B82F6', l: {p:'#2563EB', s:'#60A5FA', f:'#DC2626'}, d: {p:'#3B82F6', s:'#93C5FD', f:'#F87171'} },
             { id: 1, color: '#10B981', l: {p:'#16A34A', s:'#4ADE80', f:'#DC2626'}, d: {p:'#22C55E', s:'#86EFAC', f:'#F87171'} },
             { id: 2, color: '#8B5CF6', l: {p:'#9333EA', s:'#C084FC', f:'#0D9488'}, d: {p:'#A855F7', s:'#D8B4FE', f:'#14B8A6'} },
             { id: 3, color: '#F43F5E', l: {p:'#E11D48', s:'#FB7185', f:'#2563EB'}, d: {p:'#F43F5E', s:'#FDA4AF', f:'#3B82F6'} },
             { id: 4, color: '#F59E0B', l: {p:'#D97706', s:'#FBBF24', f:'#4F46E5'}, d: {p:'#F59E0B', s:'#FDE68A', f:'#6366F1'} },
-            { id: 5, color: '#EAB308', l: {p:'#CA8A04', s:'#FACC15', f:'#EC4899'}, d: {p:'#EAB308', s:'#FEF08A', f:'#F472B6'} }, // Cyberpunk
-            { id: 6, color: '#D946EF', l: {p:'#C026D3', s:'#E879F9', f:'#06B6D4'}, d: {p:'#D946EF', s:'#F5D0FE', f:'#22D3EE'} }, // Synthwave
-            { id: 7, color: '#84CC16', l: {p:'#65A30D', s:'#A3E635', f:'#F97316'}, d: {p:'#84CC16', s:'#D9F99D', f:'#FB923C'} }, // Forest
-            { id: 8, color: '#06B6D4', l: {p:'#0891B2', s:'#22D3EE', f:'#F43F5E'}, d: {p:'#06B6D4', s:'#A5F3FC', f:'#FB7185'} }, // Ocean
-            { id: 9, color: '#F97316', l: {p:'#EA580C', s:'#FB923C', f:'#8B5CF6'}, d: {p:'#F97316', s:'#FED7AA', f:'#A855F7'} }  // Sunset
+            { id: 5, color: '#EAB308', l: {p:'#CA8A04', s:'#FACC15', f:'#EC4899'}, d: {p:'#EAB308', s:'#FEF08A', f:'#F472B6'} },
+            { id: 6, color: '#D946EF', l: {p:'#C026D3', s:'#E879F9', f:'#06B6D4'}, d: {p:'#D946EF', s:'#F5D0FE', f:'#22D3EE'} },
+            { id: 7, color: '#84CC16', l: {p:'#65A30D', s:'#A3E635', f:'#F97316'}, d: {p:'#84CC16', s:'#D9F99D', f:'#FB923C'} },
+            { id: 8, color: '#06B6D4', l: {p:'#0891B2', s:'#22D3EE', f:'#F43F5E'}, d: {p:'#06B6D4', s:'#A5F3FC', f:'#FB7185'} },
+            { id: 9, color: '#F97316', l: {p:'#EA580C', s:'#FB923C', f:'#8B5CF6'}, d: {p:'#F97316', s:'#FED7AA', f:'#A855F7'} },
+            { id: 10, color: '#94A3B8', name: 'Minimal', l: {p:'#475569', s:'#94A3B8', f:'#0F172A'}, d: {p:'#CBD5E1', s:'#64748B', f:'#F8FAFC'} },
+            { id: 11, isDynamic: true, name: 'Chroma' } // RGB
         ];
 
-        // 8 Skins with rounded properties
         const skins = [
             { id: 0, name: "Basic", price: 0, desc: "Classic smooth style" },
             { id: 1, name: "Pixel", price: 0, desc: "Slightly rounded blocks" },
@@ -313,157 +308,15 @@
             { id: 7, name: "Ghost", price: 100, desc: "Hollow glowing spirits" }
         ];
 
-        // --- UI & Rendering Logic ---
-        function updateUI() {
-            document.getElementById("score").innerText = score;
-            const bar = document.getElementById("comboBar"); const comboTxt = document.getElementById("comboText");
-            bar.style.width = `${(comboTimer / MAX_COMBO) * 100}%`;
-            comboTxt.innerText = `x${comboMultiplier}`;
-            
-            if(comboMultiplier >= 5) {
-                document.getElementById('comboGlowIcon').classList.remove('hidden');
-                canvasContainer.classList.add('combo-glow');
-                comboTxt.classList.add('animate-pulse', 'text-yellow-400');
-            } else {
-                document.getElementById('comboGlowIcon').classList.add('hidden');
-                canvasContainer.classList.remove('combo-glow');
-                comboTxt.classList.remove('animate-pulse', 'text-yellow-400');
-            }
-
-            const lvlInfo = getLevelInfo(playerXP);
-            document.getElementById('levelText').innerText = `Lv. ${lvlInfo.level}`;
-            document.getElementById('xpText').innerText = `${lvlInfo.currentXP}/${lvlInfo.maxXP}`;
-            document.getElementById('xpBar').style.width = `${lvlInfo.progress}%`;
-        }
-
-        function loop() {
-            requestAnimationFrame(loop); frames++;
-            const tickRate = Math.max(2, Math.floor(25 - speed)); 
-            if (frames % tickRate === 0 && !isPaused && !isGameOver) moveSnake();
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawBeautifulGrid(); 
-            if (!isGameOver) drawFoods(); 
-            drawSnake();
-            
-            for(let i=particles.length-1; i>=0; i--) {
-                let p = particles[i]; p.x += p.vx; p.y += p.vy; p.life -= 0.04;
-                if(p.life <= 0) { particles.splice(i, 1); continue; }
-                ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-            } ctx.globalAlpha = 1.0;
-        }
-
-        // Themed and rounded beautiful grid
-        function drawBeautifulGrid() {
-            const colors = themes[currentThemeId][isDarkMode?'d':'l'];
-            ctx.fillStyle = colors.p;
-            ctx.globalAlpha = 0.04; // Very subtle themed background cells
-            
-            for (let x = 0; x < tileCount; x++) {
-                for (let y = 0; y < tileCount; y++) {
-                    ctx.beginPath();
-                    ctx.roundRect(x * gridSize + 2, y * gridSize + 2, gridSize - 4, gridSize - 4, 6);
-                    ctx.fill();
-                }
-            }
-            ctx.globalAlpha = 1.0;
-        }
-
-        function drawSnake() {
-            const colors = themes[currentThemeId][isDarkMode?'d':'l'];
-            snake.forEach((part, index) => {
-                ctx.fillStyle = index === 0 ? colors.p : colors.s;
-                let px = part.x * gridSize; let py = part.y * gridSize; let s = gridSize;
-                
-                ctx.beginPath();
-                if (currentDesignId === 0) { // Basic
-                    ctx.roundRect(px+2, py+2, s-4, s-4, index === 0 ? 12 : 8);
-                    ctx.fill();
-                } else if (currentDesignId === 1) { // Pixel (Slightly rounded)
-                    ctx.roundRect(px+1, py+1, s-2, s-2, 3);
-                    ctx.fill();
-                    ctx.strokeStyle = isDarkMode ? '#0F172A' : '#FFFFFF'; ctx.lineWidth = 2; ctx.stroke();
-                } else if (currentDesignId === 2) { // Ninja (Rounded Diamond)
-                    ctx.save();
-                    ctx.translate(px + s/2, py + s/2);
-                    ctx.rotate(Math.PI / 4);
-                    ctx.roundRect(-s/2 + 4, -s/2 + 4, s - 8, s - 8, 6); // Rounded corners!
-                    ctx.fill();
-                    ctx.restore();
-                } else if (currentDesignId === 3) { // Mecha
-                    ctx.roundRect(px+2, py+2, s-4, s-4, 4); 
-                    ctx.fill();
-                    ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
-                    ctx.fillStyle = 'rgba(255,255,255,0.2)';
-                    ctx.fillRect(px+6, py+6, s-12, s-12); // Inner armor
-                } else if (currentDesignId === 4) { // Neon
-                    ctx.shadowBlur = 20; ctx.shadowColor = ctx.fillStyle; 
-                    ctx.arc(px + s/2, py + s/2, s/2 - 4, 0, Math.PI*2);
-                    ctx.fill(); ctx.shadowBlur = 0;
-                } else if (currentDesignId === 5) { // Blob
-                    ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2); // Overlapping
-                    ctx.fill();
-                } else if (currentDesignId === 6) { // Stripes
-                    ctx.roundRect(px+2, py+2, s-4, s-4, 8); ctx.fill();
-                    ctx.fillStyle = index % 2 === 0 ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)';
-                    ctx.roundRect(px+6, py+6, s-12, s-12, 4); ctx.fill();
-                } else if (currentDesignId === 7) { // Ghost
-                    ctx.roundRect(px+3, py+3, s-6, s-6, 8);
-                    ctx.fillStyle = 'rgba(255,255,255,0.1)'; ctx.fill();
-                    ctx.strokeStyle = colors.s; ctx.lineWidth = 3; ctx.stroke();
-                }
-
-                // High-res Eyes setup
-                if (index === 0 && currentDesignId !== 1 && currentDesignId !== 2 && currentDesignId !== 7) {
-                    ctx.fillStyle = isDarkMode ? '#0F172A' : '#FFF';
-                    let e1x = 8, e1y = 10, e2x = 22, e2y = 10; 
-                    if (currentDx === 1) { e1x = 20; e1y = 8; e2x = 20; e2y = 22; } 
-                    else if (currentDx === -1) { e1x = 10; e1y = 8; e2x = 10; e2y = 22; } 
-                    else if (currentDy === 1) { e1x = 8; e1y = 20; e2x = 22; e2y = 20; } 
-                    ctx.beginPath(); ctx.arc(px + e1x, py + e1y, 3, 0, Math.PI*2); ctx.arc(px + e2x, py + e2y, 3, 0, Math.PI*2); ctx.fill();
-                }
-            });
-        }
-
-        function drawFoods() {
-            const fColor = themes[currentThemeId][isDarkMode?'d':'l'].f; ctx.fillStyle = fColor;
-            let px = food.x * gridSize; let py = food.y * gridSize; let s = gridSize;
-            ctx.beginPath();
-            if (currentDesignId === 1 || currentDesignId === 2) { 
-                ctx.roundRect(px+4, py+4, s-8, s-8, 3); 
-            } else { 
-                let pulse = Math.sin(frames * 0.1) * 3; 
-                ctx.arc(px + s/2, py + s/2, (s/2 - 6) + pulse, 0, Math.PI*2); 
-            }
-            ctx.fill();
-
-            if (specialFood) {
-                ctx.fillStyle = '#F5BE48'; ctx.shadowBlur = 20; ctx.shadowColor = '#F5BE48';
-                let gx = specialFood.x * gridSize; let gy = specialFood.y * gridSize;
-                ctx.beginPath(); ctx.arc(gx + s/2, gy + s/2, s/2 - 4, 0, Math.PI*2);
-                ctx.fill(); ctx.shadowBlur = 0;
-                ctx.fillStyle = '#92400E'; ctx.font = "bold 16px 'Nunito'"; ctx.textAlign = "center"; 
-                ctx.fillText("C", gx + s/2, gy + 21);
-            }
-        }
-
-        // --- Engine ---
-        function getLevelInfo(xp) {
-            const level = Math.floor(Math.sqrt(xp / 100)) + 1;
-            const currentLevelXP = Math.pow(level - 1, 2) * 100;
-            const nextLevelXP = Math.pow(level, 2) * 100;
-            const progress = ((xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100;
-            return { level, currentXP: xp, maxXP: nextLevelXP, progress };
-        }
-
+        // --- Enhanced Haptics ---
         function vibe(type) {
             if (!navigator.vibrate || !soundEnabled) return;
             try {
-                if (type === 'move') navigator.vibrate(10);
-                else if (type === 'eat') navigator.vibrate(25);
-                else if (type === 'special') navigator.vibrate([40, 20, 60]);
-                else if (type === 'die') navigator.vibrate([100, 50, 200]);
+                if (type === 'click') navigator.vibrate(15);
+                else if (type === 'move') navigator.vibrate(20);
+                else if (type === 'eat') navigator.vibrate([30, 20, 30]);
+                else if (type === 'special') navigator.vibrate([50, 30, 80]);
+                else if (type === 'die') navigator.vibrate([150, 50, 250]);
             } catch(e){}
         }
 
@@ -490,19 +343,149 @@
             }
         }
 
+        // --- Render Engine ---
+        function updateUI() {
+            document.getElementById("score").innerText = score;
+            const bar = document.getElementById("comboBar"); const comboTxt = document.getElementById("comboText");
+            bar.style.width = `${(comboTimer / MAX_COMBO) * 100}%`;
+            comboTxt.innerText = `x${comboMultiplier}`;
+            if(comboMultiplier >= 5) {
+                document.getElementById('comboGlowIcon').classList.remove('hidden');
+                canvasContainer.classList.add('combo-glow'); comboTxt.classList.add('animate-pulse', 'text-yellow-400');
+            } else {
+                document.getElementById('comboGlowIcon').classList.add('hidden');
+                canvasContainer.classList.remove('combo-glow'); comboTxt.classList.remove('animate-pulse', 'text-yellow-400');
+            }
+            const lvl = Math.floor(Math.sqrt(playerXP / 100)) + 1;
+            const curLvlXP = Math.pow(lvl - 1, 2) * 100; const nextLvlXP = Math.pow(lvl, 2) * 100;
+            const prog = ((playerXP - curLvlXP) / (nextLvlXP - curLvlXP)) * 100;
+            document.getElementById('levelText').innerText = `Lv. ${lvl}`;
+            document.getElementById('xpText').innerText = `${playerXP}/${nextLvlXP}`;
+            document.getElementById('xpBar').style.width = `${prog}%`;
+        }
+
+        function loop() {
+            requestAnimationFrame(loop); frames++;
+            
+            // Chroma Dynamic Theme Logic
+            if(themes[currentThemeId].isDynamic) {
+                chromaHue = (chromaHue + 1) % 360;
+                let prim = `hsl(${chromaHue}, 90%, 60%)`;
+                let sec = `hsl(${chromaHue}, 80%, 40%)`;
+                document.documentElement.style.setProperty('--color-primary', prim);
+                document.documentElement.style.setProperty('--color-secondary', sec);
+                themes[currentThemeId].d = {p: prim, s: sec, f: '#FFF'};
+                themes[currentThemeId].l = {p: prim, s: sec, f: '#000'};
+            }
+
+            const tickRate = Math.max(2, Math.floor(25 - speed)); 
+            if (frames % tickRate === 0 && !isPaused && !isGameOver) moveSnake();
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid(); if (!isGameOver) drawFoods(); drawSnake();
+            
+            for(let i=particles.length-1; i>=0; i--) {
+                let p = particles[i]; p.x += p.vx; p.y += p.vy; p.life -= 0.04;
+                if(p.life <= 0) { particles.splice(i, 1); continue; }
+                ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+            } ctx.globalAlpha = 1.0;
+        }
+
+        function drawGrid() {
+            const colors = themes[currentThemeId][isDarkMode?'d':'l'];
+            ctx.fillStyle = colors.p; ctx.globalAlpha = 0.05; // Faint tint
+            for (let x = 0; x < tileCount; x++) {
+                for (let y = 0; y < tileCount; y++) {
+                    ctx.beginPath();
+                    ctx.roundRect(x * gridSize + 2, y * gridSize + 2, gridSize - 4, gridSize - 4, 8);
+                    ctx.fill();
+                }
+            } ctx.globalAlpha = 1.0;
+        }
+
+        function drawSnake() {
+            const colors = themes[currentThemeId][isDarkMode?'d':'l'];
+            snake.forEach((part, index) => {
+                ctx.fillStyle = index === 0 ? colors.p : colors.s;
+                let px = part.x * gridSize; let py = part.y * gridSize; let s = gridSize;
+                
+                ctx.beginPath();
+                if (currentDesignId === 0) {
+                    ctx.roundRect(px+3, py+3, s-6, s-6, index === 0 ? 16 : 10); ctx.fill();
+                } else if (currentDesignId === 1) {
+                    ctx.roundRect(px+2, py+2, s-4, s-4, 4); ctx.fill();
+                    ctx.strokeStyle = isDarkMode ? '#0F172A' : '#FFFFFF'; ctx.lineWidth = 3; ctx.stroke();
+                } else if (currentDesignId === 2) {
+                    ctx.save(); ctx.translate(px + s/2, py + s/2); ctx.rotate(Math.PI / 4);
+                    ctx.roundRect(-s/2 + 5, -s/2 + 5, s - 10, s - 10, 8); ctx.fill(); ctx.restore();
+                } else if (currentDesignId === 3) {
+                    ctx.roundRect(px+3, py+3, s-6, s-6, 6); ctx.fill();
+                    ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.stroke();
+                    ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.fillRect(px+8, py+8, s-16, s-16);
+                } else if (currentDesignId === 4) {
+                    ctx.shadowBlur = 25; ctx.shadowColor = ctx.fillStyle; 
+                    ctx.arc(px + s/2, py + s/2, s/2 - 5, 0, Math.PI*2); ctx.fill(); ctx.shadowBlur = 0;
+                } else if (currentDesignId === 5) {
+                    ctx.arc(px + s/2, py + s/2, s/2 - 2, 0, Math.PI*2); ctx.fill();
+                } else if (currentDesignId === 6) {
+                    ctx.roundRect(px+3, py+3, s-6, s-6, 12); ctx.fill();
+                    ctx.fillStyle = index % 2 === 0 ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)';
+                    ctx.roundRect(px+10, py+10, s-20, s-20, 6); ctx.fill();
+                } else if (currentDesignId === 7) {
+                    ctx.roundRect(px+4, py+4, s-8, s-8, 12);
+                    ctx.fillStyle = 'rgba(255,255,255,0.1)'; ctx.fill();
+                    ctx.strokeStyle = colors.s; ctx.lineWidth = 4; ctx.stroke();
+                }
+
+                // Eyes setup - Applied to ALL skins now!
+                if (index === 0) {
+                    ctx.fillStyle = isDarkMode ? '#0F172A' : '#FFFFFF';
+                    // Dynamic positioning to center perfectly
+                    let off1 = 12, off2 = 28, eyeY = 12; 
+                    let e1x = off1, e1y = eyeY, e2x = off2, e2y = eyeY; 
+                    if (currentDx === 1) { e1x = 28; e1y = 12; e2x = 28; e2y = 28; } 
+                    else if (currentDx === -1) { e1x = 12; e1y = 12; e2x = 12; e2y = 28; } 
+                    else if (currentDy === 1) { e1x = 12; e1y = 28; e2x = 28; e2y = 28; } 
+                    ctx.beginPath(); ctx.arc(px + e1x, py + e1y, 4, 0, Math.PI*2); ctx.arc(px + e2x, py + e2y, 4, 0, Math.PI*2); ctx.fill();
+                }
+            });
+        }
+
+        function drawFoods() {
+            const fColor = themes[currentThemeId][isDarkMode?'d':'l'].f; ctx.fillStyle = fColor;
+            let px = food.x * gridSize; let py = food.y * gridSize; let s = gridSize;
+            ctx.beginPath();
+            if (currentDesignId === 1 || currentDesignId === 2) { 
+                ctx.roundRect(px+6, py+6, s-12, s-12, 4); 
+            } else { 
+                let pulse = Math.sin(frames * 0.1) * 4; 
+                ctx.arc(px + s/2, py + s/2, (s/2 - 8) + pulse, 0, Math.PI*2); 
+            } ctx.fill();
+
+            if (specialFood) {
+                ctx.fillStyle = '#F5BE48'; ctx.shadowBlur = 25; ctx.shadowColor = '#F5BE48';
+                let gx = specialFood.x * gridSize; let gy = specialFood.y * gridSize;
+                ctx.beginPath(); ctx.arc(gx + s/2, gy + s/2, s/2 - 5, 0, Math.PI*2); ctx.fill(); ctx.shadowBlur = 0;
+                ctx.fillStyle = '#92400E'; ctx.font = "bold 20px 'Nunito'"; ctx.textAlign = "center"; ctx.fillText("C", gx + s/2, gy + 26);
+            }
+        }
+
         function showJuice(text, x, y, color) {
-            const el = document.createElement('div'); el.className = 'floating-text'; el.innerText = text; el.style.color = color;
-            el.style.left = `calc(${(x / tileCount) * 100}% - 10px)`; el.style.top = `calc(${(y / tileCount) * 100}% - 10px)`;
-            canvasContainer.appendChild(el); setTimeout(() => el.remove(), 800);
-            for(let i=0; i<10; i++) {
+            const el = document.createElement('div'); el.className = 'floating-text'; 
+            el.innerText = text; el.style.color = color;
+            el.style.left = `calc(${(x / tileCount) * 100}% - 15px)`; el.style.top = `calc(${(y / tileCount) * 100}% - 15px)`;
+            canvasContainer.appendChild(el); setTimeout(() => el.remove(), 900);
+            for(let i=0; i<12; i++) {
                 particles.push({
                     x: x * gridSize + gridSize/2, y: y * gridSize + gridSize/2,
-                    vx: (Math.random() - 0.5) * 12, vy: (Math.random() - 0.5) * 12,
-                    life: 1, color: color, size: Math.random() * 5 + 2
+                    vx: (Math.random() - 0.5) * 14, vy: (Math.random() - 0.5) * 14,
+                    life: 1, color: color, size: Math.random() * 6 + 3
                 });
             }
         }
 
+        // --- Logic ---
         function moveSnake() {
             if (moveQueue.length > 0) {
                 let nextMove = moveQueue.shift(); currentDx = nextMove.dx; currentDy = nextMove.dy; dx = currentDx; dy = currentDy;
@@ -510,6 +493,7 @@
             const head = { x: snake[0].x + dx, y: snake[0].y + dy };
             if (head.x < 0) head.x = tileCount - 1; if (head.x >= tileCount) head.x = 0;
             if (head.y < 0) head.y = tileCount - 1; if (head.y >= tileCount) head.y = 0;
+            
             for (let i = 0; i < snake.length; i++) { if (head.x === snake[i].x && head.y === snake[i].y) return triggerGameOver(); }
             
             snake.unshift(head); let ate = false;
@@ -556,8 +540,9 @@
             placeFood(); isPaused = true; document.getElementById("btnPlayPause").innerText = "▶"; 
         }
 
+        // --- Controls (Buttons + Swipe Anywhere) ---
         function togglePlayPause() {
-            vibe('move');
+            vibe('click');
             if (isGameOver) return resetGame();
             isPaused = !isPaused;
             if (!isPaused) { document.getElementById("btnPlayPause").innerHTML = "<b>||</b>"; if (dx===0 && dy===0) setDir(1, 0); } 
@@ -565,7 +550,7 @@
         }
 
         function setDir(newDx, newDy) { 
-            if (isPaused && !isGameOver) togglePlayPause(); vibe('move');
+            if (isPaused && !isGameOver) togglePlayPause(); else vibe('move');
             let lastReq = moveQueue.length > 0 ? moveQueue[moveQueue.length - 1] : {dx: currentDx, dy: currentDy};
             if (newDx !== 0 && lastReq.dx === -newDx) return; if (newDy !== 0 && lastReq.dy === -newDy) return; 
             if (moveQueue.length < 2) moveQueue.push({dx: newDx, dy: newDy});
@@ -575,28 +560,29 @@
         document.getElementById('btnLeft').onclick = () => setDir(-1, 0); document.getElementById('btnRight').onclick = () => setDir(1, 0);
         document.getElementById('btnPlayPause').onclick = togglePlayPause; document.getElementById('restartBtn').onclick = resetGame;
 
+        // Global Swipe Recognition
         let tStartX = 0, tStartY = 0;
-        canvasContainer.addEventListener('touchstart', e => { 
-            if (isGameOver) return; 
+        document.addEventListener('touchstart', e => { 
+            if (isGameOver || e.target.closest('button') || e.target.closest('#settingsModal')) return; 
             tStartX = e.touches[0].clientX; tStartY = e.touches[0].clientY; e.preventDefault(); 
         }, {passive: false});
         
-        canvasContainer.addEventListener('touchend', e => {
-            if (isGameOver) return;
+        document.addEventListener('touchend', e => {
+            if (isGameOver || e.target.closest('button') || e.target.closest('#settingsModal')) return;
             let diffX = e.changedTouches[0].clientX - tStartX; let diffY = e.changedTouches[0].clientY - tStartY;
-            if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) { if(e.target===canvas) togglePlayPause(); return; }
+            if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) { if(e.target.closest('#canvasContainer')) togglePlayPause(); return; }
             if (Math.abs(diffX) > Math.abs(diffY)) { if (diffX > 0) setDir(1, 0); else setDir(-1, 0); } else { if (diffY > 0) setDir(0, 1); else setDir(0, -1); }
             e.preventDefault();
         }, {passive: false});
 
-        // Fullscreen dynamic styling
+        // --- Settings, Fullscreen & Modals ---
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         fullscreenBtn.onclick = () => {
-            vibe('move');
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => console.log(err));
-            } else { document.exitFullscreen(); }
+            vibe('click');
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => console.log(err));
+            else document.exitFullscreen();
         };
+        
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
                 fullscreenBtn.classList.add('bg-m3Primary', 'text-white');
@@ -607,14 +593,14 @@
             }
         });
 
-        // --- Theming & UI Shop ---
         function applyTheme() {
-            const root = document.documentElement; const colors = themes[currentThemeId][isDarkMode?'d':'l'];
-            root.style.setProperty('--color-primary', colors.p); root.style.setProperty('--color-secondary', colors.s);
+            if(!themes[currentThemeId].isDynamic) {
+                const colors = themes[currentThemeId][isDarkMode?'d':'l'];
+                document.documentElement.style.setProperty('--color-primary', colors.p); 
+                document.documentElement.style.setProperty('--color-secondary', colors.s);
+            }
             document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('active'));
             document.getElementById(`swatch-${currentThemeId}`).classList.add('active');
-            // Dynamically update border
-            canvasContainer.style.borderColor = colors.p;
             renderShop();
         }
 
@@ -622,9 +608,7 @@
             const dGrid = document.getElementById('designGrid'); dGrid.innerHTML = '';
             document.getElementById('shopCoins').innerText = totalCoins;
             skins.forEach(s => {
-                const isUnlocked = unlockedDesigns.includes(s.id);
-                const isActive = currentDesignId === s.id;
-                
+                const isUnlocked = unlockedDesigns.includes(s.id); const isActive = currentDesignId === s.id;
                 let btn = document.createElement('div'); 
                 btn.className = `shop-item ${isUnlocked ? '' : 'locked'} ${isActive ? 'active' : ''}`;
                 
@@ -635,41 +619,43 @@
                 
                 btn.innerHTML = content;
                 btn.onclick = () => {
-                    vibe('move');
+                    vibe('click');
                     if (isUnlocked) { currentDesignId = s.id; renderShop(); }
                     else if (totalCoins >= s.price) {
                         totalCoins -= s.price; unlockedDesigns.push(s.id);
                         localStorage.setItem('premiumCoins', totalCoins); localStorage.setItem('premiumUnlocked', JSON.stringify(unlockedDesigns));
                         document.getElementById('coinCount').innerText = totalCoins; currentDesignId = s.id; renderShop(); vibe('special');
                     } else { btn.classList.add('shake'); setTimeout(()=>btn.classList.remove('shake'), 300); }
-                };
-                dGrid.appendChild(btn);
+                }; dGrid.appendChild(btn);
             });
         }
 
         function initSettings() {
             const tGrid = document.getElementById('themeGrid');
             themes.forEach(t => {
-                let div = document.createElement('div'); div.className = 'color-swatch';
-                div.style.backgroundColor = t.color; div.id = `swatch-${t.id}`;
-                div.onclick = () => { vibe('move'); currentThemeId = t.id; applyTheme(); }; tGrid.appendChild(div);
-            });
-            applyTheme();
+                let div = document.createElement('div'); 
+                div.className = `color-swatch ${t.isDynamic ? 'chroma-swatch' : ''}`;
+                if(!t.isDynamic) div.style.backgroundColor = t.color; 
+                div.id = `swatch-${t.id}`;
+                div.onclick = () => { vibe('click'); currentThemeId = t.id; applyTheme(); }; tGrid.appendChild(div);
+            }); applyTheme();
         }
 
         const modal = document.getElementById('settingsModal');
         const tabShop = document.getElementById('tabShop'); const tabSettings = document.getElementById('tabSettings');
         const contentShop = document.getElementById('shopContent'); const contentSettings = document.getElementById('settingsContent');
 
-        document.getElementById('menuBtn').onclick = () => { vibe('move'); modal.classList.remove('hidden'); modal.classList.add('flex'); renderShop(); };
-        document.getElementById('closeModalBtn').onclick = () => { vibe('move'); modal.classList.add('hidden'); modal.classList.remove('flex'); };
+        document.getElementById('menuBtn').onclick = () => { vibe('click'); modal.classList.remove('hidden'); modal.classList.add('flex'); renderShop(); };
+        document.getElementById('closeModalBtn').onclick = () => { vibe('click'); modal.classList.add('hidden'); modal.classList.remove('flex'); };
         
         tabShop.onclick = () => {
+            vibe('click');
             tabShop.className = "flex-1 py-2 font-bold text-sm rounded-xl bg-m3Primary text-white shadow-md transition-all";
             tabSettings.className = "flex-1 py-2 font-bold text-sm rounded-xl text-gray-500 dark:text-gray-400 transition-all hover:bg-black/5 dark:hover:bg-white/5";
             contentShop.classList.remove('hidden'); contentSettings.classList.add('hidden'); contentSettings.classList.remove('flex');
         };
         tabSettings.onclick = () => {
+            vibe('click');
             tabSettings.className = "flex-1 py-2 font-bold text-sm rounded-xl bg-m3Primary text-white shadow-md transition-all";
             tabShop.className = "flex-1 py-2 font-bold text-sm rounded-xl text-gray-500 dark:text-gray-400 transition-all hover:bg-black/5 dark:hover:bg-white/5";
             contentSettings.classList.remove('hidden'); contentSettings.classList.add('flex'); contentShop.classList.add('hidden');
@@ -677,13 +663,22 @@
 
         const themeToggleBtn = document.getElementById('themeToggleBtn');
         themeToggleBtn.onclick = () => { 
-            vibe('move'); isDarkMode = !isDarkMode; 
-            document.documentElement.className = isDarkMode ? "dark" : "light";
+            vibe('click'); isDarkMode = !isDarkMode; 
+            if(isDarkMode) document.documentElement.classList.add('dark'); else document.documentElement.classList.remove('dark');
             themeToggleBtn.innerHTML = isDarkMode ? "Light Mode" : "Dark Mode"; applyTheme(); 
         };
+
+        const amoledToggleBtn = document.getElementById('amoledToggleBtn');
+        amoledToggleBtn.onclick = () => { 
+            vibe('click'); isAmoled = !isAmoled; 
+            if(isAmoled) document.documentElement.classList.add('amoled'); else document.documentElement.classList.remove('amoled');
+            amoledToggleBtn.innerHTML = isAmoled ? "ON" : "OFF";
+            amoledToggleBtn.style.background = isAmoled ? "var(--color-primary)" : "rgba(255,255,255,0.05)";
+        };
+
         const soundToggleBtn = document.getElementById('soundToggleBtn');
         soundToggleBtn.onclick = () => {
-            vibe('move'); soundEnabled = !soundEnabled;
+            vibe('click'); soundEnabled = !soundEnabled;
             soundToggleBtn.innerText = soundEnabled ? "ON" : "OFF";
             soundToggleBtn.style.background = soundEnabled ? "var(--color-primary)" : "rgba(255,255,255,0.05)";
             soundToggleBtn.style.color = soundEnabled ? "#fff" : "var(--text-muted)";
